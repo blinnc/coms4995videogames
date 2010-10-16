@@ -2,7 +2,6 @@ package pongRevolution;
 import java.awt.*;
 
 import javax.swing.*;
-import javax.swing.text.IconView;
 
 public class mainWindow {
 
