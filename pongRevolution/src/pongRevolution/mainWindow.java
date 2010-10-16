@@ -8,7 +8,7 @@ public class mainWindow {
 	/**
 	 * @param args
 	 */
-    
+    //noob
 	//Hi!
 	
 	public static void main(String[] args) {
