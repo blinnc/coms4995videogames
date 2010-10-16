@@ -9,6 +9,8 @@ public class mainWindow {
 	 * @param args
 	 */
     
+	//Hi!
+	
 	public static void main(String[] args) {
 		JFrame frame = new JFrame("Pong Revolution");
 		frame.setSize(800, 600);
