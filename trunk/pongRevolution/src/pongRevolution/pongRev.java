@@ -26,7 +26,6 @@ public class pongRev extends JFrame implements KeyListener {
 	boolean a = false;
 	boolean d = false;
 	
-	@SuppressWarnings("deprecation")
 	public pongRev()
 	{
 		super( "Pong Revolution" );
