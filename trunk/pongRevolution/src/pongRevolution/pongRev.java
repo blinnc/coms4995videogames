@@ -18,22 +18,23 @@ public class pongRev extends JFrame implements KeyListener {
 	
 	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_Y = 50;
-	private static final int CIRCLE_DIAMETER = 500;
+	private static final int CIRCLE_DIAMETER = 510;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public int paddleRotation = 0;
 	Rectangle paddle = new Rectangle(540, 280, 20, 40);
 	Shape shape = new Rectangle(540, 280, 20, 40);
-	boolean blah = false;
+	boolean a = false;
+	boolean d = false;
 	
 	@SuppressWarnings("deprecation")
 	public pongRev()
 	{
 		super( "Pong Revolution" );
-        setBackground( Color.yellow );
+        setBackground( Color.gray );
         setSize( 800, 600 );
         //paddle = new Rectangle(540, 280, 20, 40);
         this.addKeyListener(this);
-        show();
+        setVisible(true);
 	}
 	
 	public void paint(Graphics g)
@@ -52,42 +53,74 @@ public class pongRev extends JFrame implements KeyListener {
 		char c = arg0.getKeyChar();
 		if(c == 'a') 
 		{
-			AffineTransform tx = new AffineTransform();
-			paddleRotation += 3;
-			tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-			//double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			//double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			shape = (Path2D) tx.createTransformedShape(paddle);
+		    a = true;
 			this.repaint();
 		} 
 		else if (c == 'd') 
 		{
-			AffineTransform tx = new AffineTransform();
-			paddleRotation -= 3;
-			tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-			//double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			//double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			shape = (Path2D) tx.createTransformedShape(paddle);
-			this.repaint();
+		    d = true;
 		}
 	}
 	
+	private void movePaddle() throws InterruptedException {
+	    while (true) {
+	        Thread.sleep(15);
+	        if (a) {
+	            moveA();
+	        } else if (d) {
+	            moveD();
+	        }
+	    }
+	}
+	
+	private void moveA() {
+        AffineTransform tx = new AffineTransform();
+        paddleRotation += 1;
+        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+        shape = (Path2D) tx.createTransformedShape(paddle);
+        this.repaint();
+	}
+
+	private void moveD() {
+	    AffineTransform tx = new AffineTransform();
+        paddleRotation -= 1;
+        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+        shape = (Path2D) tx.createTransformedShape(paddle);
+        this.repaint();
+	}
 	public static void main(String[] args)
 	{
-		pongRev pr = new pongRev();
+		final pongRev pr = new pongRev();
+		(new Thread() {
+            public void run() {
+                try {
+                    pr.movePaddle();
+                }
+                catch(InterruptedException e) {}
+            }
+        }).start();
 		pr.addWindowListener(new WindowAdapter()
 		{
 			 public void windowClosing( WindowEvent e )
              {
-             System.exit( 0 );
+			     System.exit( 0 );
              }
 		});
 	}
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	    char c = arg0.getKeyChar();
+	    if (c == 'a') {
+	        a = false;
+	    }
+	    if (c == 'd') {
+	        d = false;
+	    }
 	}
 
 	@Override
