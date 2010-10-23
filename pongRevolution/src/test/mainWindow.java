@@ -1,4 +1,4 @@
-package pongRevolution;
+package test;
 import java.awt.*;
 
 import javax.swing.*;
