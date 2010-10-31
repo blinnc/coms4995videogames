@@ -1,6 +1,6 @@
 package pongRevolution;
 
-public class PongServer {
+public class Game {
 	
 	
 	
