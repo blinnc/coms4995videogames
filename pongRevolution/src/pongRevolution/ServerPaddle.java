@@ -1,38 +1,22 @@
 package pongRevolution;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 public class ServerPaddle {
 	double t;
 	double r;
 	double vr;
-	double ar;
-	public static final double LENGTH = 30;
-	public static final double HEIGHT = 10;
+	public static final double LENGTH = 40;
+	public static final double HEIGHT = 20;
 	boolean isInvisible;
 	
-	Powerup powerup;
+	public Paddle paddle;
 	
 	public ServerPaddle() {
 		t = 0;
 		r = 0;
 		vr = 0;
-		ar = 0;
-	}
-	
-	/**
-	 * Draws the paddle
-	 */
-	public void draw(Graphics2D g2) {
-		Rectangle2D rectangle = new Rectangle2D.Double(r * Math.cos(t), r * Math.sin(t), LENGTH, HEIGHT);
-		Color oldColor = g2.getColor();
-		g2.setColor(Color.LIGHT_GRAY);
-		g2.fill(rectangle);
-		g2.setColor(oldColor);
-		g2.draw(rectangle);
 	}
 	
 	/**
@@ -52,27 +36,11 @@ public class ServerPaddle {
 	}
 	
 	/**
-	 * Sets the radial acceleration.
-	 * @param ar the new radial acceleration
-	 */
-	public void setAR(double ar) {
-		this.ar = ar;
-	}
-	
-	/**
 	 * Gets the radial velocity.
 	 * @return the current radial velocity
 	 */
 	public double getVR() {
 		return vr;
-	}
-	
-	/**
-	 * Gets the radial acceleration.
-	 * @return the current radial acceleration
-	 */
-	public double getAR() {
-		return ar;
 	}
 
 	/**
@@ -80,17 +48,44 @@ public class ServerPaddle {
 	 * @param p the point
 	 */
 	public boolean contains(Point2D p) {
-		Rectangle2D rectangle = new Rectangle2D.Double((r + HEIGHT / 2) * Math.cos(t), (r + HEIGHT / 2) * Math.sin(t), LENGTH, HEIGHT);
-		return rectangle.contains(p);
+		Polygon polygon = getBounds();
+		return polygon.contains(p);
 	}
 
 	/**
 	 * Gets the bounds of the paddle
 	 * 
-	 * @return the rectangle containing the bounds
+	 * @return the polygon containing the bounds
 	 */
-	public Rectangle2D getBounds() {
-		return new Rectangle2D.Double(r * Math.cos(t), r * Math.sin(t), LENGTH, HEIGHT);
+	public Polygon getBounds() {
+		int[] xpoints = new int[4];
+		xpoints[0] = (int) (r * Math.cos(t) + LENGTH / 2 * Math.sin(t) + HEIGHT / 2 * Math.cos(t));
+		xpoints[1] = (int) (r * Math.cos(t) - LENGTH / 2 * Math.sin(t) + HEIGHT / 2 * Math.cos(t));
+		xpoints[2] = (int) (r * Math.cos(t) - LENGTH / 2 * Math.sin(t) - HEIGHT / 2 * Math.cos(t));
+		xpoints[3] = (int) (r * Math.cos(t) + LENGTH / 2 * Math.sin(t) - HEIGHT / 2 * Math.cos(t));
+		int[] ypoints = new int[4];
+		ypoints[0] = (int) (r * Math.sin(t) + LENGTH / 2 * Math.cos(t) - HEIGHT / 2 * Math.sin(t));
+		ypoints[1] = (int) (r * Math.sin(t) + LENGTH / 2 * Math.cos(t) + HEIGHT / 2 * Math.sin(t));
+		ypoints[2] = (int) (r * Math.sin(t) - LENGTH / 2 * Math.cos(t) + HEIGHT / 2 * Math.sin(t));
+		ypoints[3] = (int) (r * Math.sin(t) - LENGTH / 2 * Math.cos(t) - HEIGHT / 2 * Math.sin(t));
+		Polygon polygon = new Polygon(xpoints, ypoints, 4);
+		return polygon;
 	}
-		
+	
+	/**
+	 * Gets the optimal connection point on the paddle.
+	 * @param other the other point that connects to the paddle
+	 */
+	public Point2D getConnectionPoint(Point2D other) {
+		double dx = other.getX() - r * Math.cos(t);
+		double dy = other.getY() - r * Math.sin(t);
+		double distance = Math.sqrt(dx * dx + dy * dy);
+		if (distance == 0) {
+			return other;
+		} else {
+			
+			return new Point2D.Double(r * Math.cos(t) + dx * r / distance, r * Math.sin(t) + dy * r / distance);
+		}
+	}
+	
 }

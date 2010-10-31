@@ -1,37 +1,21 @@
 package pongRevolution;
 
-import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 public class ServerBall {
-	double radius;
+	public final static double R = 5;
 	double vx, vy;
-	double x, y;
-	int multiplier;
-	boolean isShadow;
+	int x, y;
 	
-	Powerup powerup;
+	public Ball ball;
 	
 	public ServerBall() {
 		x = 0;
 		y = 0;
 		vx = 0;
 		vy = 0;
-	}
-	
-	/**
-	 * Draws the ball
-	 */
-	public void draw(Graphics2D g2) {
-		Ellipse2D circle = new Ellipse2D.Double(x, y, radius, radius);
-		Color oldColor = g2.getColor();
-		g2.setColor(Color.DARK_GRAY);
-		g2.fill(circle);
-		g2.setColor(oldColor);
-		g2.draw(circle);
 	}
 	
 	/**
@@ -79,7 +63,7 @@ public class ServerBall {
 	 * @param p the point
 	 */
 	public boolean contains(Point2D p) {
-		Ellipse2D circle = new Ellipse2D.Double(x, y, radius, radius);
+		Ellipse2D circle = new Ellipse2D.Double(x, y, 2 * R, 2 * R);
 		return circle.contains(p);
 	}
 
@@ -89,7 +73,21 @@ public class ServerBall {
 	 * @return the rectangle containing the bounds
 	 */
 	public Rectangle2D getBounds() {
-		return new Rectangle2D.Double(x, y, radius, radius);
+		return new Rectangle2D.Double(x, y, 2 * R, 2 * R);
 	}
 	
+	/**
+	 * Gets the optimal connection point on the ball.
+	 * @param other the other point that connects to the ball
+	 */
+	public Point2D getConnectionPoint(Point2D other) {
+		double dx = other.getX() - x;
+		double dy = other.getY() - y;
+		double distance = Math.sqrt(dx * dx + dy * dy);
+		if (distance == 0) {
+			return other;
+		} else {
+			return new Point2D.Double(x + dx * R / distance, y + dy * R / distance);
+		}
+	}
 }
