@@ -1,11 +1,13 @@
 package pongRevolution;
 
 public class Ball {
-	private double radius;
-	private double speed;
-	//TODO: Vector
+	public double radius;
+	public double speed;
+	public double x, y;
+	public int multiplier;
+	public boolean isShadow;
 	
-	private Powerup powerup;
+	public Powerup powerup;
 	
 	public Ball() {
 		
