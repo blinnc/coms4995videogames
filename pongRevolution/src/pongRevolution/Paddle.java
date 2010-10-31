@@ -7,6 +7,8 @@ public class Paddle {
 	public double radius;
 	public double length;
 	public boolean isInvisible;
+	public boolean isSpeedup;
+	public boolean isMagnetic;
 	public Player.Team team;
 	
 	public Paddle() {
