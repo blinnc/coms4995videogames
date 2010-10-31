@@ -1,11 +1,12 @@
 package pongRevolution;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Command {
-	enum Type {
+	public enum Type {
 		LEFT,RIGHT,JUMP,POWERUP
 	}
 	
-	public List<Type> commandBuffer;
+	public List<Type> commandBuffer = new ArrayList<Type>();
 }
