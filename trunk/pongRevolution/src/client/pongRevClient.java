@@ -2,7 +2,8 @@ package client;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import pongRevolution.*;
+
+import pongRevolution.Command;
 import pongRevolution.Command.Type;
 
 public class pongRevClient {
@@ -13,6 +14,7 @@ public class pongRevClient {
 	private static boolean s;
 	private static boolean w;
 	private static final int COMMAND_BUFFER_MAX = 5;
+	private static final String HOST_IP = "209.2.231.243";
 	
 	//command class that buffers commands that come in
 	static Command cmd = new Command();
@@ -20,6 +22,28 @@ public class pongRevClient {
 	public static void main(String[] args)
 	{
 		//logic to connect to the server
+		/*TTransport transport;
+	      try {
+	         transport = new TSocket(HOST_IP, 7911);
+	         TProtocol protocol = new TBinaryProtocol(transport);
+	         Client client = new Client(protocol);
+	         transport.open();
+	         boolean hi = true;
+	         while (hi) {
+	        	 long time = System.currentTimeMillis();
+	        	 client.time();
+	        	 long curr = System.currentTimeMillis();
+	             System.out.println("Time from server:" + time + " | " + curr + " | " + (curr - time));
+	         }
+	         
+	         transport.close();
+//	      } catch (SocketException e) {
+//	         e.printStackTrace();
+	      } catch (TTransportException e) {
+	         e.printStackTrace();
+	      } catch (TException e) {
+	         e.printStackTrace();
+	      }*/
 		//end logic to connect to the server
 		
 		//set up and draw the pong game
