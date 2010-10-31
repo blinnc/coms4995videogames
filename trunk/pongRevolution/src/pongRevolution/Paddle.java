@@ -2,7 +2,12 @@ package pongRevolution;
 
 public class Paddle {
 	
-	private double speed;
+	public double speed;
+	public double angle;
+	public double radius;
+	public double length;
+	public boolean isInvisible;
+	public Player.Team team;
 	
 	public Paddle() {
 		
