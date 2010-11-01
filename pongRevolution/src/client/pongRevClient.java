@@ -2,12 +2,14 @@ package client;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import pongRevolution.Command;
 import pongRevolution.Command.Type;
 
-public class pongRevClient {
-
+public class pongRevClient extends TimerTask {
+	
 	//booleans that determine whether a key is pressed or not
 	private static boolean a;
 	private static boolean d;
@@ -45,6 +47,10 @@ public class pongRevClient {
 	         e.printStackTrace();
 	      }*/
 		//end logic to connect to the server
+		
+		Timer timer = new Timer();
+		TimerTask commandTask = new pongRevClient();
+		timer.schedule(commandTask, 0, 100);
 		
 		//set up and draw the pong game
 		final pongRevWindow gameWindow = new pongRevWindow();
@@ -117,7 +123,6 @@ public class pongRevClient {
 	 * @throws InterruptedException
 	 */
 	private static void doCommand(int max) throws InterruptedException {
-	    int i = 0;
 		while (true) {
 	        Thread.sleep(15);
 	        if (a) {
@@ -131,13 +136,13 @@ public class pongRevClient {
 	        	addCommand(cmd, Type.JUMP);
 	        	w = false;
 	        }
-	        i++;
-	        if(i == max) {
-	        	i = 0;
-	        	//logic to send the buffer to the server
-	        	cmd.commandBuffer.clear();
-	        }
 	    }
 	}
+	@Override
+	public void run() {
+		//send the packets
+		cmd.commandBuffer.clear();
+	}
 }
+
 
