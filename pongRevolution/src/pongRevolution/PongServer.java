@@ -2,56 +2,19 @@ package pongRevolution;
 
 import java.util.TimerTask;
 
-import network.GameState;
-import network.Player;
-import network.Settings;
+import network.TGameState;
+import network.TPlayer;
+import network.TSettings;
 
 import org.apache.thrift.TException;
 
-public class PongServer implements network.PongServer.Iface{
+public class PongServer implements network.TNetworkServer.Iface{
 	public static final int CLOCK_INTERVAL = 15;
 	
 	private Game game;
 	
 	public PongServer() {
 		game = new Game();
-	}
-
-
-	@Override
-	public Settings getSettings() throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void jump(Player requester) throws TException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void moveLeft(Player requester) throws TException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void moveRight(Player requester) throws TException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public GameState poll(Player requester) throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void usePowerUp(Player requester) throws TException {
-		// TODO Auto-generated method stub
-		
 	}
 	
 	class ClockThread extends TimerTask {
@@ -61,5 +24,46 @@ public class PongServer implements network.PongServer.Iface{
 			game.movePaddles();
 			game.moveBalls();
 		}
+	}
+
+	@Override
+	public void jump(TPlayer requester) throws TException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void moveLeft(TPlayer requester) throws TException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void moveRight(TPlayer requester) throws TException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public TGameState poll(TPlayer requester) throws TException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+
+	@Override
+	public void usePowerUp(TPlayer requester) throws TException {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public TSettings getSettings() throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

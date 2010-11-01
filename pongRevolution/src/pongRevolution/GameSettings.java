@@ -5,5 +5,9 @@ public class GameSettings {
 	
 	public static final int GAME_START_DELAY = 3000;
 	
-	public static final int PADDLE_MOVE_DISTANCE = 0;
+	
+	// Paddle settings
+	public static final double PADDLE_LENGTH = 40;
+	public static final double PADDLE_HEIGHT = 20;
+	public static final double PADDLE_MOVE_DISTANCE = 0;
 }
