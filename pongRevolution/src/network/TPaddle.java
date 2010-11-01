@@ -31,13 +31,15 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
 
   private static final TField RADIUS_FIELD_DESC = new TField("radius", TType.DOUBLE, (short)1);
   private static final TField ANGLE_FIELD_DESC = new TField("angle", TType.DOUBLE, (short)2);
-  private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)3);
-  private static final TField IS_INVISIBLE_FIELD_DESC = new TField("isInvisible", TType.BOOL, (short)4);
-  private static final TField IS_SPEEDUP_FIELD_DESC = new TField("isSpeedup", TType.BOOL, (short)5);
-  private static final TField IS_MAGNETIC_FIELD_DESC = new TField("isMagnetic", TType.BOOL, (short)6);
+  private static final TField LENGTH_FIELD_DESC = new TField("length", TType.DOUBLE, (short)3);
+  private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)4);
+  private static final TField IS_INVISIBLE_FIELD_DESC = new TField("isInvisible", TType.BOOL, (short)5);
+  private static final TField IS_SPEEDUP_FIELD_DESC = new TField("isSpeedup", TType.BOOL, (short)6);
+  private static final TField IS_MAGNETIC_FIELD_DESC = new TField("isMagnetic", TType.BOOL, (short)7);
 
   public double radius;
   public double angle;
+  public double length;
   /**
    * 
    * @see TPlayer
@@ -51,14 +53,15 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
   public enum _Fields implements TFieldIdEnum {
     RADIUS((short)1, "radius"),
     ANGLE((short)2, "angle"),
+    LENGTH((short)3, "length"),
     /**
      * 
      * @see TPlayer
      */
-    PLAYER((short)3, "player"),
-    IS_INVISIBLE((short)4, "isInvisible"),
-    IS_SPEEDUP((short)5, "isSpeedup"),
-    IS_MAGNETIC((short)6, "isMagnetic");
+    PLAYER((short)4, "player"),
+    IS_INVISIBLE((short)5, "isInvisible"),
+    IS_SPEEDUP((short)6, "isSpeedup"),
+    IS_MAGNETIC((short)7, "isMagnetic");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -77,13 +80,15 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
           return RADIUS;
         case 2: // ANGLE
           return ANGLE;
-        case 3: // PLAYER
+        case 3: // LENGTH
+          return LENGTH;
+        case 4: // PLAYER
           return PLAYER;
-        case 4: // IS_INVISIBLE
+        case 5: // IS_INVISIBLE
           return IS_INVISIBLE;
-        case 5: // IS_SPEEDUP
+        case 6: // IS_SPEEDUP
           return IS_SPEEDUP;
-        case 6: // IS_MAGNETIC
+        case 7: // IS_MAGNETIC
           return IS_MAGNETIC;
         default:
           return null;
@@ -127,10 +132,11 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
   // isset id assignments
   private static final int __RADIUS_ISSET_ID = 0;
   private static final int __ANGLE_ISSET_ID = 1;
-  private static final int __ISINVISIBLE_ISSET_ID = 2;
-  private static final int __ISSPEEDUP_ISSET_ID = 3;
-  private static final int __ISMAGNETIC_ISSET_ID = 4;
-  private BitSet __isset_bit_vector = new BitSet(5);
+  private static final int __LENGTH_ISSET_ID = 2;
+  private static final int __ISINVISIBLE_ISSET_ID = 3;
+  private static final int __ISSPEEDUP_ISSET_ID = 4;
+  private static final int __ISMAGNETIC_ISSET_ID = 5;
+  private BitSet __isset_bit_vector = new BitSet(6);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
@@ -138,6 +144,8 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     tmpMap.put(_Fields.RADIUS, new FieldMetaData("radius", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.DOUBLE)));
     tmpMap.put(_Fields.ANGLE, new FieldMetaData("angle", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.DOUBLE)));
+    tmpMap.put(_Fields.LENGTH, new FieldMetaData("length", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.DOUBLE)));
     tmpMap.put(_Fields.PLAYER, new FieldMetaData("player", TFieldRequirementType.DEFAULT, 
         new EnumMetaData(TType.ENUM, TPlayer.class)));
@@ -157,6 +165,7 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
   public TPaddle(
     double radius,
     double angle,
+    double length,
     TPlayer player,
     boolean isInvisible,
     boolean isSpeedup,
@@ -167,6 +176,8 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     setRadiusIsSet(true);
     this.angle = angle;
     setAngleIsSet(true);
+    this.length = length;
+    setLengthIsSet(true);
     this.player = player;
     this.isInvisible = isInvisible;
     setIsInvisibleIsSet(true);
@@ -184,6 +195,7 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.radius = other.radius;
     this.angle = other.angle;
+    this.length = other.length;
     if (other.isSetPlayer()) {
       this.player = other.player;
     }
@@ -202,6 +214,8 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     this.radius = 0.0;
     setAngleIsSet(false);
     this.angle = 0.0;
+    setLengthIsSet(false);
+    this.length = 0.0;
     this.player = null;
     setIsInvisibleIsSet(false);
     this.isInvisible = false;
@@ -255,6 +269,29 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
 
   public void setAngleIsSet(boolean value) {
     __isset_bit_vector.set(__ANGLE_ISSET_ID, value);
+  }
+
+  public double getLength() {
+    return this.length;
+  }
+
+  public TPaddle setLength(double length) {
+    this.length = length;
+    setLengthIsSet(true);
+    return this;
+  }
+
+  public void unsetLength() {
+    __isset_bit_vector.clear(__LENGTH_ISSET_ID);
+  }
+
+  /** Returns true if field length is set (has been asigned a value) and false otherwise */
+  public boolean isSetLength() {
+    return __isset_bit_vector.get(__LENGTH_ISSET_ID);
+  }
+
+  public void setLengthIsSet(boolean value) {
+    __isset_bit_vector.set(__LENGTH_ISSET_ID, value);
   }
 
   /**
@@ -376,6 +413,14 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
       }
       break;
 
+    case LENGTH:
+      if (value == null) {
+        unsetLength();
+      } else {
+        setLength((Double)value);
+      }
+      break;
+
     case PLAYER:
       if (value == null) {
         unsetPlayer();
@@ -419,6 +464,9 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     case ANGLE:
       return new Double(getAngle());
 
+    case LENGTH:
+      return new Double(getLength());
+
     case PLAYER:
       return getPlayer();
 
@@ -446,6 +494,8 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
       return isSetRadius();
     case ANGLE:
       return isSetAngle();
+    case LENGTH:
+      return isSetLength();
     case PLAYER:
       return isSetPlayer();
     case IS_INVISIBLE:
@@ -486,6 +536,15 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
       if (!(this_present_angle && that_present_angle))
         return false;
       if (this.angle != that.angle)
+        return false;
+    }
+
+    boolean this_present_length = true;
+    boolean that_present_length = true;
+    if (this_present_length || that_present_length) {
+      if (!(this_present_length && that_present_length))
+        return false;
+      if (this.length != that.length)
         return false;
     }
 
@@ -557,6 +616,16 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     }
     if (isSetAngle()) {
       lastComparison = TBaseHelper.compareTo(this.angle, typedOther.angle);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetLength()).compareTo(typedOther.isSetLength());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetLength()) {
+      lastComparison = TBaseHelper.compareTo(this.length, typedOther.length);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -634,14 +703,22 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // PLAYER
+        case 3: // LENGTH
+          if (field.type == TType.DOUBLE) {
+            this.length = iprot.readDouble();
+            setLengthIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 4: // PLAYER
           if (field.type == TType.I32) {
             this.player = TPlayer.findByValue(iprot.readI32());
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // IS_INVISIBLE
+        case 5: // IS_INVISIBLE
           if (field.type == TType.BOOL) {
             this.isInvisible = iprot.readBool();
             setIsInvisibleIsSet(true);
@@ -649,7 +726,7 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // IS_SPEEDUP
+        case 6: // IS_SPEEDUP
           if (field.type == TType.BOOL) {
             this.isSpeedup = iprot.readBool();
             setIsSpeedupIsSet(true);
@@ -657,7 +734,7 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // IS_MAGNETIC
+        case 7: // IS_MAGNETIC
           if (field.type == TType.BOOL) {
             this.isMagnetic = iprot.readBool();
             setIsMagneticIsSet(true);
@@ -685,6 +762,9 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     oprot.writeFieldEnd();
     oprot.writeFieldBegin(ANGLE_FIELD_DESC);
     oprot.writeDouble(this.angle);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(LENGTH_FIELD_DESC);
+    oprot.writeDouble(this.length);
     oprot.writeFieldEnd();
     if (this.player != null) {
       oprot.writeFieldBegin(PLAYER_FIELD_DESC);
@@ -715,6 +795,10 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     if (!first) sb.append(", ");
     sb.append("angle:");
     sb.append(this.angle);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("length:");
+    sb.append(this.length);
     first = false;
     if (!first) sb.append(", ");
     sb.append("player:");
