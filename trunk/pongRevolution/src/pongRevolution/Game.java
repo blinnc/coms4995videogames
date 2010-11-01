@@ -13,7 +13,7 @@ public class Game {
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
-		paddleArray = new ServerPaddle[4];
+		paddleArray = new ServerPaddle[5];
 		
 		
 	}
@@ -23,6 +23,10 @@ public class Game {
 		redScore = 0;
 		blueScore = 0;
 		ballSpawnTime = GAME_START_DELAY;
+	}
+	
+	public void movePaddle(Player requester, boolean moveLeft) {
+		
 	}
 	
 	/**
