@@ -3,18 +3,23 @@ package pongRevolution;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
+import network.TPlayer;
+
 public class ServerPaddle {
 	double t;
 	double r;
 	double vr;
 	boolean isInvisible;
 	
+	private TPlayer player;
+	
 	public Paddle paddle;
 	
-	public ServerPaddle() {
-		t = 0;
-		r = 0;
-		vr = 0;
+	public ServerPaddle(TPlayer player) {
+		this.player = player;
+		t = GameSettings.STARTING_POSITIONS[player.getValue()];
+		r = GameSettings.ARENA_RADIUS;
+		vr = GameSettings.PADDLE_VELOCITY;
 	}
 	
 	/**
@@ -39,6 +44,10 @@ public class ServerPaddle {
 	 */
 	public double getVR() {
 		return vr;
+	}
+	
+	public void move(boolean clockwise) {
+		t = clockwise ? t + vr : t - vr;
 	}
 
 	/**
