@@ -26,12 +26,13 @@ struct TPosition {
 }
 
 struct TPaddle {
-	1: double radius;
-	2: double angle;
-	3: TPlayer player;
-	4: bool isInvisible;
-	5: bool isSpeedup;
-	6: bool isMagnetic;
+        1: double radius;
+        2: double angle;
+        3: double length;
+        4: TPlayer player;
+        5: bool isInvisible;
+        6: bool isSpeedup;
+        7: bool isMagnetic;
 }
 
 struct TBall {
