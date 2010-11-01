@@ -13,8 +13,6 @@ import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
-import pongRevolution.Command;
-
 public class pongRevClient {
 	
 	//booleans that determine whether a key is pressed or not
@@ -30,9 +28,6 @@ public class pongRevClient {
 	
 	//client interface that we receive the server-side methods from
 	static Client client;
-	
-	//command class that buffers commands that come in
-	static Command cmd = new Command();
 	
 	//this will be set by the server at some point
 	private static TPlayer requester;
