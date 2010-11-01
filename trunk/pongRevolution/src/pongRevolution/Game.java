@@ -3,9 +3,9 @@ package pongRevolution;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game {
-	private static final int GAME_START_DELAY = 3000;
-	
+import network.TPlayer;
+
+public class Game {	
 	private List<ServerBall> ballList;
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
@@ -22,11 +22,11 @@ public class Game {
 		ballList.clear();
 		redScore = 0;
 		blueScore = 0;
-		ballSpawnTime = GAME_START_DELAY;
+		ballSpawnTime = GameSettings.GAME_START_DELAY;
 	}
 	
-	public void movePaddle(Player requester, boolean moveLeft) {
-		
+	public void movePaddle(TPlayer requester, boolean clockwise) {
+		paddleArray[requester.getValue()].move(clockwise);
 	}
 	
 	/**
