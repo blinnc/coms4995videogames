@@ -13,6 +13,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
+import java.util.ArrayList;
+import java.util.List;
+import network.*;
+
 import javax.swing.JFrame;
 
 @SuppressWarnings("serial")
@@ -50,11 +54,19 @@ public class pongRev extends JFrame implements KeyListener {
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	private boolean a;
 	private boolean d;
+	List<TPosition> positions;
+	TBall ball1;
+	
     
 	@SuppressWarnings("deprecation")
 	public pongRev()
 	{
 		super( "Pong Revolution" );
+		positions = new ArrayList<TPosition>();
+		positions.add(new TPosition(100, 300));
+		positions.add(new TPosition(320, 320));
+		ball1 = new TBall(positions, TPowerUp.NONE, TPlayer.NONE, false);
+		System.out.println(ball1.positions.get(0).xPos);
         setBackground(Color.black );
         setForeground(Color.white);
         setSize( 900, 600 );
@@ -118,7 +130,7 @@ public class pongRev extends JFrame implements KeyListener {
 			}
 		}
 		
-		else
+		/*else
 		{
 			dbg.setColor(Color.green);
 			dbg.fillOval(300, 300, 10, 10);
@@ -157,8 +169,11 @@ public class pongRev extends JFrame implements KeyListener {
 				changeZ = 1;
 			if(otherColorZ<=0)
 				changeZ = 0;
-		}
+		}*/
 		
+		
+		dbg.setColor(Color.green);
+		dbg.fillOval((int)ball1.positions.get(0).xPos, (int)ball1.positions.get(0).yPos, 10, 10);
 		
 		if(change == 0)
 			otherColor +=1;
