@@ -33,7 +33,9 @@ public class Game {
 	 * Updates the balls to their next position
 	 */
 	public void moveBalls() {
-		
+		for(ServerBall ball : ballList) {
+			ball.move();
+		}
 	}
 	
 	/**

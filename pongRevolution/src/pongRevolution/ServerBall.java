@@ -6,13 +6,15 @@ import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class ServerBall {
-	public final static double R = 5;
-	double vx, vy;
-	int x, y;
+	private double vx, vy;
+	private int x, y;
+	
+	private int combo;
 	
 	public ServerBall() {
 		x = 0;
 		y = 0;
+		combo = 0;
 		
 		// Create a random direction for the ball
 		double vSq = Math.pow(GameSettings.COMBO_SPEED[0], 2);
@@ -67,13 +69,30 @@ public class ServerBall {
 	public double getVY() {
 		return vy;
 	}
+	
+	public void move() {
+		x += vx;
+		y += vy;
+		// TODO: check for collisions
+	}
+	
+	public void increaseCombo() {
+		combo++;
+		// TODO: Adjust vx and vy
+		
+	}
+	
+	public void resetCombo() {
+		combo = 1;
+		// TODO: Adjust vx and vy
+	}
 
 	/**
 	 * Checks if the ball contains a point
 	 * @param p the point
 	 */
 	public boolean contains(Point2D p) {
-		Ellipse2D circle = new Ellipse2D.Double(x, y, 2 * R, 2 * R);
+		Ellipse2D circle = new Ellipse2D.Double(x, y, 2 * GameSettings.BALL_RADIUS, 2 * GameSettings.BALL_RADIUS);
 		return circle.contains(p);
 	}
 
@@ -83,7 +102,7 @@ public class ServerBall {
 	 * @return the rectangle containing the bounds
 	 */
 	public Rectangle2D getBounds() {
-		return new Rectangle2D.Double(x, y, 2 * R, 2 * R);
+		return new Rectangle2D.Double(x, y, 2 * GameSettings.BALL_RADIUS, 2 * GameSettings.BALL_RADIUS);
 	}
 	
 	/**
@@ -97,7 +116,7 @@ public class ServerBall {
 		if (distance == 0) {
 			return other;
 		} else {
-			return new Point2D.Double(x + dx * R / distance, y + dy * R / distance);
+			return new Point2D.Double(x + dx * GameSettings.BALL_RADIUS / distance, y + dy * GameSettings.BALL_RADIUS / distance);
 		}
 	}
 }
