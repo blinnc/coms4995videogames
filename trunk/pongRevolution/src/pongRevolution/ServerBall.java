@@ -3,6 +3,7 @@ package pongRevolution;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 public class ServerBall {
 	public final static double R = 5;
@@ -12,10 +13,21 @@ public class ServerBall {
 	public Ball ball;
 	
 	public ServerBall() {
+		Random rand = new Random();
 		x = 0;
 		y = 0;
-		vx = 0;
-		vy = 0;
+		int negX = rand.nextInt(1);
+		int negY = rand.nextInt(1);
+		double changeX = rand.nextDouble();
+		double changeY = rand.nextDouble();
+		if(negX == 1)
+			vx = -(changeX);
+		else
+			vx = changeX;
+		if(negY == 1)
+			vy = -changeY;
+		else
+			vy = changeY;
 	}
 	
 	/**

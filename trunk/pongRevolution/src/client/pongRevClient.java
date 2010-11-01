@@ -3,8 +3,8 @@ package client;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import network.Player;
-import network.PongServer.Client;
+import network.TPlayer;
+import network.TNetworkServer.Client;
 
 import org.apache.thrift.TException;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -26,6 +26,8 @@ public class pongRevClient {
 	//ip address that the system connects to
 	private static final String HOST_IP = "209.2.231.243";
 	
+	private static final int TIME_INTERVAL = 15;
+	
 	//client interface that we receive the server-side methods from
 	static Client client;
 	
@@ -33,7 +35,7 @@ public class pongRevClient {
 	static Command cmd = new Command();
 	
 	//this will be set by the server at some point
-	private static Player requester;
+	private static TPlayer requester;
 	
 	public static void main(String[] args)
 	{
@@ -123,7 +125,7 @@ public class pongRevClient {
 	 */
 	private static void doCommand() throws InterruptedException, TException {
 		while (true) {
-	        Thread.sleep(15);
+	        Thread.sleep(TIME_INTERVAL);
 	        if (a) {
 	        	client.moveLeft(requester);
 	        } else if (d) {
