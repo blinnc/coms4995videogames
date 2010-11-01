@@ -3,31 +3,29 @@ package pongRevolution;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Random;
+
+import network.TPowerUp;
 
 public class ServerBall {
 	private double vx, vy;
-	private int x, y;
+	private double x, y;
+	private double t;
 	
 	private int combo;
+	private TPowerUp powerup;
 	
 	public ServerBall() {
 		x = 0;
 		y = 0;
 		combo = 0;
 		
-		// Create a random direction for the ball
-		double vSq = Math.pow(GameSettings.COMBO_SPEED[0], 2);
-		double vxSq = Math.random() * vSq;
-		double vySq = vSq - vxSq;
-		vx = Math.sqrt(vxSq);
-		vy = Math.sqrt(vySq);
-		if(Math.random() > 0.5) {
-			vx = -vx;
-		}
-		if(Math.random() > 0.5) {
-			vy = -vy;
-		}
+		// Random direction
+		t = Math.random() * 2 * Math.PI;
+		updateVelocity();
+		
+		// Random powerup
+		int pu = (int)(Math.random() * 8) + 1;
+		powerup = TPowerUp.findByValue(pu);
 	}
 	
 	/**
@@ -36,6 +34,12 @@ public class ServerBall {
 	public void translate(double dx, double dy) {
 		x += dx;
 		y += dy;
+	}
+	
+	private void updateVelocity() {
+		double speed = GameSettings.COMBO_SPEED[combo];
+		vx = speed * Math.cos(t);
+		vy = speed * Math.sin(t);
 	}
 	
 	/**
@@ -78,13 +82,12 @@ public class ServerBall {
 	
 	public void increaseCombo() {
 		combo++;
-		// TODO: Adjust vx and vy
-		
+		updateVelocity();
 	}
 	
 	public void resetCombo() {
 		combo = 1;
-		// TODO: Adjust vx and vy
+		updateVelocity();
 	}
 
 	/**
