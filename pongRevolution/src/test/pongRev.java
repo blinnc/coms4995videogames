@@ -193,22 +193,24 @@ public class pongRev extends JFrame implements KeyListener {
 		char c = arg0.getKeyChar();
 		if(c == 'a') 
 		{
-			AffineTransform tx = new AffineTransform();
+			/*AffineTransform tx = new AffineTransform();
 			paddleRotation += 3;
 			tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 			//double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
 			//double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			shape = (Path2D) tx.createTransformedShape(paddle);
+			shape = (Path2D) tx.createTransformedShape(paddle);*/
+			a = true;
 		} 
 		else if (c == 'd') 
 		{
-			AffineTransform tx = new AffineTransform();
+			/*AffineTransform tx = new AffineTransform();
 			paddleRotation -= 3;
 			tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 			//double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
 			//double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
 			shape = (Path2D) tx.createTransformedShape(paddle);
-			this.repaint();
+			this.repaint();*/
+			d = true;
 		}
 		else if (c == 'w')
 		{
@@ -276,8 +278,12 @@ public class pongRev extends JFrame implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		char c = arg0.getKeyChar();
+		if(c == 'a') {
+			a = false;
+		} else if (c == 'd') {
+			d = false;
+		}
 	}
 
 	@Override
