@@ -2,47 +2,63 @@ package pongRevolution;
 
 import java.util.TimerTask;
 
-public class PongServer {
+import network.GameState;
+import network.Player;
+import network.Settings;
+
+import org.apache.thrift.TException;
+
+public class PongServer implements network.PongServer.Iface{
+	public static final int CLOCK_INTERVAL = 15;
 	
 	private Game game;
-	private int playerNum;
 	
 	public PongServer() {
 		game = new Game();
-		playerNum = 0;
 	}
-	
-	public int registerUser() {
-		if(playerNum >= 4) {
-			return -1;
-		}
-		int num = playerNum;
-		playerNum++;
-		return num;
+
+
+	@Override
+	public Settings getSettings() throws TException {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public void moveLeft(int player) {
+
+	@Override
+	public void jump(Player requester) throws TException {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	public void moveRight(int player) {
+
+	@Override
+	public void moveLeft(Player requester) throws TException {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	public void jump(int player) {
+
+	@Override
+	public void moveRight(Player requester) throws TException {
+		// TODO Auto-generated method stub
 		
 	}
-	
-	public void usePowerup(int player) {
+
+	@Override
+	public GameState poll(Player requester) throws TException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void usePowerUp(Player requester) throws TException {
+		// TODO Auto-generated method stub
 		
 	}
-	
 	
 	class ClockThread extends TimerTask {
 		
 		public void run() {
 			
-			
+			game.movePaddles();
 			game.moveBalls();
 		}
 	}

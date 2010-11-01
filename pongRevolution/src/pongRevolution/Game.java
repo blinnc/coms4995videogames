@@ -4,16 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game {
+	private static final int GAME_START_DELAY = 3000;
 	
 	private List<ServerBall> ballList;
 	private ServerPaddle[] paddleArray;
-	
+	private int redScore, blueScore;
+	private int ballSpawnTime;
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[4];
 		
 		
+	}
+	
+	public void resetGame() {
+		ballList.clear();
+		redScore = 0;
+		blueScore = 0;
+		ballSpawnTime = GAME_START_DELAY;
 	}
 	
 	/**
