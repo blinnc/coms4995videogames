@@ -41,8 +41,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 
 	@Override
 	public void moveRight(TPlayer requester) throws TException {
-		// TODO Auto-generated method stub
-		
+		game.movePaddle(requester, false);		
 	}
 
 

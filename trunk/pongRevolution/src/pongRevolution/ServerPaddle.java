@@ -4,6 +4,7 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
 import network.TPlayer;
+import network.TPowerUp;
 
 public class ServerPaddle {
 	double t;
@@ -11,6 +12,7 @@ public class ServerPaddle {
 	double vr;
 	boolean isInvisible;
 	
+	private TPowerUp powerup;
 	private TPlayer player;
 	
 	public ServerPaddle(TPlayer player) {
