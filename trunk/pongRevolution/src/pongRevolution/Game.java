@@ -42,15 +42,4 @@ public class Game {
 	public void movePaddles() {
 		
 	}
-	
-	
-	
-	/**
-	 * Gets the relevant information from the game that the clients need to know
-	 * @return a GameState object that represents the game from the clients' point of view
-	 */
-	public GameState getGameState() {
-		
-		return null;
-	}
 }

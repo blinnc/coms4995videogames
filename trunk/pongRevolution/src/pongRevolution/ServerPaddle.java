@@ -13,8 +13,6 @@ public class ServerPaddle {
 	
 	private TPlayer player;
 	
-	public Paddle paddle;
-	
 	public ServerPaddle(TPlayer player) {
 		this.player = player;
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];

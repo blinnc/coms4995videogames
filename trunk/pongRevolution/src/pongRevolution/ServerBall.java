@@ -10,24 +10,22 @@ public class ServerBall {
 	double vx, vy;
 	int x, y;
 	
-	public Ball ball;
-	
 	public ServerBall() {
-		Random rand = new Random();
 		x = 0;
 		y = 0;
-		int negX = rand.nextInt(1);
-		int negY = rand.nextInt(1);
-		double changeX = rand.nextDouble();
-		double changeY = rand.nextDouble();
-		if(negX == 1)
-			vx = -(changeX);
-		else
-			vx = changeX;
-		if(negY == 1)
-			vy = -changeY;
-		else
-			vy = changeY;
+		
+		// Create a random direction for the ball
+		double vSq = Math.pow(GameSettings.COMBO_SPEED[0], 2);
+		double vxSq = Math.random() * vSq;
+		double vySq = vSq - vxSq;
+		vx = Math.sqrt(vxSq);
+		vy = Math.sqrt(vySq);
+		if(Math.random() > 0.5) {
+			vx = -vx;
+		}
+		if(Math.random() > 0.5) {
+			vy = -vy;
+		}
 	}
 	
 	/**
