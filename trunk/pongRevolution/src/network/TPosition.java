@@ -26,8 +26,8 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 
-public class Position implements TBase<Position, Position._Fields>, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("Position");
+public class TPosition implements TBase<TPosition, TPosition._Fields>, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("TPosition");
 
   private static final TField X_POS_FIELD_DESC = new TField("xPos", TType.DOUBLE, (short)1);
   private static final TField Y_POS_FIELD_DESC = new TField("yPos", TType.DOUBLE, (short)2);
@@ -109,13 +109,13 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
     tmpMap.put(_Fields.Y_POS, new FieldMetaData("yPos", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    FieldMetaData.addStructMetaDataMap(Position.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(TPosition.class, metaDataMap);
   }
 
-  public Position() {
+  public TPosition() {
   }
 
-  public Position(
+  public TPosition(
     double xPos,
     double yPos)
   {
@@ -129,15 +129,15 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Position(Position other) {
+  public TPosition(TPosition other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.xPos = other.xPos;
     this.yPos = other.yPos;
   }
 
-  public Position deepCopy() {
-    return new Position(this);
+  public TPosition deepCopy() {
+    return new TPosition(this);
   }
 
   @Override
@@ -152,7 +152,7 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
     return this.xPos;
   }
 
-  public Position setXPos(double xPos) {
+  public TPosition setXPos(double xPos) {
     this.xPos = xPos;
     setXPosIsSet(true);
     return this;
@@ -175,7 +175,7 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
     return this.yPos;
   }
 
-  public Position setYPos(double yPos) {
+  public TPosition setYPos(double yPos) {
     this.yPos = yPos;
     setYPosIsSet(true);
     return this;
@@ -246,12 +246,12 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Position)
-      return this.equals((Position)that);
+    if (that instanceof TPosition)
+      return this.equals((TPosition)that);
     return false;
   }
 
-  public boolean equals(Position that) {
+  public boolean equals(TPosition that) {
     if (that == null)
       return false;
 
@@ -281,13 +281,13 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
     return 0;
   }
 
-  public int compareTo(Position other) {
+  public int compareTo(TPosition other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Position typedOther = (Position)other;
+    TPosition typedOther = (TPosition)other;
 
     lastComparison = Boolean.valueOf(isSetXPos()).compareTo(typedOther.isSetXPos());
     if (lastComparison != 0) {
@@ -369,7 +369,7 @@ public class Position implements TBase<Position, Position._Fields>, java.io.Seri
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Position(");
+    StringBuilder sb = new StringBuilder("TPosition(");
     boolean first = true;
 
     sb.append("xPos:");

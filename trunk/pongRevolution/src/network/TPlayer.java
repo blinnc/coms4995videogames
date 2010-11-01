@@ -10,21 +10,16 @@ import java.util.Map;
 import java.util.HashMap;
 import org.apache.thrift.TEnum;
 
-public enum BallType implements TEnum {
-  RED(1),
-  BLUE(2),
-  SPEED(3),
-  INVIS(4),
-  SHADOW(5),
-  MAGNET(6),
-  EXTEND(7),
-  PUSH(8),
-  LASER(9),
-  WALL(10);
+public enum TPlayer implements TEnum {
+  NONE(0),
+  RED_ONE(1),
+  RED_TWO(2),
+  BLUE_ONE(3),
+  BLUE_TWO(4);
 
   private final int value;
 
-  private BallType(int value) {
+  private TPlayer(int value) {
     this.value = value;
   }
 
@@ -39,28 +34,18 @@ public enum BallType implements TEnum {
    * Find a the enum type by its integer value, as defined in the Thrift IDL.
    * @return null if the value is not found.
    */
-  public static BallType findByValue(int value) { 
+  public static TPlayer findByValue(int value) { 
     switch (value) {
+      case 0:
+        return NONE;
       case 1:
-        return RED;
+        return RED_ONE;
       case 2:
-        return BLUE;
+        return RED_TWO;
       case 3:
-        return SPEED;
+        return BLUE_ONE;
       case 4:
-        return INVIS;
-      case 5:
-        return SHADOW;
-      case 6:
-        return MAGNET;
-      case 7:
-        return EXTEND;
-      case 8:
-        return PUSH;
-      case 9:
-        return LASER;
-      case 10:
-        return WALL;
+        return BLUE_TWO;
       default:
         return null;
     }

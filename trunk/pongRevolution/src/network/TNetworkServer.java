@@ -26,21 +26,21 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 
-public class PongServer {
+public class TNetworkServer {
 
   public interface Iface {
 
-    public Settings getSettings() throws TException;
+    public TSettings getSettings() throws TException;
 
-    public GameState poll(Player requester) throws TException;
+    public TGameState poll(TPlayer requester) throws TException;
 
-    public void moveLeft(Player requester) throws TException;
+    public void moveLeft(TPlayer requester) throws TException;
 
-    public void moveRight(Player requester) throws TException;
+    public void moveRight(TPlayer requester) throws TException;
 
-    public void usePowerUp(Player requester) throws TException;
+    public void usePowerUp(TPlayer requester) throws TException;
 
-    public void jump(Player requester) throws TException;
+    public void jump(TPlayer requester) throws TException;
 
   }
 
@@ -48,15 +48,15 @@ public class PongServer {
 
     public void getSettings(AsyncMethodCallback<AsyncClient.getSettings_call> resultHandler) throws TException;
 
-    public void poll(Player requester, AsyncMethodCallback<AsyncClient.poll_call> resultHandler) throws TException;
+    public void poll(TPlayer requester, AsyncMethodCallback<AsyncClient.poll_call> resultHandler) throws TException;
 
-    public void moveLeft(Player requester, AsyncMethodCallback<AsyncClient.moveLeft_call> resultHandler) throws TException;
+    public void moveLeft(TPlayer requester, AsyncMethodCallback<AsyncClient.moveLeft_call> resultHandler) throws TException;
 
-    public void moveRight(Player requester, AsyncMethodCallback<AsyncClient.moveRight_call> resultHandler) throws TException;
+    public void moveRight(TPlayer requester, AsyncMethodCallback<AsyncClient.moveRight_call> resultHandler) throws TException;
 
-    public void usePowerUp(Player requester, AsyncMethodCallback<AsyncClient.usePowerUp_call> resultHandler) throws TException;
+    public void usePowerUp(TPlayer requester, AsyncMethodCallback<AsyncClient.usePowerUp_call> resultHandler) throws TException;
 
-    public void jump(Player requester, AsyncMethodCallback<AsyncClient.jump_call> resultHandler) throws TException;
+    public void jump(TPlayer requester, AsyncMethodCallback<AsyncClient.jump_call> resultHandler) throws TException;
 
   }
 
@@ -97,7 +97,7 @@ public class PongServer {
       return this.oprot_;
     }
 
-    public Settings getSettings() throws TException
+    public TSettings getSettings() throws TException
     {
       send_getSettings();
       return recv_getSettings();
@@ -112,7 +112,7 @@ public class PongServer {
       oprot_.getTransport().flush();
     }
 
-    public Settings recv_getSettings() throws TException
+    public TSettings recv_getSettings() throws TException
     {
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
@@ -132,13 +132,13 @@ public class PongServer {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "getSettings failed: unknown result");
     }
 
-    public GameState poll(Player requester) throws TException
+    public TGameState poll(TPlayer requester) throws TException
     {
       send_poll(requester);
       return recv_poll();
     }
 
-    public void send_poll(Player requester) throws TException
+    public void send_poll(TPlayer requester) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("poll", TMessageType.CALL, ++seqid_));
       poll_args args = new poll_args();
@@ -148,7 +148,7 @@ public class PongServer {
       oprot_.getTransport().flush();
     }
 
-    public GameState recv_poll() throws TException
+    public TGameState recv_poll() throws TException
     {
       TMessage msg = iprot_.readMessageBegin();
       if (msg.type == TMessageType.EXCEPTION) {
@@ -168,12 +168,12 @@ public class PongServer {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "poll failed: unknown result");
     }
 
-    public void moveLeft(Player requester) throws TException
+    public void moveLeft(TPlayer requester) throws TException
     {
       send_moveLeft(requester);
     }
 
-    public void send_moveLeft(Player requester) throws TException
+    public void send_moveLeft(TPlayer requester) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("moveLeft", TMessageType.CALL, ++seqid_));
       moveLeft_args args = new moveLeft_args();
@@ -183,12 +183,12 @@ public class PongServer {
       oprot_.getTransport().flush();
     }
 
-    public void moveRight(Player requester) throws TException
+    public void moveRight(TPlayer requester) throws TException
     {
       send_moveRight(requester);
     }
 
-    public void send_moveRight(Player requester) throws TException
+    public void send_moveRight(TPlayer requester) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("moveRight", TMessageType.CALL, ++seqid_));
       moveRight_args args = new moveRight_args();
@@ -198,12 +198,12 @@ public class PongServer {
       oprot_.getTransport().flush();
     }
 
-    public void usePowerUp(Player requester) throws TException
+    public void usePowerUp(TPlayer requester) throws TException
     {
       send_usePowerUp(requester);
     }
 
-    public void send_usePowerUp(Player requester) throws TException
+    public void send_usePowerUp(TPlayer requester) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("usePowerUp", TMessageType.CALL, ++seqid_));
       usePowerUp_args args = new usePowerUp_args();
@@ -213,12 +213,12 @@ public class PongServer {
       oprot_.getTransport().flush();
     }
 
-    public void jump(Player requester) throws TException
+    public void jump(TPlayer requester) throws TException
     {
       send_jump(requester);
     }
 
-    public void send_jump(Player requester) throws TException
+    public void send_jump(TPlayer requester) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("jump", TMessageType.CALL, ++seqid_));
       jump_args args = new jump_args();
@@ -264,7 +264,7 @@ public class PongServer {
         prot.writeMessageEnd();
       }
 
-      public Settings getResult() throws TException {
+      public TSettings getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -274,15 +274,15 @@ public class PongServer {
       }
     }
 
-    public void poll(Player requester, AsyncMethodCallback<poll_call> resultHandler) throws TException {
+    public void poll(TPlayer requester, AsyncMethodCallback<poll_call> resultHandler) throws TException {
       checkReady();
       poll_call method_call = new poll_call(requester, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class poll_call extends TAsyncMethodCall {
-      private Player requester;
-      public poll_call(Player requester, AsyncMethodCallback<poll_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TPlayer requester;
+      public poll_call(TPlayer requester, AsyncMethodCallback<poll_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.requester = requester;
       }
@@ -295,7 +295,7 @@ public class PongServer {
         prot.writeMessageEnd();
       }
 
-      public GameState getResult() throws TException {
+      public TGameState getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -305,15 +305,15 @@ public class PongServer {
       }
     }
 
-    public void moveLeft(Player requester, AsyncMethodCallback<moveLeft_call> resultHandler) throws TException {
+    public void moveLeft(TPlayer requester, AsyncMethodCallback<moveLeft_call> resultHandler) throws TException {
       checkReady();
       moveLeft_call method_call = new moveLeft_call(requester, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class moveLeft_call extends TAsyncMethodCall {
-      private Player requester;
-      public moveLeft_call(Player requester, AsyncMethodCallback<moveLeft_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TPlayer requester;
+      public moveLeft_call(TPlayer requester, AsyncMethodCallback<moveLeft_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, true);
         this.requester = requester;
       }
@@ -335,15 +335,15 @@ public class PongServer {
       }
     }
 
-    public void moveRight(Player requester, AsyncMethodCallback<moveRight_call> resultHandler) throws TException {
+    public void moveRight(TPlayer requester, AsyncMethodCallback<moveRight_call> resultHandler) throws TException {
       checkReady();
       moveRight_call method_call = new moveRight_call(requester, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class moveRight_call extends TAsyncMethodCall {
-      private Player requester;
-      public moveRight_call(Player requester, AsyncMethodCallback<moveRight_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TPlayer requester;
+      public moveRight_call(TPlayer requester, AsyncMethodCallback<moveRight_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, true);
         this.requester = requester;
       }
@@ -365,15 +365,15 @@ public class PongServer {
       }
     }
 
-    public void usePowerUp(Player requester, AsyncMethodCallback<usePowerUp_call> resultHandler) throws TException {
+    public void usePowerUp(TPlayer requester, AsyncMethodCallback<usePowerUp_call> resultHandler) throws TException {
       checkReady();
       usePowerUp_call method_call = new usePowerUp_call(requester, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class usePowerUp_call extends TAsyncMethodCall {
-      private Player requester;
-      public usePowerUp_call(Player requester, AsyncMethodCallback<usePowerUp_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TPlayer requester;
+      public usePowerUp_call(TPlayer requester, AsyncMethodCallback<usePowerUp_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, true);
         this.requester = requester;
       }
@@ -395,15 +395,15 @@ public class PongServer {
       }
     }
 
-    public void jump(Player requester, AsyncMethodCallback<jump_call> resultHandler) throws TException {
+    public void jump(TPlayer requester, AsyncMethodCallback<jump_call> resultHandler) throws TException {
       checkReady();
       jump_call method_call = new jump_call(requester, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class jump_call extends TAsyncMethodCall {
-      private Player requester;
-      public jump_call(Player requester, AsyncMethodCallback<jump_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TPlayer requester;
+      public jump_call(TPlayer requester, AsyncMethodCallback<jump_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, true);
         this.requester = requester;
       }
@@ -794,7 +794,7 @@ public class PongServer {
 
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short)0);
 
-    public Settings success;
+    public TSettings success;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
@@ -860,7 +860,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
-          new StructMetaData(TType.STRUCT, Settings.class)));
+          new StructMetaData(TType.STRUCT, TSettings.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(getSettings_result.class, metaDataMap);
     }
@@ -869,7 +869,7 @@ public class PongServer {
     }
 
     public getSettings_result(
-      Settings success)
+      TSettings success)
     {
       this();
       this.success = success;
@@ -880,7 +880,7 @@ public class PongServer {
      */
     public getSettings_result(getSettings_result other) {
       if (other.isSetSuccess()) {
-        this.success = new Settings(other.success);
+        this.success = new TSettings(other.success);
       }
     }
 
@@ -893,11 +893,11 @@ public class PongServer {
       this.success = null;
     }
 
-    public Settings getSuccess() {
+    public TSettings getSuccess() {
       return this.success;
     }
 
-    public getSettings_result setSuccess(Settings success) {
+    public getSettings_result setSuccess(TSettings success) {
       this.success = success;
       return this;
     }
@@ -923,7 +923,7 @@ public class PongServer {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Settings)value);
+          setSuccess((TSettings)value);
         }
         break;
 
@@ -1019,7 +1019,7 @@ public class PongServer {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == TType.STRUCT) {
-              this.success = new Settings();
+              this.success = new TSettings();
               this.success.read(iprot);
             } else { 
               TProtocolUtil.skip(iprot, field.type);
@@ -1077,15 +1077,15 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player requester;
+    public TPlayer requester;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
       /**
        * 
-       * @see Player
+       * @see TPlayer
        */
       REQUESTER((short)1, "requester");
 
@@ -1149,7 +1149,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, Player.class)));
+          new EnumMetaData(TType.ENUM, TPlayer.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(poll_args.class, metaDataMap);
     }
@@ -1158,7 +1158,7 @@ public class PongServer {
     }
 
     public poll_args(
-      Player requester)
+      TPlayer requester)
     {
       this();
       this.requester = requester;
@@ -1184,17 +1184,17 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player getRequester() {
+    public TPlayer getRequester() {
       return this.requester;
     }
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public poll_args setRequester(Player requester) {
+    public poll_args setRequester(TPlayer requester) {
       this.requester = requester;
       return this;
     }
@@ -1220,7 +1220,7 @@ public class PongServer {
         if (value == null) {
           unsetRequester();
         } else {
-          setRequester((Player)value);
+          setRequester((TPlayer)value);
         }
         break;
 
@@ -1316,7 +1316,7 @@ public class PongServer {
         switch (field.id) {
           case 1: // REQUESTER
             if (field.type == TType.I32) {
-              this.requester = Player.findByValue(iprot.readI32());
+              this.requester = TPlayer.findByValue(iprot.readI32());
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -1372,7 +1372,7 @@ public class PongServer {
 
     private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short)0);
 
-    public GameState success;
+    public TGameState success;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
@@ -1438,7 +1438,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
-          new StructMetaData(TType.STRUCT, GameState.class)));
+          new StructMetaData(TType.STRUCT, TGameState.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(poll_result.class, metaDataMap);
     }
@@ -1447,7 +1447,7 @@ public class PongServer {
     }
 
     public poll_result(
-      GameState success)
+      TGameState success)
     {
       this();
       this.success = success;
@@ -1458,7 +1458,7 @@ public class PongServer {
      */
     public poll_result(poll_result other) {
       if (other.isSetSuccess()) {
-        this.success = new GameState(other.success);
+        this.success = new TGameState(other.success);
       }
     }
 
@@ -1471,11 +1471,11 @@ public class PongServer {
       this.success = null;
     }
 
-    public GameState getSuccess() {
+    public TGameState getSuccess() {
       return this.success;
     }
 
-    public poll_result setSuccess(GameState success) {
+    public poll_result setSuccess(TGameState success) {
       this.success = success;
       return this;
     }
@@ -1501,7 +1501,7 @@ public class PongServer {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((GameState)value);
+          setSuccess((TGameState)value);
         }
         break;
 
@@ -1597,7 +1597,7 @@ public class PongServer {
         switch (field.id) {
           case 0: // SUCCESS
             if (field.type == TType.STRUCT) {
-              this.success = new GameState();
+              this.success = new TGameState();
               this.success.read(iprot);
             } else { 
               TProtocolUtil.skip(iprot, field.type);
@@ -1655,15 +1655,15 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player requester;
+    public TPlayer requester;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
       /**
        * 
-       * @see Player
+       * @see TPlayer
        */
       REQUESTER((short)1, "requester");
 
@@ -1727,7 +1727,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, Player.class)));
+          new EnumMetaData(TType.ENUM, TPlayer.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(moveLeft_args.class, metaDataMap);
     }
@@ -1736,7 +1736,7 @@ public class PongServer {
     }
 
     public moveLeft_args(
-      Player requester)
+      TPlayer requester)
     {
       this();
       this.requester = requester;
@@ -1762,17 +1762,17 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player getRequester() {
+    public TPlayer getRequester() {
       return this.requester;
     }
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public moveLeft_args setRequester(Player requester) {
+    public moveLeft_args setRequester(TPlayer requester) {
       this.requester = requester;
       return this;
     }
@@ -1798,7 +1798,7 @@ public class PongServer {
         if (value == null) {
           unsetRequester();
         } else {
-          setRequester((Player)value);
+          setRequester((TPlayer)value);
         }
         break;
 
@@ -1894,7 +1894,7 @@ public class PongServer {
         switch (field.id) {
           case 1: // REQUESTER
             if (field.type == TType.I32) {
-              this.requester = Player.findByValue(iprot.readI32());
+              this.requester = TPlayer.findByValue(iprot.readI32());
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -1952,15 +1952,15 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player requester;
+    public TPlayer requester;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
       /**
        * 
-       * @see Player
+       * @see TPlayer
        */
       REQUESTER((short)1, "requester");
 
@@ -2024,7 +2024,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, Player.class)));
+          new EnumMetaData(TType.ENUM, TPlayer.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(moveRight_args.class, metaDataMap);
     }
@@ -2033,7 +2033,7 @@ public class PongServer {
     }
 
     public moveRight_args(
-      Player requester)
+      TPlayer requester)
     {
       this();
       this.requester = requester;
@@ -2059,17 +2059,17 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player getRequester() {
+    public TPlayer getRequester() {
       return this.requester;
     }
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public moveRight_args setRequester(Player requester) {
+    public moveRight_args setRequester(TPlayer requester) {
       this.requester = requester;
       return this;
     }
@@ -2095,7 +2095,7 @@ public class PongServer {
         if (value == null) {
           unsetRequester();
         } else {
-          setRequester((Player)value);
+          setRequester((TPlayer)value);
         }
         break;
 
@@ -2191,7 +2191,7 @@ public class PongServer {
         switch (field.id) {
           case 1: // REQUESTER
             if (field.type == TType.I32) {
-              this.requester = Player.findByValue(iprot.readI32());
+              this.requester = TPlayer.findByValue(iprot.readI32());
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -2249,15 +2249,15 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player requester;
+    public TPlayer requester;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
       /**
        * 
-       * @see Player
+       * @see TPlayer
        */
       REQUESTER((short)1, "requester");
 
@@ -2321,7 +2321,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, Player.class)));
+          new EnumMetaData(TType.ENUM, TPlayer.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(usePowerUp_args.class, metaDataMap);
     }
@@ -2330,7 +2330,7 @@ public class PongServer {
     }
 
     public usePowerUp_args(
-      Player requester)
+      TPlayer requester)
     {
       this();
       this.requester = requester;
@@ -2356,17 +2356,17 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player getRequester() {
+    public TPlayer getRequester() {
       return this.requester;
     }
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public usePowerUp_args setRequester(Player requester) {
+    public usePowerUp_args setRequester(TPlayer requester) {
       this.requester = requester;
       return this;
     }
@@ -2392,7 +2392,7 @@ public class PongServer {
         if (value == null) {
           unsetRequester();
         } else {
-          setRequester((Player)value);
+          setRequester((TPlayer)value);
         }
         break;
 
@@ -2488,7 +2488,7 @@ public class PongServer {
         switch (field.id) {
           case 1: // REQUESTER
             if (field.type == TType.I32) {
-              this.requester = Player.findByValue(iprot.readI32());
+              this.requester = TPlayer.findByValue(iprot.readI32());
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -2546,15 +2546,15 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player requester;
+    public TPlayer requester;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
       /**
        * 
-       * @see Player
+       * @see TPlayer
        */
       REQUESTER((short)1, "requester");
 
@@ -2618,7 +2618,7 @@ public class PongServer {
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, Player.class)));
+          new EnumMetaData(TType.ENUM, TPlayer.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(jump_args.class, metaDataMap);
     }
@@ -2627,7 +2627,7 @@ public class PongServer {
     }
 
     public jump_args(
-      Player requester)
+      TPlayer requester)
     {
       this();
       this.requester = requester;
@@ -2653,17 +2653,17 @@ public class PongServer {
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public Player getRequester() {
+    public TPlayer getRequester() {
       return this.requester;
     }
 
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
-    public jump_args setRequester(Player requester) {
+    public jump_args setRequester(TPlayer requester) {
       this.requester = requester;
       return this;
     }
@@ -2689,7 +2689,7 @@ public class PongServer {
         if (value == null) {
           unsetRequester();
         } else {
-          setRequester((Player)value);
+          setRequester((TPlayer)value);
         }
         break;
 
@@ -2785,7 +2785,7 @@ public class PongServer {
         switch (field.id) {
           case 1: // REQUESTER
             if (field.type == TType.I32) {
-              this.requester = Player.findByValue(iprot.readI32());
+              this.requester = TPlayer.findByValue(iprot.readI32());
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }

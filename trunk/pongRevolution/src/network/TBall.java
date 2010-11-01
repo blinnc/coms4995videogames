@@ -26,19 +26,25 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 
-public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("Ball");
+public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("TBall");
 
   private static final TField POSITIONS_FIELD_DESC = new TField("positions", TType.LIST, (short)1);
   private static final TField TYPE_FIELD_DESC = new TField("type", TType.I32, (short)2);
-  private static final TField IS_SHADOW_FIELD_DESC = new TField("isShadow", TType.BOOL, (short)3);
+  private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)3);
+  private static final TField IS_SHADOW_FIELD_DESC = new TField("isShadow", TType.BOOL, (short)4);
 
-  public List<Position> positions;
+  public List<TPosition> positions;
   /**
    * 
-   * @see BallType
+   * @see TPowerUp
    */
-  public BallType type;
+  public TPowerUp type;
+  /**
+   * 
+   * @see TPlayer
+   */
+  public TPlayer player;
   public boolean isShadow;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -46,10 +52,15 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     POSITIONS((short)1, "positions"),
     /**
      * 
-     * @see BallType
+     * @see TPowerUp
      */
     TYPE((short)2, "type"),
-    IS_SHADOW((short)3, "isShadow");
+    /**
+     * 
+     * @see TPlayer
+     */
+    PLAYER((short)3, "player"),
+    IS_SHADOW((short)4, "isShadow");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -68,7 +79,9 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
           return POSITIONS;
         case 2: // TYPE
           return TYPE;
-        case 3: // IS_SHADOW
+        case 3: // PLAYER
+          return PLAYER;
+        case 4: // IS_SHADOW
           return IS_SHADOW;
         default:
           return null;
@@ -118,26 +131,30 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.POSITIONS, new FieldMetaData("positions", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
-            new StructMetaData(TType.STRUCT, Position.class))));
+            new StructMetaData(TType.STRUCT, TPosition.class))));
     tmpMap.put(_Fields.TYPE, new FieldMetaData("type", TFieldRequirementType.DEFAULT, 
-        new EnumMetaData(TType.ENUM, BallType.class)));
+        new EnumMetaData(TType.ENUM, TPowerUp.class)));
+    tmpMap.put(_Fields.PLAYER, new FieldMetaData("player", TFieldRequirementType.DEFAULT, 
+        new EnumMetaData(TType.ENUM, TPlayer.class)));
     tmpMap.put(_Fields.IS_SHADOW, new FieldMetaData("isShadow", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    FieldMetaData.addStructMetaDataMap(Ball.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(TBall.class, metaDataMap);
   }
 
-  public Ball() {
+  public TBall() {
   }
 
-  public Ball(
-    List<Position> positions,
-    BallType type,
+  public TBall(
+    List<TPosition> positions,
+    TPowerUp type,
+    TPlayer player,
     boolean isShadow)
   {
     this();
     this.positions = positions;
     this.type = type;
+    this.player = player;
     this.isShadow = isShadow;
     setIsShadowIsSet(true);
   }
@@ -145,30 +162,34 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Ball(Ball other) {
+  public TBall(TBall other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetPositions()) {
-      List<Position> __this__positions = new ArrayList<Position>();
-      for (Position other_element : other.positions) {
-        __this__positions.add(new Position(other_element));
+      List<TPosition> __this__positions = new ArrayList<TPosition>();
+      for (TPosition other_element : other.positions) {
+        __this__positions.add(new TPosition(other_element));
       }
       this.positions = __this__positions;
     }
     if (other.isSetType()) {
       this.type = other.type;
     }
+    if (other.isSetPlayer()) {
+      this.player = other.player;
+    }
     this.isShadow = other.isShadow;
   }
 
-  public Ball deepCopy() {
-    return new Ball(this);
+  public TBall deepCopy() {
+    return new TBall(this);
   }
 
   @Override
   public void clear() {
     this.positions = null;
     this.type = null;
+    this.player = null;
     setIsShadowIsSet(false);
     this.isShadow = false;
   }
@@ -177,22 +198,22 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     return (this.positions == null) ? 0 : this.positions.size();
   }
 
-  public java.util.Iterator<Position> getPositionsIterator() {
+  public java.util.Iterator<TPosition> getPositionsIterator() {
     return (this.positions == null) ? null : this.positions.iterator();
   }
 
-  public void addToPositions(Position elem) {
+  public void addToPositions(TPosition elem) {
     if (this.positions == null) {
-      this.positions = new ArrayList<Position>();
+      this.positions = new ArrayList<TPosition>();
     }
     this.positions.add(elem);
   }
 
-  public List<Position> getPositions() {
+  public List<TPosition> getPositions() {
     return this.positions;
   }
 
-  public Ball setPositions(List<Position> positions) {
+  public TBall setPositions(List<TPosition> positions) {
     this.positions = positions;
     return this;
   }
@@ -214,17 +235,17 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
 
   /**
    * 
-   * @see BallType
+   * @see TPowerUp
    */
-  public BallType getType() {
+  public TPowerUp getType() {
     return this.type;
   }
 
   /**
    * 
-   * @see BallType
+   * @see TPowerUp
    */
-  public Ball setType(BallType type) {
+  public TBall setType(TPowerUp type) {
     this.type = type;
     return this;
   }
@@ -244,11 +265,43 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     }
   }
 
+  /**
+   * 
+   * @see TPlayer
+   */
+  public TPlayer getPlayer() {
+    return this.player;
+  }
+
+  /**
+   * 
+   * @see TPlayer
+   */
+  public TBall setPlayer(TPlayer player) {
+    this.player = player;
+    return this;
+  }
+
+  public void unsetPlayer() {
+    this.player = null;
+  }
+
+  /** Returns true if field player is set (has been asigned a value) and false otherwise */
+  public boolean isSetPlayer() {
+    return this.player != null;
+  }
+
+  public void setPlayerIsSet(boolean value) {
+    if (!value) {
+      this.player = null;
+    }
+  }
+
   public boolean isIsShadow() {
     return this.isShadow;
   }
 
-  public Ball setIsShadow(boolean isShadow) {
+  public TBall setIsShadow(boolean isShadow) {
     this.isShadow = isShadow;
     setIsShadowIsSet(true);
     return this;
@@ -273,7 +326,7 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
       if (value == null) {
         unsetPositions();
       } else {
-        setPositions((List<Position>)value);
+        setPositions((List<TPosition>)value);
       }
       break;
 
@@ -281,7 +334,15 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
       if (value == null) {
         unsetType();
       } else {
-        setType((BallType)value);
+        setType((TPowerUp)value);
+      }
+      break;
+
+    case PLAYER:
+      if (value == null) {
+        unsetPlayer();
+      } else {
+        setPlayer((TPlayer)value);
       }
       break;
 
@@ -304,6 +365,9 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     case TYPE:
       return getType();
 
+    case PLAYER:
+      return getPlayer();
+
     case IS_SHADOW:
       return new Boolean(isIsShadow());
 
@@ -322,6 +386,8 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
       return isSetPositions();
     case TYPE:
       return isSetType();
+    case PLAYER:
+      return isSetPlayer();
     case IS_SHADOW:
       return isSetIsShadow();
     }
@@ -332,12 +398,12 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Ball)
-      return this.equals((Ball)that);
+    if (that instanceof TBall)
+      return this.equals((TBall)that);
     return false;
   }
 
-  public boolean equals(Ball that) {
+  public boolean equals(TBall that) {
     if (that == null)
       return false;
 
@@ -359,6 +425,15 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
         return false;
     }
 
+    boolean this_present_player = true && this.isSetPlayer();
+    boolean that_present_player = true && that.isSetPlayer();
+    if (this_present_player || that_present_player) {
+      if (!(this_present_player && that_present_player))
+        return false;
+      if (!this.player.equals(that.player))
+        return false;
+    }
+
     boolean this_present_isShadow = true;
     boolean that_present_isShadow = true;
     if (this_present_isShadow || that_present_isShadow) {
@@ -376,13 +451,13 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     return 0;
   }
 
-  public int compareTo(Ball other) {
+  public int compareTo(TBall other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Ball typedOther = (Ball)other;
+    TBall typedOther = (TBall)other;
 
     lastComparison = Boolean.valueOf(isSetPositions()).compareTo(typedOther.isSetPositions());
     if (lastComparison != 0) {
@@ -400,6 +475,16 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
     }
     if (isSetType()) {
       lastComparison = TBaseHelper.compareTo(this.type, typedOther.type);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetPlayer()).compareTo(typedOther.isSetPlayer());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPlayer()) {
+      lastComparison = TBaseHelper.compareTo(this.player, typedOther.player);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -435,11 +520,11 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
           if (field.type == TType.LIST) {
             {
               TList _list0 = iprot.readListBegin();
-              this.positions = new ArrayList<Position>(_list0.size);
+              this.positions = new ArrayList<TPosition>(_list0.size);
               for (int _i1 = 0; _i1 < _list0.size; ++_i1)
               {
-                Position _elem2;
-                _elem2 = new Position();
+                TPosition _elem2;
+                _elem2 = new TPosition();
                 _elem2.read(iprot);
                 this.positions.add(_elem2);
               }
@@ -451,12 +536,19 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
           break;
         case 2: // TYPE
           if (field.type == TType.I32) {
-            this.type = BallType.findByValue(iprot.readI32());
+            this.type = TPowerUp.findByValue(iprot.readI32());
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // IS_SHADOW
+        case 3: // PLAYER
+          if (field.type == TType.I32) {
+            this.player = TPlayer.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 4: // IS_SHADOW
           if (field.type == TType.BOOL) {
             this.isShadow = iprot.readBool();
             setIsShadowIsSet(true);
@@ -483,7 +575,7 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
       oprot.writeFieldBegin(POSITIONS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.positions.size()));
-        for (Position _iter3 : this.positions)
+        for (TPosition _iter3 : this.positions)
         {
           _iter3.write(oprot);
         }
@@ -496,6 +588,11 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
       oprot.writeI32(this.type.getValue());
       oprot.writeFieldEnd();
     }
+    if (this.player != null) {
+      oprot.writeFieldBegin(PLAYER_FIELD_DESC);
+      oprot.writeI32(this.player.getValue());
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldBegin(IS_SHADOW_FIELD_DESC);
     oprot.writeBool(this.isShadow);
     oprot.writeFieldEnd();
@@ -505,7 +602,7 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Ball(");
+    StringBuilder sb = new StringBuilder("TBall(");
     boolean first = true;
 
     sb.append("positions:");
@@ -521,6 +618,14 @@ public class Ball implements TBase<Ball, Ball._Fields>, java.io.Serializable, Cl
       sb.append("null");
     } else {
       sb.append(this.type);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("player:");
+    if (this.player == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.player);
     }
     first = false;
     if (!first) sb.append(", ");

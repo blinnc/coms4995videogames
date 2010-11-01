@@ -26,16 +26,22 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 
-public class Settings implements TBase<Settings, Settings._Fields>, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("Settings");
+public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("TSettings");
 
   private static final TField BALL_RADIUS_FIELD_DESC = new TField("ballRadius", TType.I32, (short)1);
+  private static final TField ARENA_RADIUS_FIELD_DESC = new TField("arenaRadius", TType.I32, (short)2);
+  private static final TField TIMER_REFRESH_FIELD_DESC = new TField("timerRefresh", TType.I32, (short)3);
 
   public int ballRadius;
+  public int arenaRadius;
+  public int timerRefresh;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
-    BALL_RADIUS((short)1, "ballRadius");
+    BALL_RADIUS((short)1, "ballRadius"),
+    ARENA_RADIUS((short)2, "arenaRadius"),
+    TIMER_REFRESH((short)3, "timerRefresh");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -52,6 +58,10 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
       switch(fieldId) {
         case 1: // BALL_RADIUS
           return BALL_RADIUS;
+        case 2: // ARENA_RADIUS
+          return ARENA_RADIUS;
+        case 3: // TIMER_REFRESH
+          return TIMER_REFRESH;
         default:
           return null;
       }
@@ -93,52 +103,70 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
 
   // isset id assignments
   private static final int __BALLRADIUS_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __ARENARADIUS_ISSET_ID = 1;
+  private static final int __TIMERREFRESH_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
     Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.BALL_RADIUS, new FieldMetaData("ballRadius", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
+    tmpMap.put(_Fields.ARENA_RADIUS, new FieldMetaData("arenaRadius", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
+    tmpMap.put(_Fields.TIMER_REFRESH, new FieldMetaData("timerRefresh", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    FieldMetaData.addStructMetaDataMap(Settings.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(TSettings.class, metaDataMap);
   }
 
-  public Settings() {
+  public TSettings() {
   }
 
-  public Settings(
-    int ballRadius)
+  public TSettings(
+    int ballRadius,
+    int arenaRadius,
+    int timerRefresh)
   {
     this();
     this.ballRadius = ballRadius;
     setBallRadiusIsSet(true);
+    this.arenaRadius = arenaRadius;
+    setArenaRadiusIsSet(true);
+    this.timerRefresh = timerRefresh;
+    setTimerRefreshIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Settings(Settings other) {
+  public TSettings(TSettings other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.ballRadius = other.ballRadius;
+    this.arenaRadius = other.arenaRadius;
+    this.timerRefresh = other.timerRefresh;
   }
 
-  public Settings deepCopy() {
-    return new Settings(this);
+  public TSettings deepCopy() {
+    return new TSettings(this);
   }
 
   @Override
   public void clear() {
     setBallRadiusIsSet(false);
     this.ballRadius = 0;
+    setArenaRadiusIsSet(false);
+    this.arenaRadius = 0;
+    setTimerRefreshIsSet(false);
+    this.timerRefresh = 0;
   }
 
   public int getBallRadius() {
     return this.ballRadius;
   }
 
-  public Settings setBallRadius(int ballRadius) {
+  public TSettings setBallRadius(int ballRadius) {
     this.ballRadius = ballRadius;
     setBallRadiusIsSet(true);
     return this;
@@ -157,6 +185,52 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
     __isset_bit_vector.set(__BALLRADIUS_ISSET_ID, value);
   }
 
+  public int getArenaRadius() {
+    return this.arenaRadius;
+  }
+
+  public TSettings setArenaRadius(int arenaRadius) {
+    this.arenaRadius = arenaRadius;
+    setArenaRadiusIsSet(true);
+    return this;
+  }
+
+  public void unsetArenaRadius() {
+    __isset_bit_vector.clear(__ARENARADIUS_ISSET_ID);
+  }
+
+  /** Returns true if field arenaRadius is set (has been asigned a value) and false otherwise */
+  public boolean isSetArenaRadius() {
+    return __isset_bit_vector.get(__ARENARADIUS_ISSET_ID);
+  }
+
+  public void setArenaRadiusIsSet(boolean value) {
+    __isset_bit_vector.set(__ARENARADIUS_ISSET_ID, value);
+  }
+
+  public int getTimerRefresh() {
+    return this.timerRefresh;
+  }
+
+  public TSettings setTimerRefresh(int timerRefresh) {
+    this.timerRefresh = timerRefresh;
+    setTimerRefreshIsSet(true);
+    return this;
+  }
+
+  public void unsetTimerRefresh() {
+    __isset_bit_vector.clear(__TIMERREFRESH_ISSET_ID);
+  }
+
+  /** Returns true if field timerRefresh is set (has been asigned a value) and false otherwise */
+  public boolean isSetTimerRefresh() {
+    return __isset_bit_vector.get(__TIMERREFRESH_ISSET_ID);
+  }
+
+  public void setTimerRefreshIsSet(boolean value) {
+    __isset_bit_vector.set(__TIMERREFRESH_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case BALL_RADIUS:
@@ -167,6 +241,22 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
       }
       break;
 
+    case ARENA_RADIUS:
+      if (value == null) {
+        unsetArenaRadius();
+      } else {
+        setArenaRadius((Integer)value);
+      }
+      break;
+
+    case TIMER_REFRESH:
+      if (value == null) {
+        unsetTimerRefresh();
+      } else {
+        setTimerRefresh((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -174,6 +264,12 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
     switch (field) {
     case BALL_RADIUS:
       return new Integer(getBallRadius());
+
+    case ARENA_RADIUS:
+      return new Integer(getArenaRadius());
+
+    case TIMER_REFRESH:
+      return new Integer(getTimerRefresh());
 
     }
     throw new IllegalStateException();
@@ -188,6 +284,10 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
     switch (field) {
     case BALL_RADIUS:
       return isSetBallRadius();
+    case ARENA_RADIUS:
+      return isSetArenaRadius();
+    case TIMER_REFRESH:
+      return isSetTimerRefresh();
     }
     throw new IllegalStateException();
   }
@@ -196,12 +296,12 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Settings)
-      return this.equals((Settings)that);
+    if (that instanceof TSettings)
+      return this.equals((TSettings)that);
     return false;
   }
 
-  public boolean equals(Settings that) {
+  public boolean equals(TSettings that) {
     if (that == null)
       return false;
 
@@ -214,6 +314,24 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
         return false;
     }
 
+    boolean this_present_arenaRadius = true;
+    boolean that_present_arenaRadius = true;
+    if (this_present_arenaRadius || that_present_arenaRadius) {
+      if (!(this_present_arenaRadius && that_present_arenaRadius))
+        return false;
+      if (this.arenaRadius != that.arenaRadius)
+        return false;
+    }
+
+    boolean this_present_timerRefresh = true;
+    boolean that_present_timerRefresh = true;
+    if (this_present_timerRefresh || that_present_timerRefresh) {
+      if (!(this_present_timerRefresh && that_present_timerRefresh))
+        return false;
+      if (this.timerRefresh != that.timerRefresh)
+        return false;
+    }
+
     return true;
   }
 
@@ -222,13 +340,13 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
     return 0;
   }
 
-  public int compareTo(Settings other) {
+  public int compareTo(TSettings other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Settings typedOther = (Settings)other;
+    TSettings typedOther = (TSettings)other;
 
     lastComparison = Boolean.valueOf(isSetBallRadius()).compareTo(typedOther.isSetBallRadius());
     if (lastComparison != 0) {
@@ -236,6 +354,26 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
     }
     if (isSetBallRadius()) {
       lastComparison = TBaseHelper.compareTo(this.ballRadius, typedOther.ballRadius);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetArenaRadius()).compareTo(typedOther.isSetArenaRadius());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetArenaRadius()) {
+      lastComparison = TBaseHelper.compareTo(this.arenaRadius, typedOther.arenaRadius);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetTimerRefresh()).compareTo(typedOther.isSetTimerRefresh());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetTimerRefresh()) {
+      lastComparison = TBaseHelper.compareTo(this.timerRefresh, typedOther.timerRefresh);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -265,6 +403,22 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 2: // ARENA_RADIUS
+          if (field.type == TType.I32) {
+            this.arenaRadius = iprot.readI32();
+            setArenaRadiusIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 3: // TIMER_REFRESH
+          if (field.type == TType.I32) {
+            this.timerRefresh = iprot.readI32();
+            setTimerRefreshIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -283,17 +437,31 @@ public class Settings implements TBase<Settings, Settings._Fields>, java.io.Seri
     oprot.writeFieldBegin(BALL_RADIUS_FIELD_DESC);
     oprot.writeI32(this.ballRadius);
     oprot.writeFieldEnd();
+    oprot.writeFieldBegin(ARENA_RADIUS_FIELD_DESC);
+    oprot.writeI32(this.arenaRadius);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(TIMER_REFRESH_FIELD_DESC);
+    oprot.writeI32(this.timerRefresh);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Settings(");
+    StringBuilder sb = new StringBuilder("TSettings(");
     boolean first = true;
 
     sb.append("ballRadius:");
     sb.append(this.ballRadius);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("arenaRadius:");
+    sb.append(this.arenaRadius);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("timerRefresh:");
+    sb.append(this.timerRefresh);
     first = false;
     sb.append(")");
     return sb.toString();
