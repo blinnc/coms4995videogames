@@ -26,8 +26,8 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 
-public class GameState implements TBase<GameState, GameState._Fields>, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("GameState");
+public class TGameState implements TBase<TGameState, TGameState._Fields>, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("TGameState");
 
   private static final TField PADDLES_FIELD_DESC = new TField("paddles", TType.LIST, (short)1);
   private static final TField BALLS_FIELD_DESC = new TField("balls", TType.LIST, (short)2);
@@ -36,14 +36,26 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
   private static final TField IS_LASER_RED_FIELD_DESC = new TField("isLaserRed", TType.BOOL, (short)5);
   private static final TField IS_LASER_BLUE_FIELD_DESC = new TField("isLaserBlue", TType.BOOL, (short)6);
   private static final TField IS_WALL_FIELD_DESC = new TField("isWall", TType.BOOL, (short)7);
+  private static final TField PLAYER_UP_FIELD_DESC = new TField("playerUp", TType.I32, (short)8);
+  private static final TField ALLY_UP_FIELD_DESC = new TField("allyUp", TType.I32, (short)9);
 
-  public List<Paddle> paddles;
-  public List<Ball> balls;
+  public List<TPaddle> paddles;
+  public List<TBall> balls;
   public int redScore;
   public int blueScore;
   public boolean isLaserRed;
   public boolean isLaserBlue;
   public boolean isWall;
+  /**
+   * 
+   * @see TPowerUp
+   */
+  public TPowerUp playerUp;
+  /**
+   * 
+   * @see TPowerUp
+   */
+  public TPowerUp allyUp;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
@@ -53,7 +65,17 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     BLUE_SCORE((short)4, "blueScore"),
     IS_LASER_RED((short)5, "isLaserRed"),
     IS_LASER_BLUE((short)6, "isLaserBlue"),
-    IS_WALL((short)7, "isWall");
+    IS_WALL((short)7, "isWall"),
+    /**
+     * 
+     * @see TPowerUp
+     */
+    PLAYER_UP((short)8, "playerUp"),
+    /**
+     * 
+     * @see TPowerUp
+     */
+    ALLY_UP((short)9, "allyUp");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -82,6 +104,10 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
           return IS_LASER_BLUE;
         case 7: // IS_WALL
           return IS_WALL;
+        case 8: // PLAYER_UP
+          return PLAYER_UP;
+        case 9: // ALLY_UP
+          return ALLY_UP;
         default:
           return null;
       }
@@ -134,10 +160,10 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.PADDLES, new FieldMetaData("paddles", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
-            new StructMetaData(TType.STRUCT, Paddle.class))));
+            new StructMetaData(TType.STRUCT, TPaddle.class))));
     tmpMap.put(_Fields.BALLS, new FieldMetaData("balls", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
-            new StructMetaData(TType.STRUCT, Ball.class))));
+            new StructMetaData(TType.STRUCT, TBall.class))));
     tmpMap.put(_Fields.RED_SCORE, new FieldMetaData("redScore", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
     tmpMap.put(_Fields.BLUE_SCORE, new FieldMetaData("blueScore", TFieldRequirementType.DEFAULT, 
@@ -148,21 +174,27 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
         new FieldValueMetaData(TType.BOOL)));
     tmpMap.put(_Fields.IS_WALL, new FieldMetaData("isWall", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
+    tmpMap.put(_Fields.PLAYER_UP, new FieldMetaData("playerUp", TFieldRequirementType.DEFAULT, 
+        new EnumMetaData(TType.ENUM, TPowerUp.class)));
+    tmpMap.put(_Fields.ALLY_UP, new FieldMetaData("allyUp", TFieldRequirementType.DEFAULT, 
+        new EnumMetaData(TType.ENUM, TPowerUp.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    FieldMetaData.addStructMetaDataMap(GameState.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(TGameState.class, metaDataMap);
   }
 
-  public GameState() {
+  public TGameState() {
   }
 
-  public GameState(
-    List<Paddle> paddles,
-    List<Ball> balls,
+  public TGameState(
+    List<TPaddle> paddles,
+    List<TBall> balls,
     int redScore,
     int blueScore,
     boolean isLaserRed,
     boolean isLaserBlue,
-    boolean isWall)
+    boolean isWall,
+    TPowerUp playerUp,
+    TPowerUp allyUp)
   {
     this();
     this.paddles = paddles;
@@ -177,25 +209,27 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     setIsLaserBlueIsSet(true);
     this.isWall = isWall;
     setIsWallIsSet(true);
+    this.playerUp = playerUp;
+    this.allyUp = allyUp;
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public GameState(GameState other) {
+  public TGameState(TGameState other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetPaddles()) {
-      List<Paddle> __this__paddles = new ArrayList<Paddle>();
-      for (Paddle other_element : other.paddles) {
-        __this__paddles.add(new Paddle(other_element));
+      List<TPaddle> __this__paddles = new ArrayList<TPaddle>();
+      for (TPaddle other_element : other.paddles) {
+        __this__paddles.add(new TPaddle(other_element));
       }
       this.paddles = __this__paddles;
     }
     if (other.isSetBalls()) {
-      List<Ball> __this__balls = new ArrayList<Ball>();
-      for (Ball other_element : other.balls) {
-        __this__balls.add(new Ball(other_element));
+      List<TBall> __this__balls = new ArrayList<TBall>();
+      for (TBall other_element : other.balls) {
+        __this__balls.add(new TBall(other_element));
       }
       this.balls = __this__balls;
     }
@@ -204,10 +238,16 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     this.isLaserRed = other.isLaserRed;
     this.isLaserBlue = other.isLaserBlue;
     this.isWall = other.isWall;
+    if (other.isSetPlayerUp()) {
+      this.playerUp = other.playerUp;
+    }
+    if (other.isSetAllyUp()) {
+      this.allyUp = other.allyUp;
+    }
   }
 
-  public GameState deepCopy() {
-    return new GameState(this);
+  public TGameState deepCopy() {
+    return new TGameState(this);
   }
 
   @Override
@@ -224,28 +264,30 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     this.isLaserBlue = false;
     setIsWallIsSet(false);
     this.isWall = false;
+    this.playerUp = null;
+    this.allyUp = null;
   }
 
   public int getPaddlesSize() {
     return (this.paddles == null) ? 0 : this.paddles.size();
   }
 
-  public java.util.Iterator<Paddle> getPaddlesIterator() {
+  public java.util.Iterator<TPaddle> getPaddlesIterator() {
     return (this.paddles == null) ? null : this.paddles.iterator();
   }
 
-  public void addToPaddles(Paddle elem) {
+  public void addToPaddles(TPaddle elem) {
     if (this.paddles == null) {
-      this.paddles = new ArrayList<Paddle>();
+      this.paddles = new ArrayList<TPaddle>();
     }
     this.paddles.add(elem);
   }
 
-  public List<Paddle> getPaddles() {
+  public List<TPaddle> getPaddles() {
     return this.paddles;
   }
 
-  public GameState setPaddles(List<Paddle> paddles) {
+  public TGameState setPaddles(List<TPaddle> paddles) {
     this.paddles = paddles;
     return this;
   }
@@ -269,22 +311,22 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return (this.balls == null) ? 0 : this.balls.size();
   }
 
-  public java.util.Iterator<Ball> getBallsIterator() {
+  public java.util.Iterator<TBall> getBallsIterator() {
     return (this.balls == null) ? null : this.balls.iterator();
   }
 
-  public void addToBalls(Ball elem) {
+  public void addToBalls(TBall elem) {
     if (this.balls == null) {
-      this.balls = new ArrayList<Ball>();
+      this.balls = new ArrayList<TBall>();
     }
     this.balls.add(elem);
   }
 
-  public List<Ball> getBalls() {
+  public List<TBall> getBalls() {
     return this.balls;
   }
 
-  public GameState setBalls(List<Ball> balls) {
+  public TGameState setBalls(List<TBall> balls) {
     this.balls = balls;
     return this;
   }
@@ -308,7 +350,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return this.redScore;
   }
 
-  public GameState setRedScore(int redScore) {
+  public TGameState setRedScore(int redScore) {
     this.redScore = redScore;
     setRedScoreIsSet(true);
     return this;
@@ -331,7 +373,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return this.blueScore;
   }
 
-  public GameState setBlueScore(int blueScore) {
+  public TGameState setBlueScore(int blueScore) {
     this.blueScore = blueScore;
     setBlueScoreIsSet(true);
     return this;
@@ -354,7 +396,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return this.isLaserRed;
   }
 
-  public GameState setIsLaserRed(boolean isLaserRed) {
+  public TGameState setIsLaserRed(boolean isLaserRed) {
     this.isLaserRed = isLaserRed;
     setIsLaserRedIsSet(true);
     return this;
@@ -377,7 +419,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return this.isLaserBlue;
   }
 
-  public GameState setIsLaserBlue(boolean isLaserBlue) {
+  public TGameState setIsLaserBlue(boolean isLaserBlue) {
     this.isLaserBlue = isLaserBlue;
     setIsLaserBlueIsSet(true);
     return this;
@@ -400,7 +442,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return this.isWall;
   }
 
-  public GameState setIsWall(boolean isWall) {
+  public TGameState setIsWall(boolean isWall) {
     this.isWall = isWall;
     setIsWallIsSet(true);
     return this;
@@ -419,13 +461,77 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     __isset_bit_vector.set(__ISWALL_ISSET_ID, value);
   }
 
+  /**
+   * 
+   * @see TPowerUp
+   */
+  public TPowerUp getPlayerUp() {
+    return this.playerUp;
+  }
+
+  /**
+   * 
+   * @see TPowerUp
+   */
+  public TGameState setPlayerUp(TPowerUp playerUp) {
+    this.playerUp = playerUp;
+    return this;
+  }
+
+  public void unsetPlayerUp() {
+    this.playerUp = null;
+  }
+
+  /** Returns true if field playerUp is set (has been asigned a value) and false otherwise */
+  public boolean isSetPlayerUp() {
+    return this.playerUp != null;
+  }
+
+  public void setPlayerUpIsSet(boolean value) {
+    if (!value) {
+      this.playerUp = null;
+    }
+  }
+
+  /**
+   * 
+   * @see TPowerUp
+   */
+  public TPowerUp getAllyUp() {
+    return this.allyUp;
+  }
+
+  /**
+   * 
+   * @see TPowerUp
+   */
+  public TGameState setAllyUp(TPowerUp allyUp) {
+    this.allyUp = allyUp;
+    return this;
+  }
+
+  public void unsetAllyUp() {
+    this.allyUp = null;
+  }
+
+  /** Returns true if field allyUp is set (has been asigned a value) and false otherwise */
+  public boolean isSetAllyUp() {
+    return this.allyUp != null;
+  }
+
+  public void setAllyUpIsSet(boolean value) {
+    if (!value) {
+      this.allyUp = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PADDLES:
       if (value == null) {
         unsetPaddles();
       } else {
-        setPaddles((List<Paddle>)value);
+        setPaddles((List<TPaddle>)value);
       }
       break;
 
@@ -433,7 +539,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
       if (value == null) {
         unsetBalls();
       } else {
-        setBalls((List<Ball>)value);
+        setBalls((List<TBall>)value);
       }
       break;
 
@@ -477,6 +583,22 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
       }
       break;
 
+    case PLAYER_UP:
+      if (value == null) {
+        unsetPlayerUp();
+      } else {
+        setPlayerUp((TPowerUp)value);
+      }
+      break;
+
+    case ALLY_UP:
+      if (value == null) {
+        unsetAllyUp();
+      } else {
+        setAllyUp((TPowerUp)value);
+      }
+      break;
+
     }
   }
 
@@ -503,6 +625,12 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     case IS_WALL:
       return new Boolean(isIsWall());
 
+    case PLAYER_UP:
+      return getPlayerUp();
+
+    case ALLY_UP:
+      return getAllyUp();
+
     }
     throw new IllegalStateException();
   }
@@ -528,6 +656,10 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
       return isSetIsLaserBlue();
     case IS_WALL:
       return isSetIsWall();
+    case PLAYER_UP:
+      return isSetPlayerUp();
+    case ALLY_UP:
+      return isSetAllyUp();
     }
     throw new IllegalStateException();
   }
@@ -536,12 +668,12 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof GameState)
-      return this.equals((GameState)that);
+    if (that instanceof TGameState)
+      return this.equals((TGameState)that);
     return false;
   }
 
-  public boolean equals(GameState that) {
+  public boolean equals(TGameState that) {
     if (that == null)
       return false;
 
@@ -608,6 +740,24 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
         return false;
     }
 
+    boolean this_present_playerUp = true && this.isSetPlayerUp();
+    boolean that_present_playerUp = true && that.isSetPlayerUp();
+    if (this_present_playerUp || that_present_playerUp) {
+      if (!(this_present_playerUp && that_present_playerUp))
+        return false;
+      if (!this.playerUp.equals(that.playerUp))
+        return false;
+    }
+
+    boolean this_present_allyUp = true && this.isSetAllyUp();
+    boolean that_present_allyUp = true && that.isSetAllyUp();
+    if (this_present_allyUp || that_present_allyUp) {
+      if (!(this_present_allyUp && that_present_allyUp))
+        return false;
+      if (!this.allyUp.equals(that.allyUp))
+        return false;
+    }
+
     return true;
   }
 
@@ -616,13 +766,13 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     return 0;
   }
 
-  public int compareTo(GameState other) {
+  public int compareTo(TGameState other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    GameState typedOther = (GameState)other;
+    TGameState typedOther = (TGameState)other;
 
     lastComparison = Boolean.valueOf(isSetPaddles()).compareTo(typedOther.isSetPaddles());
     if (lastComparison != 0) {
@@ -694,6 +844,26 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetPlayerUp()).compareTo(typedOther.isSetPlayerUp());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetPlayerUp()) {
+      lastComparison = TBaseHelper.compareTo(this.playerUp, typedOther.playerUp);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAllyUp()).compareTo(typedOther.isSetAllyUp());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAllyUp()) {
+      lastComparison = TBaseHelper.compareTo(this.allyUp, typedOther.allyUp);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -715,11 +885,11 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
           if (field.type == TType.LIST) {
             {
               TList _list4 = iprot.readListBegin();
-              this.paddles = new ArrayList<Paddle>(_list4.size);
+              this.paddles = new ArrayList<TPaddle>(_list4.size);
               for (int _i5 = 0; _i5 < _list4.size; ++_i5)
               {
-                Paddle _elem6;
-                _elem6 = new Paddle();
+                TPaddle _elem6;
+                _elem6 = new TPaddle();
                 _elem6.read(iprot);
                 this.paddles.add(_elem6);
               }
@@ -733,11 +903,11 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
           if (field.type == TType.LIST) {
             {
               TList _list7 = iprot.readListBegin();
-              this.balls = new ArrayList<Ball>(_list7.size);
+              this.balls = new ArrayList<TBall>(_list7.size);
               for (int _i8 = 0; _i8 < _list7.size; ++_i8)
               {
-                Ball _elem9;
-                _elem9 = new Ball();
+                TBall _elem9;
+                _elem9 = new TBall();
                 _elem9.read(iprot);
                 this.balls.add(_elem9);
               }
@@ -787,6 +957,20 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 8: // PLAYER_UP
+          if (field.type == TType.I32) {
+            this.playerUp = TPowerUp.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 9: // ALLY_UP
+          if (field.type == TType.I32) {
+            this.allyUp = TPowerUp.findByValue(iprot.readI32());
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -806,7 +990,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
       oprot.writeFieldBegin(PADDLES_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.paddles.size()));
-        for (Paddle _iter10 : this.paddles)
+        for (TPaddle _iter10 : this.paddles)
         {
           _iter10.write(oprot);
         }
@@ -818,7 +1002,7 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
       oprot.writeFieldBegin(BALLS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.balls.size()));
-        for (Ball _iter11 : this.balls)
+        for (TBall _iter11 : this.balls)
         {
           _iter11.write(oprot);
         }
@@ -841,13 +1025,23 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     oprot.writeFieldBegin(IS_WALL_FIELD_DESC);
     oprot.writeBool(this.isWall);
     oprot.writeFieldEnd();
+    if (this.playerUp != null) {
+      oprot.writeFieldBegin(PLAYER_UP_FIELD_DESC);
+      oprot.writeI32(this.playerUp.getValue());
+      oprot.writeFieldEnd();
+    }
+    if (this.allyUp != null) {
+      oprot.writeFieldBegin(ALLY_UP_FIELD_DESC);
+      oprot.writeI32(this.allyUp.getValue());
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("GameState(");
+    StringBuilder sb = new StringBuilder("TGameState(");
     boolean first = true;
 
     sb.append("paddles:");
@@ -884,6 +1078,22 @@ public class GameState implements TBase<GameState, GameState._Fields>, java.io.S
     if (!first) sb.append(", ");
     sb.append("isWall:");
     sb.append(this.isWall);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("playerUp:");
+    if (this.playerUp == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.playerUp);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("allyUp:");
+    if (this.allyUp == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.allyUp);
+    }
     first = false;
     sb.append(")");
     return sb.toString();

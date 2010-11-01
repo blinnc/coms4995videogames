@@ -1,69 +1,74 @@
 namespace java network
 
-enum BallType {
-	RED = 1;
-	BLUE = 2;
-	SPEED = 3;
-	INVIS = 4;
-	SHADOW = 5;
-	MAGNET = 6;
-	EXTEND = 7;
-	PUSH = 8;
-	LASER = 9;
-	WALL = 10;
+enum TPowerUp {
+	NONE = 0;
+	SPEED = 1;
+	INVIS = 2;
+	SHADOW = 3;
+	MAGNET = 4;
+	EXTEND = 5;
+	PUSH = 6;
+	LASER = 7;
+	WALL = 8;
 }
 
-enum Player {
+enum TPlayer {
+	NONE = 0;
 	RED_ONE = 1;
 	RED_TWO = 2;
 	BLUE_ONE = 3;
 	BLUE_TWO = 4;
 }
 
-struct Position {
+struct TPosition {
 	1: double xPos;
 	2: double yPos;
 }
 
-struct Paddle {
+struct TPaddle {
 	1: double radius;
 	2: double angle;
-	3: Player player;
+	3: TPlayer player;
 	4: bool isInvisible;
 	5: bool isSpeedup;
 	6: bool isMagnetic;
 }
 
-struct Ball {
-	1: list<Position> positions;
-	2: BallType type;
-	3: bool isShadow;
+struct TBall {
+	1: list<TPosition> positions;
+	2: TPowerUp type;
+	3: TPlayer player;
+	4: bool isShadow;
 }
 
-struct GameState {
-	1: list<Paddle> paddles;
-	2: list<Ball> balls;
+struct TGameState {
+	1: list<TPaddle> paddles;
+	2: list<TBall> balls;
 	3: i32 redScore;
 	4: i32 blueScore;
 	5: bool isLaserRed;
 	6: bool isLaserBlue;
 	7: bool isWall;
+	8: TPowerUp playerUp;
+	9: TPowerUp allyUp; 
 }
 
-struct Settings {
+struct TSettings {
 	1: i32 ballRadius;
+	2: i32 arenaRadius;
+	3: i32 timerRefresh;
 }
 
-service PongServer {
-	Settings getSettings(),
+service TNetworkServer {
+	TSettings getSettings(),
 
-	GameState poll(1:Player requester),
+	TGameState poll(1:TPlayer requester),
 
-	oneway void moveLeft(1:Player requester),
+	oneway void moveLeft(1:TPlayer requester),
 
-	oneway void moveRight(1:Player requester),
+	oneway void moveRight(1:TPlayer requester),
 
-	oneway void usePowerUp(1:Player requester),
+	oneway void usePowerUp(1:TPlayer requester),
 
-	oneway void jump(1:Player requester),
+	oneway void jump(1:TPlayer requester),
 }

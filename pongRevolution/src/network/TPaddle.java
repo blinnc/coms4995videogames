@@ -26,8 +26,8 @@ import org.apache.thrift.meta_data.*;
 import org.apache.thrift.transport.*;
 import org.apache.thrift.protocol.*;
 
-public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializable, Cloneable {
-  private static final TStruct STRUCT_DESC = new TStruct("Paddle");
+public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Serializable, Cloneable {
+  private static final TStruct STRUCT_DESC = new TStruct("TPaddle");
 
   private static final TField RADIUS_FIELD_DESC = new TField("radius", TType.DOUBLE, (short)1);
   private static final TField ANGLE_FIELD_DESC = new TField("angle", TType.DOUBLE, (short)2);
@@ -40,9 +40,9 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
   public double angle;
   /**
    * 
-   * @see Player
+   * @see TPlayer
    */
-  public Player player;
+  public TPlayer player;
   public boolean isInvisible;
   public boolean isSpeedup;
   public boolean isMagnetic;
@@ -53,7 +53,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     ANGLE((short)2, "angle"),
     /**
      * 
-     * @see Player
+     * @see TPlayer
      */
     PLAYER((short)3, "player"),
     IS_INVISIBLE((short)4, "isInvisible"),
@@ -140,7 +140,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     tmpMap.put(_Fields.ANGLE, new FieldMetaData("angle", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.DOUBLE)));
     tmpMap.put(_Fields.PLAYER, new FieldMetaData("player", TFieldRequirementType.DEFAULT, 
-        new EnumMetaData(TType.ENUM, Player.class)));
+        new EnumMetaData(TType.ENUM, TPlayer.class)));
     tmpMap.put(_Fields.IS_INVISIBLE, new FieldMetaData("isInvisible", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
     tmpMap.put(_Fields.IS_SPEEDUP, new FieldMetaData("isSpeedup", TFieldRequirementType.DEFAULT, 
@@ -148,16 +148,16 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     tmpMap.put(_Fields.IS_MAGNETIC, new FieldMetaData("isMagnetic", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
-    FieldMetaData.addStructMetaDataMap(Paddle.class, metaDataMap);
+    FieldMetaData.addStructMetaDataMap(TPaddle.class, metaDataMap);
   }
 
-  public Paddle() {
+  public TPaddle() {
   }
 
-  public Paddle(
+  public TPaddle(
     double radius,
     double angle,
-    Player player,
+    TPlayer player,
     boolean isInvisible,
     boolean isSpeedup,
     boolean isMagnetic)
@@ -179,7 +179,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
   /**
    * Performs a deep copy on <i>other</i>.
    */
-  public Paddle(Paddle other) {
+  public TPaddle(TPaddle other) {
     __isset_bit_vector.clear();
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.radius = other.radius;
@@ -192,8 +192,8 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     this.isMagnetic = other.isMagnetic;
   }
 
-  public Paddle deepCopy() {
-    return new Paddle(this);
+  public TPaddle deepCopy() {
+    return new TPaddle(this);
   }
 
   @Override
@@ -215,7 +215,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     return this.radius;
   }
 
-  public Paddle setRadius(double radius) {
+  public TPaddle setRadius(double radius) {
     this.radius = radius;
     setRadiusIsSet(true);
     return this;
@@ -238,7 +238,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     return this.angle;
   }
 
-  public Paddle setAngle(double angle) {
+  public TPaddle setAngle(double angle) {
     this.angle = angle;
     setAngleIsSet(true);
     return this;
@@ -259,17 +259,17 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
 
   /**
    * 
-   * @see Player
+   * @see TPlayer
    */
-  public Player getPlayer() {
+  public TPlayer getPlayer() {
     return this.player;
   }
 
   /**
    * 
-   * @see Player
+   * @see TPlayer
    */
-  public Paddle setPlayer(Player player) {
+  public TPaddle setPlayer(TPlayer player) {
     this.player = player;
     return this;
   }
@@ -293,7 +293,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     return this.isInvisible;
   }
 
-  public Paddle setIsInvisible(boolean isInvisible) {
+  public TPaddle setIsInvisible(boolean isInvisible) {
     this.isInvisible = isInvisible;
     setIsInvisibleIsSet(true);
     return this;
@@ -316,7 +316,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     return this.isSpeedup;
   }
 
-  public Paddle setIsSpeedup(boolean isSpeedup) {
+  public TPaddle setIsSpeedup(boolean isSpeedup) {
     this.isSpeedup = isSpeedup;
     setIsSpeedupIsSet(true);
     return this;
@@ -339,7 +339,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     return this.isMagnetic;
   }
 
-  public Paddle setIsMagnetic(boolean isMagnetic) {
+  public TPaddle setIsMagnetic(boolean isMagnetic) {
     this.isMagnetic = isMagnetic;
     setIsMagneticIsSet(true);
     return this;
@@ -380,7 +380,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
       if (value == null) {
         unsetPlayer();
       } else {
-        setPlayer((Player)value);
+        setPlayer((TPlayer)value);
       }
       break;
 
@@ -462,12 +462,12 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
   public boolean equals(Object that) {
     if (that == null)
       return false;
-    if (that instanceof Paddle)
-      return this.equals((Paddle)that);
+    if (that instanceof TPaddle)
+      return this.equals((TPaddle)that);
     return false;
   }
 
-  public boolean equals(Paddle that) {
+  public boolean equals(TPaddle that) {
     if (that == null)
       return false;
 
@@ -533,13 +533,13 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
     return 0;
   }
 
-  public int compareTo(Paddle other) {
+  public int compareTo(TPaddle other) {
     if (!getClass().equals(other.getClass())) {
       return getClass().getName().compareTo(other.getClass().getName());
     }
 
     int lastComparison = 0;
-    Paddle typedOther = (Paddle)other;
+    TPaddle typedOther = (TPaddle)other;
 
     lastComparison = Boolean.valueOf(isSetRadius()).compareTo(typedOther.isSetRadius());
     if (lastComparison != 0) {
@@ -636,7 +636,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
           break;
         case 3: // PLAYER
           if (field.type == TType.I32) {
-            this.player = Player.findByValue(iprot.readI32());
+            this.player = TPlayer.findByValue(iprot.readI32());
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
@@ -706,7 +706,7 @@ public class Paddle implements TBase<Paddle, Paddle._Fields>, java.io.Serializab
 
   @Override
   public String toString() {
-    StringBuilder sb = new StringBuilder("Paddle(");
+    StringBuilder sb = new StringBuilder("TPaddle(");
     boolean first = true;
 
     sb.append("radius:");
