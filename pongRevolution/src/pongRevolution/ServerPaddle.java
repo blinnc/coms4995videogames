@@ -11,11 +11,15 @@ public class ServerPaddle {
 	double r;
 	double vr;
 	
+	int[] xpoints;
+	int[] ypoints;
+	
 	private TPowerUp powerup;
 	private TPlayer player;
 	
 	public ServerPaddle(TPlayer player) {
 		this.player = player;
+		getBounds();
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];
 		r = GameSettings.ARENA_RADIUS;
 		vr = GameSettings.PADDLE_VELOCITY;
@@ -75,12 +79,12 @@ public class ServerPaddle {
 	 * @return the polygon containing the bounds
 	 */
 	public Polygon getBounds() {
-		int[] xpoints = new int[4];
+		xpoints = new int[4];
 		xpoints[0] = (int) (r * Math.cos(t) + GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
 		xpoints[1] = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
 		xpoints[2] = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
 		xpoints[3] = (int) (r * Math.cos(t) + GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
-		int[] ypoints = new int[4];
+		ypoints = new int[4];
 		ypoints[0] = (int) (r * Math.sin(t) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
 		ypoints[1] = (int) (r * Math.sin(t) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
 		ypoints[2] = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
@@ -90,21 +94,47 @@ public class ServerPaddle {
 	}
 	
 	/**
-	 * Gets the optimal connection point on the paddle.
+	 * Gets the optimal horizontal connection point on the paddle.
 	 * @param other the other point that connects to the paddle
 	 */
-	public Point2D getConnectionPoint(Point2D other) {
-		double x1 = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
-		double x2 = (int) (r * Math.cos(t) + GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
-		double y1 = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
-		double y2 = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+	public Point2D[] getConnectionPoints(Point2D other) {
+		Point2D[] points = new Point2D[4];
+		double x0 = xpoints[0];
+		double x1 = xpoints[1];
+		double x2 = xpoints[2];
+		double x3 = xpoints[3];
+		double y0 = ypoints[0];
+		double y1 = ypoints[1];
+		double y2 = ypoints[2];
+		double y3 = ypoints[3];
+		
 		double m1 = (y2 - y1) / (x2 - x1);
 		double m2 = -1 / m1;
-		double b1 = y1 - m1 * x1;
-		double b2 = other.getY() - m2 * other.getX();
-		double x = (b2 - b1) / (m1 - m2);
-		double y = m1 * x + b1;
-		return new Point2D.Double(x, y);
+		double b1 = y0 - m1 * x0;
+		double b2 = y2 - m1 * x2; 
+		double b3 = other.getY() - m2 * other.getX();
+		
+		double x_0 = (b3 - b1) / (m1 - m2);
+		double x_1 = (b3 - b2) / (m1 - m2);
+		double y_0 = m1 * x_0 + b1;
+		double y_1 = m1 * x_1 + b2;
+		
+		points[0] = new Point2D.Double(x_0, y_0);
+		points[1] = new Point2D.Double(x_1, y_1);
+		
+		double b4 = y0 - m2 * x0;
+		double b5 = y2 - m2 * x2;
+		double b6 = other.getY() - m1 * other.getX();
+		
+		double x_2 = (b6 - b4) / (m2 - m1);
+		double x_3 = (b6 - b5) / (m2 - m1);
+		double y_2 = (b6 - b4) / (m2 - m1);
+		double y_3 = (b6 - b5) / (m2 - m1);
+
+		points[2] = new Point2D.Double(x_2, y_2);
+		points[3] = new Point2D.Double(x_3, y_3);
+		
+		return points;
 	}
 	
 }
