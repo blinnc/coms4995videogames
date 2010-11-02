@@ -37,6 +37,7 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			ball.move();
 		}
+		checkCollision();
 	}
 	
 	/**
