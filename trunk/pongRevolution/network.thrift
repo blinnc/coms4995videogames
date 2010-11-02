@@ -26,13 +26,13 @@ struct TPosition {
 }
 
 struct TPaddle {
-        1: double radius;
-        2: double angle;
-        3: double length;
-        4: TPlayer player;
-        5: bool isInvisible;
-        6: bool isSpeedup;
-        7: bool isMagnetic;
+	1: double radius;
+	2: double angle;
+	3: double length;
+	4: TPlayer player;
+	5: bool isInvisible;
+	6: bool isSpeedup;
+	7: bool isMagnetic;
 }
 
 struct TBall {
@@ -58,10 +58,11 @@ struct TSettings {
 	1: i32 ballRadius;
 	2: i32 arenaRadius;
 	3: i32 timerRefresh;
+	4: TPlayer color;
 }
 
 service TNetworkServer {
-	TSettings getSettings(),
+	TSettings getSettings(1:bool isBlue),
 
 	TGameState poll(1:TPlayer requester),
 
