@@ -81,7 +81,7 @@ public class pongRev extends JFrame implements KeyListener {
         setSize( 900, 600 );
         //paddle = new Rectangle(540, 280, 20, 40);
         this.addKeyListener(this);
-        show();
+        setVisible(true);
 
 	}
 	
