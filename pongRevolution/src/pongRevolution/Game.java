@@ -4,6 +4,8 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import network.TGameState;
+import network.TPaddle;
 import network.TPlayer;
 
 public class Game {	
@@ -123,4 +125,14 @@ public class Game {
 		}
 	}
 	
+	public TGameState getState() {
+		List<TPaddle> paddleList = new ArrayList<TPaddle>();
+		for(int i = 1; i < 5; i++) {
+			ServerPaddle paddle = paddleArray[i];
+			if(paddle != null) {
+				paddleList.add(paddle.getTPaddle());
+			}
+		}
+		return new TGameState(paddleList,null,0,0,false,false,false,null,null);
+	}
 }

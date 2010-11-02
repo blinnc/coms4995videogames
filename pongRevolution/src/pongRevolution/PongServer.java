@@ -21,8 +21,9 @@ public class PongServer implements network.TNetworkServer.Iface{
 		
 		public void run() {
 			// TODO: stuff
-			game.movePaddles();
-			game.moveBalls();
+//			game.movePaddles();
+//			game.moveBalls();
+			
 		}
 	}
 
@@ -46,10 +47,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 
 	@Override
 	public TGameState poll(TPlayer requester) throws TException {
-		
-
-		
-		return null;
+		return game.getState();
 	}
 
 

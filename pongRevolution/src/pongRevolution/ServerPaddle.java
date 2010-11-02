@@ -3,6 +3,8 @@ package pongRevolution;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
+import network.TGameState;
+import network.TPaddle;
 import network.TPlayer;
 import network.TPowerUp;
 
@@ -14,8 +16,13 @@ public class ServerPaddle {
 	int[] xpoints;
 	int[] ypoints;
 	
+	private double length;
+	
+	private boolean isInvisible, isSpeedup, isMagnetic;
+	
 	private TPowerUp powerup;
 	private TPlayer player;
+	private TPaddle tPaddle;
 	
 	public ServerPaddle(TPlayer player) {
 		this.player = player;
@@ -23,6 +30,11 @@ public class ServerPaddle {
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];
 		r = GameSettings.ARENA_RADIUS;
 		vr = GameSettings.PADDLE_VELOCITY;
+		isInvisible = false;
+		isSpeedup = false;
+		isMagnetic = false;
+		
+		tPaddle = new TPaddle(r, t, length, player, isInvisible, isSpeedup, isMagnetic);
 	}
 	
 	/**
@@ -45,6 +57,10 @@ public class ServerPaddle {
 		return t;
 	}
 	
+	public double getR() {
+		return r;
+	}
+	
 	/**
 	 * Gets the radial velocity.
 	 * @return the current radial velocity
@@ -53,11 +69,36 @@ public class ServerPaddle {
 		return vr;
 	}
 	
+	public double getLength() {
+		return length;
+	}
+	
+	public boolean isInvisible() {
+		return isInvisible;
+	}
+	
+	public boolean isSpeedup() {
+		return isSpeedup;
+	}
+	
+	public boolean isMagnetic() {
+		return isMagnetic;
+	}
+	
+	public TPlayer getPlayer() {
+		return player;
+	}
+	
+	public TPaddle getTPaddle() {
+		return tPaddle;
+	}
+	
 	public void move(boolean clockwise) {
 		t = clockwise ? t + vr : t - vr;
 		if(t > 2 * Math.PI) {
 			t = t % (2 * Math.PI);
 		}
+		tPaddle.setAngle(t);
 	}
 	
 	public void jump() {
