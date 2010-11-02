@@ -13,6 +13,7 @@ public class GameSettings {
 	public static final double PADDLE_LENGTH = 40;
 	public static final double PADDLE_HEIGHT = 20;
 	public static final double PADDLE_VELOCITY = 1.5;
+	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 2;
 	
 	// Ball settings
 	public static final double BALL_RADIUS = 5;
