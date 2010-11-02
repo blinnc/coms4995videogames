@@ -1,5 +1,7 @@
 package client;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -12,6 +14,8 @@ import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
+
+import test.StartWindow;
 
 public class pongRevClient {
 	
@@ -35,7 +39,7 @@ public class pongRevClient {
 	public static void main(String[] args)
 	{
 		//-----LOGIC TO CONNECT TO THE SERVER
-		TTransport transport;
+		/*TTransport transport;
 	      try {
 	         transport = new TSocket(HOST_IP, 7911);
 	         TProtocol protocol = new TBinaryProtocol(transport);
@@ -45,12 +49,12 @@ public class pongRevClient {
 	      } catch (TTransportException e) {
 	         System.out.println("Problem when trying to connect to the server.");
 	    	  e.printStackTrace();
-	      }
+	      }*/
 		//-----END LOGIC TO CONNECT TO THE SERVER-----
 		
-	    /*Timer timer = new Timer();
-		TimerTask commandTask = new pongRevClient();
-		timer.schedule(commandTask, 0, 100);*/
+		//-----BEGIN SET UP OF LOGIN GUI-----
+		
+		//-----END SET UP OF LOGIN GUI-----
 		
 		//-----BEGIN SET UP AND DRAW THE GUI-----
 		final pongRevWindow gameWindow = new pongRevWindow();

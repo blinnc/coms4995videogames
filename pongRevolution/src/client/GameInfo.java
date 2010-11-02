@@ -2,7 +2,7 @@ package client;
 
 public class GameInfo {
 
-	GameInfo(String ip) {
+	public GameInfo(String ip) {
 		
 	}
 }
