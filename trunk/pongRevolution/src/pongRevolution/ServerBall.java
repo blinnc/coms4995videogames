@@ -96,7 +96,6 @@ public class ServerBall {
 	public void move() {
 		x += vx;
 		y += vy;
-		// TODO: check for collisions
 			// TODO: change color
 			// TODO: change last hit
 			// TODO: change combo
