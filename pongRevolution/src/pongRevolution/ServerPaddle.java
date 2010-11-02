@@ -29,6 +29,18 @@ public class ServerPaddle {
 		r += dr;
 	}
 	
+	public double getX() {
+		return r * Math.cos(t);
+	}
+	
+	public double getY() {
+		return r * Math.sin(t);
+	}
+	
+	public double getT() {
+		return t;
+	}
+	
 	/**
 	 * Gets the radial velocity.
 	 * @return the current radial velocity
