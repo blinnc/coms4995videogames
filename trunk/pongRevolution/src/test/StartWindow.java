@@ -42,8 +42,6 @@ public class StartWindow extends javax.swing.JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				StartWindow inst = new StartWindow();
-				String[] teams = {"RED TEAM", "BLUE TEAM"};
-				inst.teamList.setListData(teams);
 				inst.setLocationRelativeTo(null);
 				inst.setVisible(true);
 			}
@@ -53,6 +51,8 @@ public class StartWindow extends javax.swing.JFrame {
 	public StartWindow() {
 		super();
 		initGUI();
+		String[] teams = {"RED TEAM", "BLUE TEAM"};
+		teamList.setListData(teams);
 	}
 	
 	private void initGUI() {

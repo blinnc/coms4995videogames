@@ -85,6 +85,75 @@ public class pongRev extends JFrame implements KeyListener {
 
 	}
 	
+	public static void main(String[] args) {
+		//-----LOGIC TO CONNECT TO THE SERVER
+		/*TTransport transport;
+	      try {
+	         transport = new TSocket(HOST_IP, 7911);
+	         TProtocol protocol = new TBinaryProtocol(transport);
+	         client = new Client(protocol);
+	         transport.open();
+	         //transport.close();
+	      } catch (TTransportException e) {
+	         System.out.println("Problem when trying to connect to the server.");
+	    	  e.printStackTrace();
+	      }*/
+		//-----END LOGIC TO CONNECT TO THE SERVER-----
+		
+		//BEGIN SET UP AND DRAW THE SERVER GUI
+		final StartWindow start = new StartWindow();
+		start.joinButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String hostAddress = start.serverInput.getText();
+				String team = null;
+				try {
+					team = start.teamList.getSelectedValue().toString();
+				} catch (NullPointerException e) {
+					System.out.println("Please select a team and try again.");
+				}
+				if(hostAddress.equals(""))
+				{
+					System.out.println("Please enter a server and try again.");
+				}
+				gameinfo = new GameInfo(hostAddress, team);
+				start.setVisible(false);
+				waitForInput = false;
+			}
+		});
+		
+		start.setVisible(true);
+		
+		while(waitForInput) {
+			
+		}
+		//END SET UP AND DRAW THE SERVER GUI
+		
+		//BEGIN SET UP AND DRAW THE GAME GUI
+		final pongRev pr = new pongRev();
+		(new Thread() {
+            public void run() {
+                try {
+                	while(true)
+                	{
+                		pr.movePaddle();
+                	}
+                }
+                catch(InterruptedException e) {}
+            }
+        }).start();
+
+		pr.addWindowListener(new WindowAdapter()
+		{
+			 public void windowClosing( WindowEvent e )
+             {
+             System.exit( 0 );
+             }
+		});
+		//END SET UP AND DRAW THE GAME GUI
+	}
+	
 	public void paint(Graphics g)
 	{	
 		if (dbImage == null) 
@@ -262,46 +331,6 @@ public class pongRev extends JFrame implements KeyListener {
         //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
         //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
         shape = (Path2D) tx.createTransformedShape(paddle);
-	}
-
-	public static void main(String[] args) {
-		final StartWindow start = new StartWindow();
-		start.joinButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String hostAddress = start.serverInput.getText();
-				gameinfo = new GameInfo(hostAddress);
-				start.setVisible(false);
-				waitForInput = false;
-			}
-		});
-		
-		start.setVisible(true);
-		
-		while(waitForInput ) {
-			
-		}
-		final pongRev pr = new pongRev();
-		(new Thread() {
-            public void run() {
-                try {
-                	while(true)
-                	{
-                		pr.movePaddle();
-                	}
-                }
-                catch(InterruptedException e) {}
-            }
-        }).start();
-
-		pr.addWindowListener(new WindowAdapter()
-		{
-			 public void windowClosing( WindowEvent e )
-             {
-             System.exit( 0 );
-             }
-		});
 	}
 
 	@Override
