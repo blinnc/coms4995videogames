@@ -31,9 +31,9 @@ public class StartWindow extends javax.swing.JFrame {
 	private JPanel jPanel1;
 	private JLabel serverLabel;
 	private JLabel teamLabel;
-	private JButton joinButton;
+	public JButton joinButton;
 	public JList teamList;
-	private JTextField serverInput;
+	public JTextField serverInput;
 
 	/**
 	* Auto-generated main method to display this JFrame

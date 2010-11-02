@@ -7,6 +7,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
@@ -15,9 +17,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.util.ArrayList;
 import java.util.List;
-import network.*;
 
 import javax.swing.JFrame;
+
+import network.TBall;
+import network.TPlayer;
+import network.TPosition;
+import network.TPowerUp;
+import client.GameInfo;
 
 @SuppressWarnings("serial")
 public class pongRev extends JFrame implements KeyListener {
@@ -56,6 +63,8 @@ public class pongRev extends JFrame implements KeyListener {
 	private boolean d;
 	List<TPosition> positions;
 	TBall ball1;
+	static GameInfo gameinfo;
+	private static boolean waitForInput = true;
 	
     
 	@SuppressWarnings("deprecation")
@@ -208,23 +217,10 @@ public class pongRev extends JFrame implements KeyListener {
 		char c = arg0.getKeyChar();
 		if(c == 'a') 
 		{
-			/*AffineTransform tx = new AffineTransform();
-			paddleRotation += 3;
-			tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-			//double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			//double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			shape = (Path2D) tx.createTransformedShape(paddle);*/
 			a = true;
 		} 
 		else if (c == 'd') 
 		{
-			/*AffineTransform tx = new AffineTransform();
-			paddleRotation -= 3;
-			tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-			//double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			//double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-			shape = (Path2D) tx.createTransformedShape(paddle);
-			this.repaint();*/
 			d = true;
 		}
 		else if (c == 'w')
@@ -269,6 +265,23 @@ public class pongRev extends JFrame implements KeyListener {
 	}
 
 	public static void main(String[] args) {
+		final StartWindow start = new StartWindow();
+		start.joinButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				String hostAddress = start.serverInput.getText();
+				gameinfo = new GameInfo(hostAddress);
+				start.setVisible(false);
+				waitForInput = false;
+			}
+		});
+		
+		start.setVisible(true);
+		
+		while(waitForInput ) {
+			
+		}
 		final pongRev pr = new pongRev();
 		(new Thread() {
             public void run() {
