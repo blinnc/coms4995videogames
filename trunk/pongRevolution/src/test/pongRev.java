@@ -31,7 +31,7 @@ public class pongRev extends JFrame implements KeyListener {
 	
 	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_Y = 50;
-	private static final int CIRCLE_DIAMETER = 500;
+	private static final int CIRCLE_DIAMETER = 510;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
 	Rectangle paddle = new Rectangle(540, 280, 20, 40);
@@ -57,7 +57,7 @@ public class pongRev extends JFrame implements KeyListener {
 	int shardYS[] = new int[shardN];
 	int shardS[] = new int[shardN];
 	Color shardC[] = new Color[shardN];
-	Image backG = Toolkit.getDefaultToolkit().getImage("assets/backS.gif");
+	Image backG = Toolkit.getDefaultToolkit().getImage("assets/backZ.gif");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	private boolean a;
 	private boolean d;
@@ -172,7 +172,7 @@ public class pongRev extends JFrame implements KeyListener {
 		//dbg.fillRect (0, 0, this.getSize().width, this.getSize().height); 
 		
 		dbg.drawImage(backG,6,6,this);
-		dbg.drawImage(score,600,0,this);
+		dbg.drawImage(score,600,50,this);
 		if(explode ==205)
 		{		
 			for(int z =0; z<shardN; z++)
