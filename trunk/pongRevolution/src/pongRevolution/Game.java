@@ -1,5 +1,6 @@
 package pongRevolution;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,4 +45,22 @@ public class Game {
 	public void movePaddles() {
 		
 	}
+	
+	/**
+	 * Checks for collision
+	 */
+	public void checkCollision() {
+		for (int i = 1; i < 5; i++) {
+			for (ServerBall ball : ballList) {
+				Point2D point = paddleArray[i].getConnectionPoint(new Point2D.Double(ball.getX(), ball.getY()));
+				if (ball.contains(point)) {
+					double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
+					if (point.distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
+						ball.setT(Math.PI + 2 * paddleArray[i].getT() - ball.getT());
+					}
+				}	
+			}
+		}
+	}
+	
 }

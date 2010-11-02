@@ -9,7 +9,7 @@ import network.TPowerUp;
 
 public class ServerBall {
 	private double vx, vy;
-	private double x, y;
+	private int x, y;
 	private double t;
 	
 	private int combo;
@@ -74,6 +74,23 @@ public class ServerBall {
 	 */
 	public double getVY() {
 		return vy;
+	}
+	
+	public int getX() {
+		return x;
+	}
+	
+	public int getY() {
+		return y;
+	}
+	
+	public double getT() {
+		return t;
+	}
+	
+	public void setT(double t) {
+		this.t = t;
+		updateVelocity();
 	}
 	
 	public void move() {
