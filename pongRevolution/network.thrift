@@ -62,7 +62,7 @@ struct TSettings {
 }
 
 service TNetworkServer {
-	TSettings getSettings(1:bool isBlue),
+	TSettings getSettings(1:TPlayer preferred),
 
 	TGameState poll(1:TPlayer requester),
 
