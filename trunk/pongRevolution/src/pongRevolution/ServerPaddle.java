@@ -84,15 +84,17 @@ public class ServerPaddle {
 	 * @param other the other point that connects to the paddle
 	 */
 	public Point2D getConnectionPoint(Point2D other) {
-		double dx = other.getX() - r * Math.cos(t);
-		double dy = other.getY() - r * Math.sin(t);
-		double distance = Math.sqrt(dx * dx + dy * dy);
-		if (distance == 0) {
-			return other;
-		} else {
-			
-			return new Point2D.Double(r * Math.cos(t) + dx * r / distance, r * Math.sin(t) + dy * r / distance);
-		}
+		double x1 = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
+		double x2 = (int) (r * Math.cos(t) + GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
+		double y1 = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		double y2 = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		double m1 = (y2 - y1) / (x2 - x1);
+		double m2 = -1 / m1;
+		double b1 = y1 - m1 * x1;
+		double b2 = other.getY() - m2 * other.getX();
+		double x = (b2 - b1) / (m1 - m2);
+		double y = m1 * x + b1;
+		return new Point2D.Double(x, y);
 	}
 	
 }
