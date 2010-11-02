@@ -60,6 +60,10 @@ public class ServerPaddle {
 		}
 	}
 	
+	public void jump() {
+		
+	}
+	
 	public void setSpeedUp(boolean enable) {
 		vr = enable ? GameSettings.PADDLE_SPEEDUP : GameSettings.PADDLE_VELOCITY;
 	}

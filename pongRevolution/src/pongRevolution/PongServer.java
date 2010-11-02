@@ -20,7 +20,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 	class ClockThread extends TimerTask {
 		
 		public void run() {
-			
+			// TODO: stuff
 			game.movePaddles();
 			game.moveBalls();
 		}
@@ -28,8 +28,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 
 	@Override
 	public void jump(TPlayer requester) throws TException {
-		// TODO Auto-generated method stub
-		
+		game.jumpPaddle(requester);		
 	}
 
 
@@ -47,27 +46,30 @@ public class PongServer implements network.TNetworkServer.Iface{
 
 	@Override
 	public TGameState poll(TPlayer requester) throws TException {
-		// TODO Auto-generated method stub
+		
+
+		
 		return null;
 	}
 
 
 	@Override
 	public void usePowerUp(TPlayer requester) throws TException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public TSettings getSettings() throws TException {
-		// TODO Auto-generated method stub
-		return null;
+		game.usePowerup(requester);
 	}
 
 
 	@Override
 	public TSettings getSettings(TPlayer preferred) throws TException {
+		TPlayer player = game.registerPlayer(preferred);
+		TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL, player);
+		
+		return settings;
+	}
+
+
+	@Override
+	public TSettings getSettings() throws TException {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -15,8 +15,6 @@ public class Game {
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[5];
-		
-		
 	}
 	
 	public void resetGame() {
@@ -24,10 +22,56 @@ public class Game {
 		redScore = 0;
 		blueScore = 0;
 		ballSpawnTime = GameSettings.GAME_START_DELAY;
+		// TODO: wipe any paddle attributes
 	}
 	
 	public void movePaddle(TPlayer requester, boolean clockwise) {
 		paddleArray[requester.getValue()].move(clockwise);
+	}
+	
+	public void jumpPaddle(TPlayer requester) {
+		paddleArray[requester.getValue()].jump();
+	}
+	
+	public void usePowerup(TPlayer requester) {
+		// TODO: check which powerup the player has, apply effects, some sort of timer
+	}
+	
+	public TPlayer registerPlayer(TPlayer team) {
+		TPlayer player = team;
+		if(team == TPlayer.RED_ONE || team == TPlayer.RED_TWO) {
+			if(paddleArray[TPlayer.RED_ONE.getValue()] == null) {
+				player = TPlayer.RED_ONE;
+				paddleArray[player.getValue()] = new ServerPaddle(player);
+				return player;
+			}
+			else if(paddleArray[TPlayer.RED_TWO.getValue()] == null) {
+				player = TPlayer.RED_TWO;
+				paddleArray[player.getValue()] = new ServerPaddle(player);
+				return player;
+			}
+			else {
+				return TPlayer.NONE;
+			}
+		}
+		else if(team == TPlayer.BLUE_ONE || team == TPlayer.BLUE_TWO){
+			if(paddleArray[TPlayer.BLUE_ONE.getValue()] == null) {
+				player = TPlayer.BLUE_ONE;
+				paddleArray[player.getValue()] = new ServerPaddle(player);
+				return player;
+			}
+			else if(paddleArray[TPlayer.RED_TWO.getValue()] == null) {
+				player = TPlayer.BLUE_TWO;
+				paddleArray[player.getValue()] = new ServerPaddle(player);
+				return player;
+			}
+			else {
+				return TPlayer.NONE;
+			}
+		}
+		else {
+			return TPlayer.NONE;
+		}
 	}
 	
 	/**
