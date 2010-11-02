@@ -30,7 +30,7 @@ public class TNetworkServer {
 
   public interface Iface {
 
-    public TSettings getSettings(boolean isBlue) throws TException;
+    public TSettings getSettings(TPlayer preferred) throws TException;
 
     public TGameState poll(TPlayer requester) throws TException;
 
@@ -46,7 +46,7 @@ public class TNetworkServer {
 
   public interface AsyncIface {
 
-    public void getSettings(boolean isBlue, AsyncMethodCallback<AsyncClient.getSettings_call> resultHandler) throws TException;
+    public void getSettings(TPlayer preferred, AsyncMethodCallback<AsyncClient.getSettings_call> resultHandler) throws TException;
 
     public void poll(TPlayer requester, AsyncMethodCallback<AsyncClient.poll_call> resultHandler) throws TException;
 
@@ -97,17 +97,17 @@ public class TNetworkServer {
       return this.oprot_;
     }
 
-    public TSettings getSettings(boolean isBlue) throws TException
+    public TSettings getSettings(TPlayer preferred) throws TException
     {
-      send_getSettings(isBlue);
+      send_getSettings(preferred);
       return recv_getSettings();
     }
 
-    public void send_getSettings(boolean isBlue) throws TException
+    public void send_getSettings(TPlayer preferred) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("getSettings", TMessageType.CALL, ++seqid_));
       getSettings_args args = new getSettings_args();
-      args.setIsBlue(isBlue);
+      args.setPreferred(preferred);
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
@@ -247,23 +247,23 @@ public class TNetworkServer {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getSettings(boolean isBlue, AsyncMethodCallback<getSettings_call> resultHandler) throws TException {
+    public void getSettings(TPlayer preferred, AsyncMethodCallback<getSettings_call> resultHandler) throws TException {
       checkReady();
-      getSettings_call method_call = new getSettings_call(isBlue, resultHandler, this, protocolFactory, transport);
+      getSettings_call method_call = new getSettings_call(preferred, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class getSettings_call extends TAsyncMethodCall {
-      private boolean isBlue;
-      public getSettings_call(boolean isBlue, AsyncMethodCallback<getSettings_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TPlayer preferred;
+      public getSettings_call(TPlayer preferred, AsyncMethodCallback<getSettings_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.isBlue = isBlue;
+        this.preferred = preferred;
       }
 
       public void write_args(TProtocol prot) throws TException {
         prot.writeMessageBegin(new TMessage("getSettings", TMessageType.CALL, 0));
         getSettings_args args = new getSettings_args();
-        args.setIsBlue(isBlue);
+        args.setPreferred(preferred);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -486,7 +486,7 @@ public class TNetworkServer {
         }
         iprot.readMessageEnd();
         getSettings_result result = new getSettings_result();
-        result.success = iface_.getSettings(args.isBlue);
+        result.success = iface_.getSettings(args.preferred);
         oprot.writeMessageBegin(new TMessage("getSettings", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
@@ -610,13 +610,21 @@ public class TNetworkServer {
   public static class getSettings_args implements TBase<getSettings_args, getSettings_args._Fields>, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("getSettings_args");
 
-    private static final TField IS_BLUE_FIELD_DESC = new TField("isBlue", TType.BOOL, (short)1);
+    private static final TField PREFERRED_FIELD_DESC = new TField("preferred", TType.I32, (short)1);
 
-    public boolean isBlue;
+    /**
+     * 
+     * @see TPlayer
+     */
+    public TPlayer preferred;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
-      IS_BLUE((short)1, "isBlue");
+      /**
+       * 
+       * @see TPlayer
+       */
+      PREFERRED((short)1, "preferred");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -631,8 +639,8 @@ public class TNetworkServer {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // IS_BLUE
-            return IS_BLUE;
+          case 1: // PREFERRED
+            return PREFERRED;
           default:
             return null;
         }
@@ -673,14 +681,12 @@ public class TNetworkServer {
     }
 
     // isset id assignments
-    private static final int __ISBLUE_ISSET_ID = 0;
-    private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, FieldMetaData> metaDataMap;
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.IS_BLUE, new FieldMetaData("isBlue", TFieldRequirementType.DEFAULT, 
-          new FieldValueMetaData(TType.BOOL)));
+      tmpMap.put(_Fields.PREFERRED, new FieldMetaData("preferred", TFieldRequirementType.DEFAULT, 
+          new EnumMetaData(TType.ENUM, TPlayer.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(getSettings_args.class, metaDataMap);
     }
@@ -689,20 +695,19 @@ public class TNetworkServer {
     }
 
     public getSettings_args(
-      boolean isBlue)
+      TPlayer preferred)
     {
       this();
-      this.isBlue = isBlue;
-      setIsBlueIsSet(true);
+      this.preferred = preferred;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getSettings_args(getSettings_args other) {
-      __isset_bit_vector.clear();
-      __isset_bit_vector.or(other.__isset_bit_vector);
-      this.isBlue = other.isBlue;
+      if (other.isSetPreferred()) {
+        this.preferred = other.preferred;
+      }
     }
 
     public getSettings_args deepCopy() {
@@ -711,40 +716,48 @@ public class TNetworkServer {
 
     @Override
     public void clear() {
-      setIsBlueIsSet(false);
-      this.isBlue = false;
+      this.preferred = null;
     }
 
-    public boolean isIsBlue() {
-      return this.isBlue;
+    /**
+     * 
+     * @see TPlayer
+     */
+    public TPlayer getPreferred() {
+      return this.preferred;
     }
 
-    public getSettings_args setIsBlue(boolean isBlue) {
-      this.isBlue = isBlue;
-      setIsBlueIsSet(true);
+    /**
+     * 
+     * @see TPlayer
+     */
+    public getSettings_args setPreferred(TPlayer preferred) {
+      this.preferred = preferred;
       return this;
     }
 
-    public void unsetIsBlue() {
-      __isset_bit_vector.clear(__ISBLUE_ISSET_ID);
+    public void unsetPreferred() {
+      this.preferred = null;
     }
 
-    /** Returns true if field isBlue is set (has been asigned a value) and false otherwise */
-    public boolean isSetIsBlue() {
-      return __isset_bit_vector.get(__ISBLUE_ISSET_ID);
+    /** Returns true if field preferred is set (has been asigned a value) and false otherwise */
+    public boolean isSetPreferred() {
+      return this.preferred != null;
     }
 
-    public void setIsBlueIsSet(boolean value) {
-      __isset_bit_vector.set(__ISBLUE_ISSET_ID, value);
+    public void setPreferredIsSet(boolean value) {
+      if (!value) {
+        this.preferred = null;
+      }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case IS_BLUE:
+      case PREFERRED:
         if (value == null) {
-          unsetIsBlue();
+          unsetPreferred();
         } else {
-          setIsBlue((Boolean)value);
+          setPreferred((TPlayer)value);
         }
         break;
 
@@ -753,8 +766,8 @@ public class TNetworkServer {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case IS_BLUE:
-        return new Boolean(isIsBlue());
+      case PREFERRED:
+        return getPreferred();
 
       }
       throw new IllegalStateException();
@@ -767,8 +780,8 @@ public class TNetworkServer {
       }
 
       switch (field) {
-      case IS_BLUE:
-        return isSetIsBlue();
+      case PREFERRED:
+        return isSetPreferred();
       }
       throw new IllegalStateException();
     }
@@ -786,12 +799,12 @@ public class TNetworkServer {
       if (that == null)
         return false;
 
-      boolean this_present_isBlue = true;
-      boolean that_present_isBlue = true;
-      if (this_present_isBlue || that_present_isBlue) {
-        if (!(this_present_isBlue && that_present_isBlue))
+      boolean this_present_preferred = true && this.isSetPreferred();
+      boolean that_present_preferred = true && that.isSetPreferred();
+      if (this_present_preferred || that_present_preferred) {
+        if (!(this_present_preferred && that_present_preferred))
           return false;
-        if (this.isBlue != that.isBlue)
+        if (!this.preferred.equals(that.preferred))
           return false;
       }
 
@@ -811,12 +824,12 @@ public class TNetworkServer {
       int lastComparison = 0;
       getSettings_args typedOther = (getSettings_args)other;
 
-      lastComparison = Boolean.valueOf(isSetIsBlue()).compareTo(typedOther.isSetIsBlue());
+      lastComparison = Boolean.valueOf(isSetPreferred()).compareTo(typedOther.isSetPreferred());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetIsBlue()) {
-        lastComparison = TBaseHelper.compareTo(this.isBlue, typedOther.isBlue);
+      if (isSetPreferred()) {
+        lastComparison = TBaseHelper.compareTo(this.preferred, typedOther.preferred);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -838,10 +851,9 @@ public class TNetworkServer {
           break;
         }
         switch (field.id) {
-          case 1: // IS_BLUE
-            if (field.type == TType.BOOL) {
-              this.isBlue = iprot.readBool();
-              setIsBlueIsSet(true);
+          case 1: // PREFERRED
+            if (field.type == TType.I32) {
+              this.preferred = TPlayer.findByValue(iprot.readI32());
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -861,9 +873,11 @@ public class TNetworkServer {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      oprot.writeFieldBegin(IS_BLUE_FIELD_DESC);
-      oprot.writeBool(this.isBlue);
-      oprot.writeFieldEnd();
+      if (this.preferred != null) {
+        oprot.writeFieldBegin(PREFERRED_FIELD_DESC);
+        oprot.writeI32(this.preferred.getValue());
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
@@ -873,8 +887,12 @@ public class TNetworkServer {
       StringBuilder sb = new StringBuilder("getSettings_args(");
       boolean first = true;
 
-      sb.append("isBlue:");
-      sb.append(this.isBlue);
+      sb.append("preferred:");
+      if (this.preferred == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.preferred);
+      }
       first = false;
       sb.append(")");
       return sb.toString();
