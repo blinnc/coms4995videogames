@@ -10,7 +10,6 @@ public class ServerPaddle {
 	double t;
 	double r;
 	double vr;
-	boolean isInvisible;
 	
 	private TPowerUp powerup;
 	private TPlayer player;
@@ -31,14 +30,6 @@ public class ServerPaddle {
 	}
 	
 	/**
-	 * Sets the radial velocity.
-	 * @param vr the new radial velocity
-	 */
-	public void setVR(double vr) {
-		this.vr = vr;
-	}
-	
-	/**
 	 * Gets the radial velocity.
 	 * @return the current radial velocity
 	 */
@@ -48,6 +39,13 @@ public class ServerPaddle {
 	
 	public void move(boolean clockwise) {
 		t = clockwise ? t + vr : t - vr;
+		if(t > 2 * Math.PI) {
+			t = t % (2 * Math.PI);
+		}
+	}
+	
+	public void setSpeedUp(boolean enable) {
+		vr = enable ? GameSettings.PADDLE_SPEEDUP : GameSettings.PADDLE_VELOCITY;
 	}
 
 	/**

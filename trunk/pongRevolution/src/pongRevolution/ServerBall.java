@@ -4,6 +4,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
+import network.TPlayer;
 import network.TPowerUp;
 
 public class ServerBall {
@@ -12,6 +13,7 @@ public class ServerBall {
 	private double t;
 	
 	private int combo;
+	private TPlayer lastHit;
 	private TPowerUp powerup;
 	
 	public ServerBall() {
@@ -78,6 +80,10 @@ public class ServerBall {
 		x += vx;
 		y += vy;
 		// TODO: check for collisions
+			// TODO: change color
+			// TODO: change last hit
+			// TODO: change combo
+			// TODO: transfer powerup to player
 	}
 	
 	public void increaseCombo() {
