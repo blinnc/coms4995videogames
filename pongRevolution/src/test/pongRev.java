@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import org.apache.thrift.TException;
+
 import network.TBall;
 import network.TPlayer;
 import network.TPosition;
@@ -316,21 +318,33 @@ public class pongRev extends JFrame implements KeyListener {
 	}
 	
 	private void moveA() {
-        AffineTransform tx = new AffineTransform();
-        paddleRotation += 1.5;
-        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-        shape = (Path2D) tx.createTransformedShape(paddle); 
+		try {
+			gameinfo.client.moveLeft(gameinfo.me);
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//        AffineTransform tx = new AffineTransform();
+//        paddleRotation += 1.5;
+//        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+//        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+//        shape = (Path2D) tx.createTransformedShape(paddle); 
 	}
 
 	private void moveD() {
-	    AffineTransform tx = new AffineTransform();
-        paddleRotation -= 1.5;
-        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-        shape = (Path2D) tx.createTransformedShape(paddle);
+		try {
+			gameinfo.client.moveRight(gameinfo.me);
+		} catch (TException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//	    AffineTransform tx = new AffineTransform();
+//        paddleRotation -= 1.5;
+//        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+//        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+//        shape = (Path2D) tx.createTransformedShape(paddle);
 	}
 
 	@Override
