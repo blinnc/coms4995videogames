@@ -24,11 +24,12 @@ public class GameInfo {
 	
 	public GameInfo(String ip, String team) {
 		this.ip = ip;
+		System.out.println(team);
 		this.start();
 		try {
-			if (team.equals("red")) {
+			if (team.equals("RED TEAM")) {
 				settings = client.getSettings(TPlayer.RED_ONE);
-			} else if (team.equals("blue")) {
+			} else if (team.equals("BLUE TEAM")) {
 				settings = client.getSettings(TPlayer.BLUE_ONE);
 			} else {
 				settings = client.getSettings(TPlayer.NONE);
@@ -39,20 +40,8 @@ public class GameInfo {
 		}
 		
 		me = settings.getColor();
+		System.out.println(me);
 		
-		(new Thread() {
-            public void run() {
-                try {
-                	Thread.sleep(15);
-                	state = client.poll(me);
-                	System.out.println(state.paddles.get(0).angle);
-                } catch (InterruptedException e) {
-                	e.printStackTrace();
-                } catch (TException e) {
-					e.printStackTrace();
-				}
-            }
-		}).start();
 	}
 	
 	private void start(){

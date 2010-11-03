@@ -307,6 +307,16 @@ public class pongRev extends JFrame implements KeyListener {
 	private void movePaddle() throws InterruptedException {
 	    while (true) {
 	        Thread.sleep(15);
+	        try {
+				gameinfo.state = gameinfo.client.poll(gameinfo.me);
+			} catch (TException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	for (int i = 0; i < gameinfo.state.paddles.size(); i++) {
+            	System.out.print(gameinfo.state.paddles.get(0).angle + ", ");                		
+        	}
+        	System.out.println();
 	        this.repaint();
 	        if (a && d) {
 	        } else if (a) {
