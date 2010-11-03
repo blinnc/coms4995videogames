@@ -11,6 +11,7 @@ import network.TPowerUp;
 public class ServerPaddle {
 	double t;
 	double r;
+	double vt;
 	double vr;
 	
 	int[] xpoints;
@@ -29,7 +30,7 @@ public class ServerPaddle {
 		getBounds();
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];
 		r = GameSettings.ARENA_RADIUS;
-		vr = GameSettings.PADDLE_VELOCITY;
+		vt = GameSettings.PADDLE_VELOCITY;
 		isInvisible = false;
 		isSpeedup = false;
 		isMagnetic = false;
@@ -60,13 +61,9 @@ public class ServerPaddle {
 	public double getR() {
 		return r;
 	}
-	
-	/**
-	 * Gets the radial velocity.
-	 * @return the current radial velocity
-	 */
-	public double getVR() {
-		return vr;
+
+	public double getVT() {
+		return vt;
 	}
 	
 	public double getLength() {
@@ -94,7 +91,7 @@ public class ServerPaddle {
 	}
 	
 	public void move(boolean clockwise) {
-		t = clockwise ? t + vr : t - vr;
+		t = clockwise ? t + vt : t - vt;
 		if(t > 2 * Math.PI) {
 			t = t % (2 * Math.PI);
 		}
@@ -102,11 +99,10 @@ public class ServerPaddle {
 	}
 	
 	public void jump() {
-		
 	}
 	
 	public void setSpeedUp(boolean enable) {
-		vr = enable ? GameSettings.PADDLE_SPEEDUP : GameSettings.PADDLE_VELOCITY;
+		vt = enable ? GameSettings.PADDLE_SPEEDUP : GameSettings.PADDLE_VELOCITY;
 	}
 
 	/**
