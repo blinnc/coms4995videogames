@@ -261,6 +261,15 @@ public class pongRev extends JFrame implements KeyListener {
 			//dbg.draw(shape);
 			((Graphics2D) dbg).fill(shape);
 		}
+		
+        dbg.setColor(Color.green);
+        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
+        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
+        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER,
+        			(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
+        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
+        	
+        	}}
 		//paint(dbg); 		
 		//dbg.setColor(Color.white);
 		//dbg.drawOval(CIRCLE_X, CIRCLE_Y, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
@@ -305,14 +314,8 @@ public class pongRev extends JFrame implements KeyListener {
 	        paddleRotation = gameinfo.state.paddles.get(gameinfo.player.getValue()).angle;
 	        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 	        shape = (Path2D) tx.createTransformedShape(paddle);
-	        dbg.setColor(Color.green);
-	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
-	        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
-	        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos,
-	        			(int)gameinfo.state.balls.get(i).positions.get(j).yPos, 
-	        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
-	        	}
-	        }
+
+	        
 
 	        this.repaint();
 	        if (a && d) {
