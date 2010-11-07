@@ -130,13 +130,13 @@ public class ServerPaddle {
 	public Polygon getBounds() {
 		xpoints = new int[4];
 		xpoints[0] = (int) (r * Math.cos(t) + GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
-		xpoints[1] = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
-		xpoints[2] = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
-		xpoints[3] = (int) (r * Math.cos(t) + GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
+		xpoints[1] = (int) (r * Math.cos(t) + GameSettings.PADDLE_TOP / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
+		xpoints[2] = (int) (r * Math.cos(t) - GameSettings.PADDLE_TOP / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
+		xpoints[3] = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
 		ypoints = new int[4];
 		ypoints[0] = (int) (r * Math.sin(t) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
-		ypoints[1] = (int) (r * Math.sin(t) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
-		ypoints[2] = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		ypoints[1] = (int) (r * Math.sin(t) + GameSettings.PADDLE_TOP / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		ypoints[2] = (int) (r * Math.sin(t) - GameSettings.PADDLE_TOP / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
 		ypoints[3] = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
 		Polygon polygon = new Polygon(xpoints, ypoints, 4);
 		return polygon;
@@ -171,14 +171,20 @@ public class ServerPaddle {
 		points[0] = new Point2D.Double(x_0, y_0);
 		points[1] = new Point2D.Double(x_1, y_1);
 		
-		double b4 = y0 - m2 * x0;
-		double b5 = y2 - m2 * x2;
-		double b6 = other.getY() - m1 * other.getX();
+		double m3 = (y1 - y0) / (x1 - x0);
+		double m4 = -1 / m3;
+		double m5 = (y3 - y2) / (x3 - x2);
+		double m6 = -1 / m5;
 		
-		double x_2 = (b6 - b4) / (m2 - m1);
-		double x_3 = (b6 - b5) / (m2 - m1);
-		double y_2 = (b6 - b4) / (m2 - m1);
-		double y_3 = (b6 - b5) / (m2 - m1);
+		double b4 = y0 - m3 * x0;
+		double b5 = y2 - m5 * x2;
+		double b6 = other.getY() - m4 * other.getX();
+		double b7 = other.getY() - m6 * other.getX();
+
+		double x_2 = (b6 - b4) / (m3 - m4);
+		double x_3 = (b7 - b5) / (m5 - m6);
+		double y_2 = m3 * x_2 + b4;
+		double y_3 = m5 * x_3 + b5;
 
 		points[2] = new Point2D.Double(x_2, y_2);
 		points[3] = new Point2D.Double(x_3, y_3);
