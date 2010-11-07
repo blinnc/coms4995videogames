@@ -18,7 +18,7 @@ public class GameInfo {
 	public Client client;
 	public TTransport transport;
 	public String ip;
-	public TPlayer me;
+	public TPlayer player;
 	public TSettings settings;
 	public TGameState state;
 	
@@ -39,8 +39,8 @@ public class GameInfo {
 			System.exit(0);
 		}
 		
-		me = settings.getColor();
-		System.out.println(me);
+		player = settings.getColor();
+		System.out.println(player);
 		
 	}
 	
