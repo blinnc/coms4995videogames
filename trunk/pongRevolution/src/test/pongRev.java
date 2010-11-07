@@ -313,8 +313,7 @@ public class pongRev extends JFrame implements KeyListener {
 	        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
 	        	}
 	        }
-	        	
-        	System.out.println();
+
 	        this.repaint();
 	        if (a && d) {
 	        } else if (a) {
