@@ -47,11 +47,11 @@ public class ServerPaddle {
 	}
 	
 	public double getX() {
-		return r * Math.cos(t);
+		return r * Math.cos(Math.toRadians(t));
 	}
 	
 	public double getY() {
-		return r * Math.sin(t);
+		return r * Math.sin(Math.toRadians(t));
 	}
 	
 	public double getT() {
@@ -97,11 +97,11 @@ public class ServerPaddle {
 	
 	public void move(boolean clockwise) {
 		t = clockwise ? t + vt : t - vt;
-		if(t > 2 * Math.PI) {
-			t = t % (2 * Math.PI);
+		if(t > 360) {
+			t = t % 360;
 		}
 		else if(t < 0) {
-			t = (2 * Math.PI) - t; 
+			t = 360 + t; 
 		}
 		tPaddle.setAngle(t);
 	}
