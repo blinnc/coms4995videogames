@@ -63,8 +63,6 @@ public class pongRev extends JFrame implements KeyListener {
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	private boolean a;
 	private boolean d;
-	List<TPosition> positions;
-	TBall ball1;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
 	
@@ -73,11 +71,6 @@ public class pongRev extends JFrame implements KeyListener {
 	public pongRev()
 	{
 		super( "Pong Revolution" );
-		positions = new ArrayList<TPosition>();
-		positions.add(new TPosition(100, 300));
-		positions.add(new TPosition(320, 320));
-		ball1 = new TBall(positions, TPowerUp.NONE, TPlayer.NONE, false);
-		System.out.println(ball1.positions.get(0).xPos);
         setBackground(Color.black );
         setForeground(Color.white);
         setSize( 900, 600 );
@@ -251,10 +244,6 @@ public class pongRev extends JFrame implements KeyListener {
 				changeZ = 0;
 		}*/
 		
-		
-		dbg.setColor(Color.green);
-		dbg.fillOval((int)ball1.positions.get(0).xPos, (int)ball1.positions.get(0).yPos, 10, 10);
-		
 		if(change == 0)
 			otherColor +=1;
 		if(change == 1)
@@ -308,22 +297,23 @@ public class pongRev extends JFrame implements KeyListener {
 	    while (true) {
 	        Thread.sleep(15);
 	        try {
-				gameinfo.state = gameinfo.client.poll(gameinfo.me);
+				gameinfo.state = gameinfo.client.poll(gameinfo.player);
 			} catch (TException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 	        AffineTransform tx = new AffineTransform();
-//	        paddleRotation += 1.5;
-	        paddleRotation = gameinfo.state.paddles.get(0).angle;
+	        paddleRotation = gameinfo.state.paddles.get(gameinfo.player.getValue()).angle;
 	        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-//	        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-//	        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
 	        shape = (Path2D) tx.createTransformedShape(paddle);
-			
-//        	for (int i = 0; i < gameinfo.state.paddles.size(); i++) {
-//            	System.out.print(gameinfo.state.paddles.get(0).angle + ", ");                		
-//        	}
+	        dbg.setColor(Color.green);
+	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
+	        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
+	        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos,
+	        			(int)gameinfo.state.balls.get(i).positions.get(j).yPos, 
+	        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
+	        	}
+	        }
+	        	
         	System.out.println();
 	        this.repaint();
 	        if (a && d) {
@@ -337,32 +327,18 @@ public class pongRev extends JFrame implements KeyListener {
 	
 	private void moveA() {
 		try {
-			gameinfo.client.moveLeft(gameinfo.me);
+			gameinfo.client.moveLeft(gameinfo.player);
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//        AffineTransform tx = new AffineTransform();
-//        paddleRotation += 1.5;
-//        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-//        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-//        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-//        shape = (Path2D) tx.createTransformedShape(paddle); 
 	}
 
 	private void moveD() {
 		try {
-			gameinfo.client.moveRight(gameinfo.me);
+			gameinfo.client.moveRight(gameinfo.player);
 		} catch (TException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//	    AffineTransform tx = new AffineTransform();
-//        paddleRotation -= 1.5;
-//        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-//        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-//        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
-//        shape = (Path2D) tx.createTransformedShape(paddle);
 	}
 
 	@Override
