@@ -20,5 +20,5 @@ public class GameSettings {
 	// Ball settings
 	public static final int BALL_RADIUS = 10;
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
-	public static final double COMBO_SPEED[] = {5, 7, 10, 15, 20, 25};
+	public static final double COMBO_SPEED[] = {2, 2.5, 3, 4, 5, 6};
 }
