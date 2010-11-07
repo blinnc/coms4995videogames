@@ -91,7 +91,6 @@ public class ServerPaddle {
 	}
 	
 	public TPaddle getTPaddle() {
-		System.out.println(tPaddle.getAngle());
 		return tPaddle;
 	}
 	
