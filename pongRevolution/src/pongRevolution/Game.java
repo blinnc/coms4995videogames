@@ -124,8 +124,10 @@ public class Game {
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
+				double paddleDiagonal2 = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_TOP / 2, 2));
+				
 				if (ball.contains(points[0])) {
-					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
+					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
 						ball.setT(Math.PI + 2 * paddleArray[i].getT() - ball.getT());
 					}
 				}
@@ -136,12 +138,16 @@ public class Game {
 				}
 				if (ball.contains(points[2])) {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						ball.setT(2 * paddleArray[i].getT() - ball.getT());
+						if (!points[0].equals(points[1])) {
+							ball.setT(2 * paddleArray[i].getT() - ball.getT());
+						}
 					}
 				}
 				if (ball.contains(points[3])) {
 					if (points[3].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						ball.setT(2 * paddleArray[i].getT() - ball.getT());
+						if (!points[0].equals(points[1])) {
+							ball.setT(2 * paddleArray[i].getT() - ball.getT());
+						}
 					}
 				}
 			}
