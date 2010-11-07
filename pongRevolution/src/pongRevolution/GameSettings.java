@@ -12,6 +12,7 @@ public class GameSettings {
 	
 	// Paddle settings
 	public static final double PADDLE_LENGTH = 40;
+	public static final double PADDLE_TOP = 40;
 	public static final double PADDLE_HEIGHT = 20;
 	public static final double PADDLE_VELOCITY = 1.5;
 	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 2;
