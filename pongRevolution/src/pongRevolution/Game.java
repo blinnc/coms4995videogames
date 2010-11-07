@@ -158,14 +158,14 @@ public class Game {
 	}
 	
 	public TGameState getState() {
-		List<TPaddle> paddles = new ArrayList<TPaddle>(5);
+		List<TPaddle> paddles = new ArrayList<TPaddle>();
 		for(int i = 0; i < 5; i++) {
 			ServerPaddle paddle = paddleArray[i];
 			if(paddle != null) {
-				paddles.set(i, paddle.getTPaddle());
+				paddles.add(paddle.getTPaddle());
 			}
 			else {
-				paddles.set(i, null);
+				paddles.add(new TPaddle());
 			}
 		}
 		List<TBall> balls = new ArrayList<TBall>();
