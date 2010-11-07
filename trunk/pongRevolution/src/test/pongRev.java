@@ -97,7 +97,7 @@ public class pongRev extends JFrame implements KeyListener {
 	         transport.open();
 	         //transport.close();
 	      } catch (TTransportException e) {
-	         System.out.println("Problem when trying to connect to the server.");
+	         f("Problem when trying to connect to the server.");
 	    	  e.printStackTrace();
 	      }*/
 		//-----END LOGIC TO CONNECT TO THE SERVER-----
@@ -313,9 +313,17 @@ public class pongRev extends JFrame implements KeyListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	for (int i = 0; i < gameinfo.state.paddles.size(); i++) {
-            	System.out.print(gameinfo.state.paddles.get(0).angle + ", ");                		
-        	}
+	        AffineTransform tx = new AffineTransform();
+//	        paddleRotation += 1.5;
+	        paddleRotation = gameinfo.state.paddles.get(0).angle;
+	        tx.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//	        //double x = 240 * Math.cos(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+//	        //double y = 240 * Math.sin(Math.toRadians(paddleRotation)) + CIRCLE_CENTER;
+	        shape = (Path2D) tx.createTransformedShape(paddle);
+			
+//        	for (int i = 0; i < gameinfo.state.paddles.size(); i++) {
+//            	System.out.print(gameinfo.state.paddles.get(0).angle + ", ");                		
+//        	}
         	System.out.println();
 	        this.repaint();
 	        if (a && d) {
