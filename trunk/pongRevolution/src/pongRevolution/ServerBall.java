@@ -3,6 +3,8 @@ package pongRevolution;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import network.TPlayer;
 import network.TPowerUp;
@@ -32,16 +34,17 @@ public class ServerBall {
 		int pu = (int)(Math.random() * 8) + 1;
 		powerup = TPowerUp.findByValue(pu);
 		
-		TBall tball = new TBall();
+		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
 		updatePosition();
 	}
 	
 	public void updatePosition() {
-		TPosition pos = new TPosition();
-		pos.setXPos(x);
-		pos.setYPos(y);
-		tball.addToPositions(pos);
+		// TODO: fix this
+		TPosition pos = new TPosition(x, y);
+		List<TPosition> positions = new ArrayList<TPosition>();
+		positions.add(pos);
+		tball.positions = positions;
 	}
 	
 	private void updateVelocity() {
