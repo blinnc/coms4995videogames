@@ -22,6 +22,7 @@ public class Game {
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
+		resetGame();
 	}
 	
 	public void resetGame() {
@@ -93,7 +94,7 @@ public class Game {
 	public void updateGame() {
 		ballSpawnCount --;
 		moveBalls();
-		if(ballSpawnCount == 0) {
+		if(ballSpawnCount < 0) {
 			spawnBall();
 			ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
 		}
@@ -121,6 +122,9 @@ public class Game {
 	 */
 	public void checkCollision() {
 		for (int i = 1; i < 5; i++) {
+			if(paddleArray[i] == null) {
+				continue;
+			}
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
@@ -172,6 +176,7 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			balls.add(ball.getTball());
 		}
+		System.out.println(balls.size());
 		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE);
 	}
 }

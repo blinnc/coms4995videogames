@@ -3,7 +3,7 @@ package pongRevolution;
 public class GameSettings {
 	public static final int CLOCK_INTERVAL = 15;
 	
-	public static final int GAME_START_DELAY = 3000;
+	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;
 	public static final int BALL_RELEASE_INTERVAL = 5000 / CLOCK_INTERVAL;
 	
 	// Arena settings
