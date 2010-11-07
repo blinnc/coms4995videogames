@@ -46,6 +46,10 @@ public class Game {
 	
 	public TPlayer registerPlayer(TPlayer team) {
 		TPlayer player = team;
+		for(int i = 0; i < 5; i++) {
+			System.out.println(paddleArray[i]);
+		}
+		
 		if(team == TPlayer.RED_ONE || team == TPlayer.RED_TWO) {
 			if(paddleArray[TPlayer.RED_ONE.getValue()] == null) {
 				player = TPlayer.RED_ONE;
