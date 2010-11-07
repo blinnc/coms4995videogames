@@ -22,6 +22,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 	
 	public PongServer() {
 		game = new Game();
+		timer = new Timer();
 		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
 	}
 	
