@@ -63,7 +63,7 @@ public class Game {
 				paddleArray[player.getValue()] = new ServerPaddle(player);
 				return player;
 			}
-			else if(paddleArray[TPlayer.RED_TWO.getValue()] == null) {
+			else if(paddleArray[TPlayer.BLUE_TWO.getValue()] == null) {
 				player = TPlayer.BLUE_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
 				return player;
@@ -78,6 +78,7 @@ public class Game {
 	}
 	
 	public void spawnBall() {
+		System.out.println("New ball released");
 		ballList.add(new ServerBall());
 	}
 	
@@ -144,10 +145,10 @@ public class Game {
 		for(int i = 0; i < 5; i++) {
 			ServerPaddle paddle = paddleArray[i];
 			if(paddle != null) {
-				paddles.add(i, paddle.getTPaddle());
+				paddles.set(i, paddle.getTPaddle());
 			}
 			else {
-				paddles.add(i, null);
+				paddles.set(i, null);
 			}
 		}
 		List<TBall> balls = new ArrayList<TBall>();
