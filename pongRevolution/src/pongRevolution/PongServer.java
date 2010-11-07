@@ -16,13 +16,18 @@ import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TTransportException;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
+
 public class PongServer implements network.TNetworkServer.Iface{
 	private Game game;
 	private Timer timer;
+	Logger log = Logger.getLogger(PongServer.class);
 	
 	public PongServer() {
 		game = new Game();
 		timer = new Timer();
+		BasicConfigurator.configure();
 		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
 	}
 	
