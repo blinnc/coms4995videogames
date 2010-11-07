@@ -87,7 +87,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 	public TSettings getSettings(TPlayer preferred) throws TException {
 		TPlayer player = game.registerPlayer(preferred);
 		TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL, player);
-		
+		System.out.println("getSettings()");
 		return settings;
 	}
 
