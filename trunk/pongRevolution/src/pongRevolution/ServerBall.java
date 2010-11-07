@@ -6,6 +6,8 @@ import java.awt.geom.Rectangle2D;
 
 import network.TPlayer;
 import network.TPowerUp;
+import network.TBall;
+import network.TPosition;
 
 public class ServerBall {
 	private double vx, vy;
@@ -15,6 +17,7 @@ public class ServerBall {
 	private int combo;
 	private TPlayer lastHit;
 	private TPowerUp powerup;
+	private TBall tball;
 	
 	public ServerBall() {
 		x = 0;
@@ -28,14 +31,17 @@ public class ServerBall {
 		// Random powerup
 		int pu = (int)(Math.random() * 8) + 1;
 		powerup = TPowerUp.findByValue(pu);
+		
+		TBall tball = new TBall();
+		
+		updatePosition();
 	}
 	
-	/**
-	 * Translate the ball.
-	 */
-	public void translate(double dx, double dy) {
-		x += dx;
-		y += dy;
+	public void updatePosition() {
+		TPosition pos = new TPosition();
+		pos.setXPos(x);
+		pos.setYPos(y);
+		tball.addToPositions(pos);
 	}
 	
 	private void updateVelocity() {
@@ -96,6 +102,7 @@ public class ServerBall {
 	public void move() {
 		x += vx;
 		y += vy;
+		updatePosition();
 			// TODO: change color
 			// TODO: change last hit
 			// TODO: change combo

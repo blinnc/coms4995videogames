@@ -19,7 +19,7 @@ public class ServerPaddle {
 	
 	private double length;
 	
-	private boolean isInvisible, isSpeedup, isMagnetic;
+	private boolean isInvisible, isSpeedup, isMagnetic, isJumping;
 	
 	private TPowerUp powerup;
 	private TPlayer player;
@@ -80,6 +80,10 @@ public class ServerPaddle {
 	
 	public boolean isMagnetic() {
 		return isMagnetic;
+	}
+	
+	public boolean isJumping() {
+		return isJumping;
 	}
 	
 	public TPlayer getPlayer() {
