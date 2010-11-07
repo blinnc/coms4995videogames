@@ -139,14 +139,17 @@ public class Game {
 				if (ball.contains(points[2])) {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (!points[0].equals(points[1])) {
-							ball.setT(2 * paddleArray[i].getT() - ball.getT());
+							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
+							ball.setT(Math.PI + 2 * (paddleArray[i].getT() + Math.PI + angle) - ball.getT());
 						}
 					}
 				}
 				if (ball.contains(points[3])) {
 					if (points[3].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (!points[0].equals(points[1])) {
-							ball.setT(2 * paddleArray[i].getT() - ball.getT());
+							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
+							ball.setT(Math.PI + 2 * (paddleArray[i].getT() + Math.PI + angle) - ball.getT());
+						
 						}
 					}
 				}
