@@ -18,6 +18,9 @@ public class Game {
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[5];
+		for(int i = 0; i < paddleArray.length; i++) {
+			paddleArray[i] = null;
+		}
 	}
 	
 	public void resetGame() {
@@ -155,6 +158,6 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			balls.add(ball.getTball());
 		}
-		return new TGameState(paddles,null,0,0,false,false,false,null,null);
+		return new TGameState(paddles,balls,0,0,false,false,false,null,null);
 	}
 }
