@@ -100,6 +100,9 @@ public class ServerPaddle {
 		if(t > 2 * Math.PI) {
 			t = t % (2 * Math.PI);
 		}
+		else if(t < 0) {
+			t = (2 * Math.PI) - t; 
+		}
 		tPaddle.setAngle(t);
 	}
 	
