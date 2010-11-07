@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import network.TBall;
 import network.TGameState;
 import network.TPaddle;
 import network.TPlayer;
@@ -12,7 +13,7 @@ public class Game {
 	private List<ServerBall> ballList;
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
-	private int ballSpawnTime;
+	private int ballSpawnCount;
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
@@ -23,7 +24,7 @@ public class Game {
 		ballList.clear();
 		redScore = 0;
 		blueScore = 0;
-		ballSpawnTime = GameSettings.GAME_START_DELAY;
+		ballSpawnCount = GameSettings.GAME_START_DELAY;
 		// TODO: wipe any paddle attributes
 	}
 	
@@ -73,6 +74,19 @@ public class Game {
 		}
 		else {
 			return TPlayer.NONE;
+		}
+	}
+	
+	public void spawnBall() {
+		ballList.add(new ServerBall());
+	}
+	
+	public void updateGame() {
+		ballSpawnCount --;
+		moveBalls();
+		if(ballSpawnCount == 0) {
+			spawnBall();
+			ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
 		}
 	}
 	
@@ -126,13 +140,20 @@ public class Game {
 	}
 	
 	public TGameState getState() {
-		List<TPaddle> paddleList = new ArrayList<TPaddle>();
-		for(int i = 1; i < 5; i++) {
+		List<TPaddle> paddles = new ArrayList<TPaddle>();
+		for(int i = 0; i < 5; i++) {
 			ServerPaddle paddle = paddleArray[i];
 			if(paddle != null) {
-				paddleList.add(paddle.getTPaddle());
+				paddles.add(paddle.getTPaddle());
+			}
+			else {
+				paddles.add(null);
 			}
 		}
-		return new TGameState(paddleList,null,0,0,false,false,false,null,null);
+		List<TBall> balls = new ArrayList<TBall>();
+		for(ServerBall ball : ballList) {
+			balls.add(ball.getTball());
+		}
+		return new TGameState(paddles,null,0,0,false,false,false,null,null);
 	}
 }

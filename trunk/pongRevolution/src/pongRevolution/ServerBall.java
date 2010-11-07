@@ -151,4 +151,8 @@ public class ServerBall {
 			return new Point2D.Double(x + dx * GameSettings.BALL_RADIUS / distance, y + dy * GameSettings.BALL_RADIUS / distance);
 		}
 	}
+
+	public TBall getTball() {
+		return tball;
+	}
 }

@@ -1,5 +1,6 @@
 package pongRevolution;
 
+import java.util.Timer;
 import java.util.TimerTask;
 
 import network.TGameState;
@@ -16,12 +17,12 @@ import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TTransportException;
 
 public class PongServer implements network.TNetworkServer.Iface{
-	public static final int CLOCK_INTERVAL = 15;
-	
 	private Game game;
+	private Timer timer;
 	
 	public PongServer() {
 		game = new Game();
+		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
 	}
 	
 	private void start(){
@@ -47,9 +48,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 		
 		public void run() {
 			// TODO: stuff
-//			game.movePaddles();
-//			game.moveBalls();
-			
+			game.updateGame();
 		}
 	}
 
