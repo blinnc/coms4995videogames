@@ -4,7 +4,7 @@ public class GameSettings {
 	public static final int CLOCK_INTERVAL = 15;
 	
 	public static final int GAME_START_DELAY = 3000;
-	public static final int BALL_RELEASE_INTERVAL = 20000 / CLOCK_INTERVAL;
+	public static final int BALL_RELEASE_INTERVAL = 10000 / CLOCK_INTERVAL;
 	
 	// Arena settings
 	public static final int ARENA_RADIUS = 250;
