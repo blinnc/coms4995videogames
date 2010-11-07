@@ -119,6 +119,14 @@ public class ServerBall {
 		updateVelocity();
 	}
 
+	public boolean isOutsideArena() {
+		if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) >= GameSettings.ARENA_RADIUS) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/**
 	 * Checks if the ball contains a point
 	 * @param p the point
