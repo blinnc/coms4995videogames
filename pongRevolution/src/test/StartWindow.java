@@ -1,18 +1,13 @@
 package test;
-import java.awt.BorderLayout;
-import java.awt.LayoutManager;
-
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle;
 import javax.swing.ListModel;
-
-import javax.swing.WindowConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 
 /**
@@ -31,6 +26,8 @@ public class StartWindow extends javax.swing.JFrame {
 	private JPanel jPanel1;
 	private JLabel serverLabel;
 	private JLabel teamLabel;
+	private JTextField usernameInput;
+	private JLabel usernameLabel;
 	public JButton joinButton;
 	public JList teamList;
 	public JTextField serverInput;
@@ -68,18 +65,18 @@ public class StartWindow extends javax.swing.JFrame {
 					serverLabel = new JLabel();
 					jPanel1.add(serverLabel);
 					serverLabel.setText("Server:");
-					serverLabel.setBounds(21, 31, 59, 16);
+					serverLabel.setBounds(21, 31, 89, 16);
 				}
 				{
 					serverInput = new JTextField();
 					jPanel1.add(serverInput);
-					serverInput.setBounds(98, 28, 245, 23);
+					serverInput.setBounds(128, 31, 245, 23);
 				}
 				{
 					teamLabel = new JLabel();
 					jPanel1.add(teamLabel);
 					teamLabel.setText("Team: ");
-					teamLabel.setBounds(21, 69, 59, 16);
+					teamLabel.setBounds(21, 98, 89, 16);
 				}
 				{
 					ListModel teamListModel = 
@@ -88,13 +85,24 @@ public class StartWindow extends javax.swing.JFrame {
 					teamList = new JList();
 					jPanel1.add(teamList);
 					teamList.setModel(teamListModel);
-					teamList.setBounds(98, 69, 245, 91);
+					teamList.setBounds(128, 101, 245, 91);
 				}
 				{
 					joinButton = new JButton();
 					jPanel1.add(joinButton);
 					joinButton.setText("Join Game");
-					joinButton.setBounds(98, 201, 131, 23);
+					joinButton.setBounds(128, 204, 131, 23);
+				}
+				{
+					usernameLabel = new JLabel();
+					jPanel1.add(usernameLabel);
+					usernameLabel.setText("Username:");
+					usernameLabel.setBounds(21, 64, 89, 16);
+				}
+				{
+					usernameInput = new JTextField();
+					jPanel1.add(usernameInput);
+					usernameInput.setBounds(128, 67, 245, 23);
 				}
 			}
 			pack();
