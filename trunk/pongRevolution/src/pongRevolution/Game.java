@@ -88,8 +88,6 @@ public class Game {
 			System.out.println("New ball released");
 			ballList.add(new ServerBall());
 		}
-		System.out.println("New ball released");
-		ballList.add(new ServerBall());
 	}
 	
 	public void updateGame() {
@@ -134,8 +132,7 @@ public class Game {
 			if(paddleArray[i] == null) {
 				continue;
 			}
-			System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
-			System.out.println(paddleArray[i].getT());
+			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
