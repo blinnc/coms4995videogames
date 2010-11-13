@@ -283,7 +283,7 @@ public class pongRev extends JFrame implements KeyListener {
         for (int i = 0; i < gameinfo.state.balls.size(); i++) {
         	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
         	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER,
-        			(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
+        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
         			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
         	
         	}}
@@ -330,28 +330,28 @@ public class pongRev extends JFrame implements KeyListener {
 			if (gameinfo.state.paddles.get(1) != null) {
 		        AffineTransform tx1 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
-		        tx1.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape1 = (Path2D) tx1.createTransformedShape(paddle1);
 			}
 	        
 			if (gameinfo.state.paddles.get(2) != null) {
 		        AffineTransform tx2 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(2).angle;
-		        tx2.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
 			}
 	        
 			if (gameinfo.state.paddles.get(3) != null) {
 		        AffineTransform tx3 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(3).angle;
-		        tx3.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
 			}
 	        
 			if (gameinfo.state.paddles.get(4) != null) {
 		        AffineTransform tx4 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(4).angle;
-		        tx4.rotate(Math.toRadians(paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
 			}
 	        
