@@ -95,7 +95,7 @@ public class ServerPaddle {
 	}
 	
 	public void move(boolean clockwise) {
-		t = clockwise ? t + vt : t - vt;
+		t = clockwise ? t - vt : t + vt;
 		if(t > 360) {
 			t = t % 360;
 		}

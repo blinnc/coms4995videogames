@@ -97,6 +97,10 @@ public class ServerBall {
 		return t;
 	}
 	
+	public double getR() {
+		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+	}
+	
 	public void setT(double t) {
 		this.t = t;
 		updateVelocity();
