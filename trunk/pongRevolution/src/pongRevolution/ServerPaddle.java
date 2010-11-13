@@ -133,10 +133,10 @@ public class ServerPaddle {
 		xpoints[2] = (int) (r * Math.cos(t) - GameSettings.PADDLE_TOP / 2 * Math.sin(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
 		xpoints[3] = (int) (r * Math.cos(t) - GameSettings.PADDLE_LENGTH / 2 * Math.sin(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.cos(t));
 		ypoints = new int[4];
-		ypoints[0] = (int) (r * Math.sin(t) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
-		ypoints[1] = (int) (r * Math.sin(t) + GameSettings.PADDLE_TOP / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
-		ypoints[2] = (int) (r * Math.sin(t) - GameSettings.PADDLE_TOP / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
-		ypoints[3] = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		ypoints[0] = (int) (r * Math.sin(t) - GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		ypoints[1] = (int) (r * Math.sin(t) - GameSettings.PADDLE_TOP / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		ypoints[2] = (int) (r * Math.sin(t) + GameSettings.PADDLE_TOP / 2 * Math.cos(t) - GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
+		ypoints[3] = (int) (r * Math.sin(t) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(t) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(t));
 		Polygon polygon = new Polygon(xpoints, ypoints, 4);
 		return polygon;
 	}
