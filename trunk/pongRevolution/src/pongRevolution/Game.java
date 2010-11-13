@@ -106,6 +106,7 @@ public class Game {
 	public void moveBalls() {
 		for(ServerBall ball : ballList) {
 			ball.move();
+			//System.out.println("Ball: (" + ball.getX() + "," + ball.getY() + ")");
 		}
 		checkCollision();
 	}
@@ -125,6 +126,7 @@ public class Game {
 			if(paddleArray[i] == null) {
 				continue;
 			}
+			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
@@ -179,7 +181,6 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			balls.add(ball.getTball());
 		}
-		System.out.println(balls.size());
 		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE);
 	}
 }
