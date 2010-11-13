@@ -15,10 +15,12 @@ public class Game {
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
+	private boolean hasPlayers;
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[5];
+		hasPlayers = false;
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
@@ -46,48 +48,47 @@ public class Game {
 	}
 	
 	public TPlayer registerPlayer(TPlayer team) {
-		TPlayer player = team;
-		for(int i = 0; i < 5; i++) {
-			System.out.println(paddleArray[i]);
-		}
-		
+		TPlayer player = team;		
 		if(team == TPlayer.RED_ONE || team == TPlayer.RED_TWO) {
 			if(paddleArray[TPlayer.RED_ONE.getValue()] == null) {
 				player = TPlayer.RED_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				return player;
 			}
 			else if(paddleArray[TPlayer.RED_TWO.getValue()] == null) {
 				player = TPlayer.RED_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				return player;
 			}
 			else {
-				return TPlayer.NONE;
+				player = TPlayer.NONE;
 			}
 		}
 		else if(team == TPlayer.BLUE_ONE || team == TPlayer.BLUE_TWO){
 			if(paddleArray[TPlayer.BLUE_ONE.getValue()] == null) {
 				player = TPlayer.BLUE_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				return player;
 			}
 			else if(paddleArray[TPlayer.BLUE_TWO.getValue()] == null) {
 				player = TPlayer.BLUE_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				return player;
 			}
 			else {
-				return TPlayer.NONE;
+				player = TPlayer.NONE;
 			}
 		}
 		else {
-			return TPlayer.NONE;
+			player = TPlayer.NONE;
 		}
+		System.out.println("Registed new player: " + player);
+		hasPlayers = player != TPlayer.NONE;
+		return player;
 	}
 	
 	public void spawnBall() {
-//		System.out.println("New ball released");
+		if(hasPlayers) {
+			System.out.println("New ball released");
+			ballList.add(new ServerBall());
+		}
+		System.out.println("New ball released");
 		ballList.add(new ServerBall());
 	}
 	
@@ -104,9 +105,16 @@ public class Game {
 	 * Updates the balls to their next position
 	 */
 	public void moveBalls() {
+		List<ServerBall> garbage = new ArrayList<ServerBall>();
 		for(ServerBall ball : ballList) {
 			ball.move();
+			if(ball.getR() > GameSettings.ARENA_RADIUS) {	// TODO: temporary until we figure out collision
+				garbage.add(ball);
+			}
 			//System.out.println("Ball: (" + ball.getX() + "," + ball.getY() + ")");
+		}
+		for(ServerBall ball : garbage) {
+			ballList.remove(ball);
 		}
 		checkCollision();
 	}
@@ -126,7 +134,8 @@ public class Game {
 			if(paddleArray[i] == null) {
 				continue;
 			}
-			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
+			System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
+			System.out.println(paddleArray[i].getT());
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));

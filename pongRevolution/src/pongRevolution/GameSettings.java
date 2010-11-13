@@ -7,8 +7,8 @@ public class GameSettings {
 	public static final int BALL_RELEASE_INTERVAL = 5000 / CLOCK_INTERVAL;
 	
 	// Arena settings
-	public static final int ARENA_RADIUS = 350;
-	public static final double STARTING_POSITIONS[] = {0, 0, 90, 180, 270};
+	public static final int ARENA_RADIUS = 250;
+	public static final double STARTING_POSITIONS[] = {0, 0, 180, 90, 270};
 	
 	// Paddle settings
 	public static final double PADDLE_LENGTH = 40;
