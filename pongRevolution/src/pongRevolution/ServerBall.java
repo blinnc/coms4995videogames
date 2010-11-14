@@ -27,7 +27,7 @@ public class ServerBall {
 		combo = 0;
 		
 		// Random direction
-		t = Math.random() * 2 * Math.PI;
+		t = Math.random() * 360;
 		updateVelocity();
 		
 		// Random powerup
@@ -49,8 +49,8 @@ public class ServerBall {
 	
 	private void updateVelocity() {
 		double speed = GameSettings.COMBO_SPEED[combo];
-		vx = speed * Math.cos(t);
-		vy = speed * Math.sin(t);
+		vx = speed * Math.cos(Math.toRadians(t));
+		vy = speed * Math.sin(Math.toRadians(t));
 	}
 	
 	/**
