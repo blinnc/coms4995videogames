@@ -30,9 +30,11 @@ public class TNetworkServer {
 
   public interface Iface {
 
-    public TSettings getSettings(TPlayer preferred) throws TException;
+    public TSettings getSettings(String username) throws TException;
 
-    public TGameState poll(TPlayer requester) throws TException;
+    public void pickTeam(TPlayer preferred, String username, boolean join) throws TException;
+
+    public void sendChat(String message, String username) throws TException;
 
     public void moveLeft(TPlayer requester) throws TException;
 
@@ -42,15 +44,15 @@ public class TNetworkServer {
 
     public void jump(TPlayer requester) throws TException;
 
-	TSettings getSettings() throws TException;
-
   }
 
   public interface AsyncIface {
 
-    public void getSettings(TPlayer preferred, AsyncMethodCallback<AsyncClient.getSettings_call> resultHandler) throws TException;
+    public void getSettings(String username, AsyncMethodCallback<AsyncClient.getSettings_call> resultHandler) throws TException;
 
-    public void poll(TPlayer requester, AsyncMethodCallback<AsyncClient.poll_call> resultHandler) throws TException;
+    public void pickTeam(TPlayer preferred, String username, boolean join, AsyncMethodCallback<AsyncClient.pickTeam_call> resultHandler) throws TException;
+
+    public void sendChat(String message, String username, AsyncMethodCallback<AsyncClient.sendChat_call> resultHandler) throws TException;
 
     public void moveLeft(TPlayer requester, AsyncMethodCallback<AsyncClient.moveLeft_call> resultHandler) throws TException;
 
@@ -99,17 +101,17 @@ public class TNetworkServer {
       return this.oprot_;
     }
 
-    public TSettings getSettings(TPlayer preferred) throws TException
+    public TSettings getSettings(String username) throws TException
     {
-      send_getSettings(preferred);
+      send_getSettings(username);
       return recv_getSettings();
     }
 
-    public void send_getSettings(TPlayer preferred) throws TException
+    public void send_getSettings(String username) throws TException
     {
       oprot_.writeMessageBegin(new TMessage("getSettings", TMessageType.CALL, ++seqid_));
       getSettings_args args = new getSettings_args();
-      args.setPreferred(preferred);
+      args.setUsername(username);
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
@@ -135,40 +137,37 @@ public class TNetworkServer {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "getSettings failed: unknown result");
     }
 
-    public TGameState poll(TPlayer requester) throws TException
+    public void pickTeam(TPlayer preferred, String username, boolean join) throws TException
     {
-      send_poll(requester);
-      return recv_poll();
+      send_pickTeam(preferred, username, join);
     }
 
-    public void send_poll(TPlayer requester) throws TException
+    public void send_pickTeam(TPlayer preferred, String username, boolean join) throws TException
     {
-      oprot_.writeMessageBegin(new TMessage("poll", TMessageType.CALL, ++seqid_));
-      poll_args args = new poll_args();
-      args.setRequester(requester);
+      oprot_.writeMessageBegin(new TMessage("pickTeam", TMessageType.CALL, ++seqid_));
+      pickTeam_args args = new pickTeam_args();
+      args.setPreferred(preferred);
+      args.setUsername(username);
+      args.setJoin(join);
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
     }
 
-    public TGameState recv_poll() throws TException
+    public void sendChat(String message, String username) throws TException
     {
-      TMessage msg = iprot_.readMessageBegin();
-      if (msg.type == TMessageType.EXCEPTION) {
-        TApplicationException x = TApplicationException.read(iprot_);
-        iprot_.readMessageEnd();
-        throw x;
-      }
-      if (msg.seqid != seqid_) {
-        throw new TApplicationException(TApplicationException.BAD_SEQUENCE_ID, "poll failed: out of sequence response");
-      }
-      poll_result result = new poll_result();
-      result.read(iprot_);
-      iprot_.readMessageEnd();
-      if (result.isSetSuccess()) {
-        return result.success;
-      }
-      throw new TApplicationException(TApplicationException.MISSING_RESULT, "poll failed: unknown result");
+      send_sendChat(message, username);
+    }
+
+    public void send_sendChat(String message, String username) throws TException
+    {
+      oprot_.writeMessageBegin(new TMessage("sendChat", TMessageType.CALL, ++seqid_));
+      sendChat_args args = new sendChat_args();
+      args.setMessage(message);
+      args.setUsername(username);
+      args.write(oprot_);
+      oprot_.writeMessageEnd();
+      oprot_.getTransport().flush();
     }
 
     public void moveLeft(TPlayer requester) throws TException
@@ -231,12 +230,6 @@ public class TNetworkServer {
       oprot_.getTransport().flush();
     }
 
-	@Override
-	public TSettings getSettings() throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
   }
   public static class AsyncClient extends TAsyncClient implements AsyncIface {
     public static class Factory implements TAsyncClientFactory<AsyncClient> {
@@ -255,23 +248,23 @@ public class TNetworkServer {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void getSettings(TPlayer preferred, AsyncMethodCallback<getSettings_call> resultHandler) throws TException {
+    public void getSettings(String username, AsyncMethodCallback<getSettings_call> resultHandler) throws TException {
       checkReady();
-      getSettings_call method_call = new getSettings_call(preferred, resultHandler, this, protocolFactory, transport);
+      getSettings_call method_call = new getSettings_call(username, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
     public static class getSettings_call extends TAsyncMethodCall {
-      private TPlayer preferred;
-      public getSettings_call(TPlayer preferred, AsyncMethodCallback<getSettings_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private String username;
+      public getSettings_call(String username, AsyncMethodCallback<getSettings_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.preferred = preferred;
+        this.username = username;
       }
 
       public void write_args(TProtocol prot) throws TException {
         prot.writeMessageBegin(new TMessage("getSettings", TMessageType.CALL, 0));
         getSettings_args args = new getSettings_args();
-        args.setPreferred(preferred);
+        args.setUsername(username);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -286,34 +279,72 @@ public class TNetworkServer {
       }
     }
 
-    public void poll(TPlayer requester, AsyncMethodCallback<poll_call> resultHandler) throws TException {
+    public void pickTeam(TPlayer preferred, String username, boolean join, AsyncMethodCallback<pickTeam_call> resultHandler) throws TException {
       checkReady();
-      poll_call method_call = new poll_call(requester, resultHandler, this, protocolFactory, transport);
+      pickTeam_call method_call = new pickTeam_call(preferred, username, join, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
-    public static class poll_call extends TAsyncMethodCall {
-      private TPlayer requester;
-      public poll_call(TPlayer requester, AsyncMethodCallback<poll_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.requester = requester;
+    public static class pickTeam_call extends TAsyncMethodCall {
+      private TPlayer preferred;
+      private String username;
+      private boolean join;
+      public pickTeam_call(TPlayer preferred, String username, boolean join, AsyncMethodCallback<pickTeam_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+        super(client, protocolFactory, transport, resultHandler, true);
+        this.preferred = preferred;
+        this.username = username;
+        this.join = join;
       }
 
       public void write_args(TProtocol prot) throws TException {
-        prot.writeMessageBegin(new TMessage("poll", TMessageType.CALL, 0));
-        poll_args args = new poll_args();
-        args.setRequester(requester);
+        prot.writeMessageBegin(new TMessage("pickTeam", TMessageType.CALL, 0));
+        pickTeam_args args = new pickTeam_args();
+        args.setPreferred(preferred);
+        args.setUsername(username);
+        args.setJoin(join);
         args.write(prot);
         prot.writeMessageEnd();
       }
 
-      public TGameState getResult() throws TException {
+      public void getResult() throws TException {
         if (getState() != State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
         TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
         TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        return (new Client(prot)).recv_poll();
+      }
+    }
+
+    public void sendChat(String message, String username, AsyncMethodCallback<sendChat_call> resultHandler) throws TException {
+      checkReady();
+      sendChat_call method_call = new sendChat_call(message, username, resultHandler, this, protocolFactory, transport);
+      manager.call(method_call);
+    }
+
+    public static class sendChat_call extends TAsyncMethodCall {
+      private String message;
+      private String username;
+      public sendChat_call(String message, String username, AsyncMethodCallback<sendChat_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+        super(client, protocolFactory, transport, resultHandler, true);
+        this.message = message;
+        this.username = username;
+      }
+
+      public void write_args(TProtocol prot) throws TException {
+        prot.writeMessageBegin(new TMessage("sendChat", TMessageType.CALL, 0));
+        sendChat_args args = new sendChat_args();
+        args.setMessage(message);
+        args.setUsername(username);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public void getResult() throws TException {
+        if (getState() != State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
+        TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
       }
     }
 
@@ -445,7 +476,8 @@ public class TNetworkServer {
     {
       iface_ = iface;
       processMap_.put("getSettings", new getSettings());
-      processMap_.put("poll", new poll());
+      processMap_.put("pickTeam", new pickTeam());
+      processMap_.put("sendChat", new sendChat());
       processMap_.put("moveLeft", new moveLeft());
       processMap_.put("moveRight", new moveRight());
       processMap_.put("usePowerUp", new usePowerUp());
@@ -494,7 +526,7 @@ public class TNetworkServer {
         }
         iprot.readMessageEnd();
         getSettings_result result = new getSettings_result();
-        result.success = iface_.getSettings(args.preferred);
+        result.success = iface_.getSettings(args.username);
         oprot.writeMessageBegin(new TMessage("getSettings", TMessageType.REPLY, seqid));
         result.write(oprot);
         oprot.writeMessageEnd();
@@ -503,30 +535,46 @@ public class TNetworkServer {
 
     }
 
-    private class poll implements ProcessFunction {
+    private class pickTeam implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot) throws TException
       {
-        poll_args args = new poll_args();
+        pickTeam_args args = new pickTeam_args();
         try {
           args.read(iprot);
         } catch (TProtocolException e) {
           iprot.readMessageEnd();
           TApplicationException x = new TApplicationException(TApplicationException.PROTOCOL_ERROR, e.getMessage());
-          oprot.writeMessageBegin(new TMessage("poll", TMessageType.EXCEPTION, seqid));
+          oprot.writeMessageBegin(new TMessage("pickTeam", TMessageType.EXCEPTION, seqid));
           x.write(oprot);
           oprot.writeMessageEnd();
           oprot.getTransport().flush();
           return;
         }
         iprot.readMessageEnd();
-        poll_result result = new poll_result();
-        result.success = iface_.poll(args.requester);
-        oprot.writeMessageBegin(new TMessage("poll", TMessageType.REPLY, seqid));
-        result.write(oprot);
-        oprot.writeMessageEnd();
-        oprot.getTransport().flush();
+        iface_.pickTeam(args.preferred, args.username, args.join);
+        return;
       }
+    }
 
+    private class sendChat implements ProcessFunction {
+      public void process(int seqid, TProtocol iprot, TProtocol oprot) throws TException
+      {
+        sendChat_args args = new sendChat_args();
+        try {
+          args.read(iprot);
+        } catch (TProtocolException e) {
+          iprot.readMessageEnd();
+          TApplicationException x = new TApplicationException(TApplicationException.PROTOCOL_ERROR, e.getMessage());
+          oprot.writeMessageBegin(new TMessage("sendChat", TMessageType.EXCEPTION, seqid));
+          x.write(oprot);
+          oprot.writeMessageEnd();
+          oprot.getTransport().flush();
+          return;
+        }
+        iprot.readMessageEnd();
+        iface_.sendChat(args.message, args.username);
+        return;
+      }
     }
 
     private class moveLeft implements ProcessFunction {
@@ -618,21 +666,13 @@ public class TNetworkServer {
   public static class getSettings_args implements TBase<getSettings_args, getSettings_args._Fields>, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("getSettings_args");
 
-    private static final TField PREFERRED_FIELD_DESC = new TField("preferred", TType.I32, (short)1);
+    private static final TField USERNAME_FIELD_DESC = new TField("username", TType.STRING, (short)1);
 
-    /**
-     * 
-     * @see TPlayer
-     */
-    public TPlayer preferred;
+    public String username;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
-      /**
-       * 
-       * @see TPlayer
-       */
-      PREFERRED((short)1, "preferred");
+      USERNAME((short)1, "username");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -647,8 +687,8 @@ public class TNetworkServer {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // PREFERRED
-            return PREFERRED;
+          case 1: // USERNAME
+            return USERNAME;
           default:
             return null;
         }
@@ -693,8 +733,8 @@ public class TNetworkServer {
     public static final Map<_Fields, FieldMetaData> metaDataMap;
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.PREFERRED, new FieldMetaData("preferred", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, TPlayer.class)));
+      tmpMap.put(_Fields.USERNAME, new FieldMetaData("username", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       FieldMetaData.addStructMetaDataMap(getSettings_args.class, metaDataMap);
     }
@@ -703,18 +743,18 @@ public class TNetworkServer {
     }
 
     public getSettings_args(
-      TPlayer preferred)
+      String username)
     {
       this();
-      this.preferred = preferred;
+      this.username = username;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
     public getSettings_args(getSettings_args other) {
-      if (other.isSetPreferred()) {
-        this.preferred = other.preferred;
+      if (other.isSetUsername()) {
+        this.username = other.username;
       }
     }
 
@@ -724,48 +764,40 @@ public class TNetworkServer {
 
     @Override
     public void clear() {
-      this.preferred = null;
+      this.username = null;
     }
 
-    /**
-     * 
-     * @see TPlayer
-     */
-    public TPlayer getPreferred() {
-      return this.preferred;
+    public String getUsername() {
+      return this.username;
     }
 
-    /**
-     * 
-     * @see TPlayer
-     */
-    public getSettings_args setPreferred(TPlayer preferred) {
-      this.preferred = preferred;
+    public getSettings_args setUsername(String username) {
+      this.username = username;
       return this;
     }
 
-    public void unsetPreferred() {
-      this.preferred = null;
+    public void unsetUsername() {
+      this.username = null;
     }
 
-    /** Returns true if field preferred is set (has been asigned a value) and false otherwise */
-    public boolean isSetPreferred() {
-      return this.preferred != null;
+    /** Returns true if field username is set (has been asigned a value) and false otherwise */
+    public boolean isSetUsername() {
+      return this.username != null;
     }
 
-    public void setPreferredIsSet(boolean value) {
+    public void setUsernameIsSet(boolean value) {
       if (!value) {
-        this.preferred = null;
+        this.username = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case PREFERRED:
+      case USERNAME:
         if (value == null) {
-          unsetPreferred();
+          unsetUsername();
         } else {
-          setPreferred((TPlayer)value);
+          setUsername((String)value);
         }
         break;
 
@@ -774,8 +806,8 @@ public class TNetworkServer {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case PREFERRED:
-        return getPreferred();
+      case USERNAME:
+        return getUsername();
 
       }
       throw new IllegalStateException();
@@ -788,8 +820,8 @@ public class TNetworkServer {
       }
 
       switch (field) {
-      case PREFERRED:
-        return isSetPreferred();
+      case USERNAME:
+        return isSetUsername();
       }
       throw new IllegalStateException();
     }
@@ -807,12 +839,12 @@ public class TNetworkServer {
       if (that == null)
         return false;
 
-      boolean this_present_preferred = true && this.isSetPreferred();
-      boolean that_present_preferred = true && that.isSetPreferred();
-      if (this_present_preferred || that_present_preferred) {
-        if (!(this_present_preferred && that_present_preferred))
+      boolean this_present_username = true && this.isSetUsername();
+      boolean that_present_username = true && that.isSetUsername();
+      if (this_present_username || that_present_username) {
+        if (!(this_present_username && that_present_username))
           return false;
-        if (!this.preferred.equals(that.preferred))
+        if (!this.username.equals(that.username))
           return false;
       }
 
@@ -832,12 +864,12 @@ public class TNetworkServer {
       int lastComparison = 0;
       getSettings_args typedOther = (getSettings_args)other;
 
-      lastComparison = Boolean.valueOf(isSetPreferred()).compareTo(typedOther.isSetPreferred());
+      lastComparison = Boolean.valueOf(isSetUsername()).compareTo(typedOther.isSetUsername());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetPreferred()) {
-        lastComparison = TBaseHelper.compareTo(this.preferred, typedOther.preferred);
+      if (isSetUsername()) {
+        lastComparison = TBaseHelper.compareTo(this.username, typedOther.username);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -859,9 +891,9 @@ public class TNetworkServer {
           break;
         }
         switch (field.id) {
-          case 1: // PREFERRED
-            if (field.type == TType.I32) {
-              this.preferred = TPlayer.findByValue(iprot.readI32());
+          case 1: // USERNAME
+            if (field.type == TType.STRING) {
+              this.username = iprot.readString();
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -881,9 +913,9 @@ public class TNetworkServer {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.preferred != null) {
-        oprot.writeFieldBegin(PREFERRED_FIELD_DESC);
-        oprot.writeI32(this.preferred.getValue());
+      if (this.username != null) {
+        oprot.writeFieldBegin(USERNAME_FIELD_DESC);
+        oprot.writeString(this.username);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -895,11 +927,11 @@ public class TNetworkServer {
       StringBuilder sb = new StringBuilder("getSettings_args(");
       boolean first = true;
 
-      sb.append("preferred:");
-      if (this.preferred == null) {
+      sb.append("username:");
+      if (this.username == null) {
         sb.append("null");
       } else {
-        sb.append(this.preferred);
+        sb.append(this.username);
       }
       first = false;
       sb.append(")");
@@ -1193,16 +1225,20 @@ public class TNetworkServer {
 
   }
 
-  public static class poll_args implements TBase<poll_args, poll_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final TStruct STRUCT_DESC = new TStruct("poll_args");
+  public static class pickTeam_args implements TBase<pickTeam_args, pickTeam_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("pickTeam_args");
 
-    private static final TField REQUESTER_FIELD_DESC = new TField("requester", TType.I32, (short)1);
+    private static final TField PREFERRED_FIELD_DESC = new TField("preferred", TType.I32, (short)1);
+    private static final TField USERNAME_FIELD_DESC = new TField("username", TType.STRING, (short)2);
+    private static final TField JOIN_FIELD_DESC = new TField("join", TType.BOOL, (short)3);
 
     /**
      * 
      * @see TPlayer
      */
-    public TPlayer requester;
+    public TPlayer preferred;
+    public String username;
+    public boolean join;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
@@ -1210,7 +1246,9 @@ public class TNetworkServer {
        * 
        * @see TPlayer
        */
-      REQUESTER((short)1, "requester");
+      PREFERRED((short)1, "preferred"),
+      USERNAME((short)2, "username"),
+      JOIN((short)3, "join");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1225,8 +1263,12 @@ public class TNetworkServer {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // REQUESTER
-            return REQUESTER;
+          case 1: // PREFERRED
+            return PREFERRED;
+          case 2: // USERNAME
+            return USERNAME;
+          case 3: // JOIN
+            return JOIN;
           default:
             return null;
         }
@@ -1267,83 +1309,166 @@ public class TNetworkServer {
     }
 
     // isset id assignments
+    private static final int __JOIN_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
 
     public static final Map<_Fields, FieldMetaData> metaDataMap;
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
+      tmpMap.put(_Fields.PREFERRED, new FieldMetaData("preferred", TFieldRequirementType.DEFAULT, 
           new EnumMetaData(TType.ENUM, TPlayer.class)));
+      tmpMap.put(_Fields.USERNAME, new FieldMetaData("username", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      tmpMap.put(_Fields.JOIN, new FieldMetaData("join", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.BOOL)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      FieldMetaData.addStructMetaDataMap(poll_args.class, metaDataMap);
+      FieldMetaData.addStructMetaDataMap(pickTeam_args.class, metaDataMap);
     }
 
-    public poll_args() {
+    public pickTeam_args() {
     }
 
-    public poll_args(
-      TPlayer requester)
+    public pickTeam_args(
+      TPlayer preferred,
+      String username,
+      boolean join)
     {
       this();
-      this.requester = requester;
+      this.preferred = preferred;
+      this.username = username;
+      this.join = join;
+      setJoinIsSet(true);
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public poll_args(poll_args other) {
-      if (other.isSetRequester()) {
-        this.requester = other.requester;
+    public pickTeam_args(pickTeam_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      if (other.isSetPreferred()) {
+        this.preferred = other.preferred;
       }
+      if (other.isSetUsername()) {
+        this.username = other.username;
+      }
+      this.join = other.join;
     }
 
-    public poll_args deepCopy() {
-      return new poll_args(this);
+    public pickTeam_args deepCopy() {
+      return new pickTeam_args(this);
     }
 
     @Override
     public void clear() {
-      this.requester = null;
+      this.preferred = null;
+      this.username = null;
+      setJoinIsSet(false);
+      this.join = false;
     }
 
     /**
      * 
      * @see TPlayer
      */
-    public TPlayer getRequester() {
-      return this.requester;
+    public TPlayer getPreferred() {
+      return this.preferred;
     }
 
     /**
      * 
      * @see TPlayer
      */
-    public poll_args setRequester(TPlayer requester) {
-      this.requester = requester;
+    public pickTeam_args setPreferred(TPlayer preferred) {
+      this.preferred = preferred;
       return this;
     }
 
-    public void unsetRequester() {
-      this.requester = null;
+    public void unsetPreferred() {
+      this.preferred = null;
     }
 
-    /** Returns true if field requester is set (has been asigned a value) and false otherwise */
-    public boolean isSetRequester() {
-      return this.requester != null;
+    /** Returns true if field preferred is set (has been asigned a value) and false otherwise */
+    public boolean isSetPreferred() {
+      return this.preferred != null;
     }
 
-    public void setRequesterIsSet(boolean value) {
+    public void setPreferredIsSet(boolean value) {
       if (!value) {
-        this.requester = null;
+        this.preferred = null;
       }
+    }
+
+    public String getUsername() {
+      return this.username;
+    }
+
+    public pickTeam_args setUsername(String username) {
+      this.username = username;
+      return this;
+    }
+
+    public void unsetUsername() {
+      this.username = null;
+    }
+
+    /** Returns true if field username is set (has been asigned a value) and false otherwise */
+    public boolean isSetUsername() {
+      return this.username != null;
+    }
+
+    public void setUsernameIsSet(boolean value) {
+      if (!value) {
+        this.username = null;
+      }
+    }
+
+    public boolean isJoin() {
+      return this.join;
+    }
+
+    public pickTeam_args setJoin(boolean join) {
+      this.join = join;
+      setJoinIsSet(true);
+      return this;
+    }
+
+    public void unsetJoin() {
+      __isset_bit_vector.clear(__JOIN_ISSET_ID);
+    }
+
+    /** Returns true if field join is set (has been asigned a value) and false otherwise */
+    public boolean isSetJoin() {
+      return __isset_bit_vector.get(__JOIN_ISSET_ID);
+    }
+
+    public void setJoinIsSet(boolean value) {
+      __isset_bit_vector.set(__JOIN_ISSET_ID, value);
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case REQUESTER:
+      case PREFERRED:
         if (value == null) {
-          unsetRequester();
+          unsetPreferred();
         } else {
-          setRequester((TPlayer)value);
+          setPreferred((TPlayer)value);
+        }
+        break;
+
+      case USERNAME:
+        if (value == null) {
+          unsetUsername();
+        } else {
+          setUsername((String)value);
+        }
+        break;
+
+      case JOIN:
+        if (value == null) {
+          unsetJoin();
+        } else {
+          setJoin((Boolean)value);
         }
         break;
 
@@ -1352,8 +1477,14 @@ public class TNetworkServer {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case REQUESTER:
-        return getRequester();
+      case PREFERRED:
+        return getPreferred();
+
+      case USERNAME:
+        return getUsername();
+
+      case JOIN:
+        return new Boolean(isJoin());
 
       }
       throw new IllegalStateException();
@@ -1366,8 +1497,12 @@ public class TNetworkServer {
       }
 
       switch (field) {
-      case REQUESTER:
-        return isSetRequester();
+      case PREFERRED:
+        return isSetPreferred();
+      case USERNAME:
+        return isSetUsername();
+      case JOIN:
+        return isSetJoin();
       }
       throw new IllegalStateException();
     }
@@ -1376,21 +1511,39 @@ public class TNetworkServer {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof poll_args)
-        return this.equals((poll_args)that);
+      if (that instanceof pickTeam_args)
+        return this.equals((pickTeam_args)that);
       return false;
     }
 
-    public boolean equals(poll_args that) {
+    public boolean equals(pickTeam_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_requester = true && this.isSetRequester();
-      boolean that_present_requester = true && that.isSetRequester();
-      if (this_present_requester || that_present_requester) {
-        if (!(this_present_requester && that_present_requester))
+      boolean this_present_preferred = true && this.isSetPreferred();
+      boolean that_present_preferred = true && that.isSetPreferred();
+      if (this_present_preferred || that_present_preferred) {
+        if (!(this_present_preferred && that_present_preferred))
           return false;
-        if (!this.requester.equals(that.requester))
+        if (!this.preferred.equals(that.preferred))
+          return false;
+      }
+
+      boolean this_present_username = true && this.isSetUsername();
+      boolean that_present_username = true && that.isSetUsername();
+      if (this_present_username || that_present_username) {
+        if (!(this_present_username && that_present_username))
+          return false;
+        if (!this.username.equals(that.username))
+          return false;
+      }
+
+      boolean this_present_join = true;
+      boolean that_present_join = true;
+      if (this_present_join || that_present_join) {
+        if (!(this_present_join && that_present_join))
+          return false;
+        if (this.join != that.join)
           return false;
       }
 
@@ -1402,20 +1555,40 @@ public class TNetworkServer {
       return 0;
     }
 
-    public int compareTo(poll_args other) {
+    public int compareTo(pickTeam_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      poll_args typedOther = (poll_args)other;
+      pickTeam_args typedOther = (pickTeam_args)other;
 
-      lastComparison = Boolean.valueOf(isSetRequester()).compareTo(typedOther.isSetRequester());
+      lastComparison = Boolean.valueOf(isSetPreferred()).compareTo(typedOther.isSetPreferred());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetRequester()) {
-        lastComparison = TBaseHelper.compareTo(this.requester, typedOther.requester);
+      if (isSetPreferred()) {
+        lastComparison = TBaseHelper.compareTo(this.preferred, typedOther.preferred);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetUsername()).compareTo(typedOther.isSetUsername());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetUsername()) {
+        lastComparison = TBaseHelper.compareTo(this.username, typedOther.username);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetJoin()).compareTo(typedOther.isSetJoin());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetJoin()) {
+        lastComparison = TBaseHelper.compareTo(this.join, typedOther.join);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1437,9 +1610,24 @@ public class TNetworkServer {
           break;
         }
         switch (field.id) {
-          case 1: // REQUESTER
+          case 1: // PREFERRED
             if (field.type == TType.I32) {
-              this.requester = TPlayer.findByValue(iprot.readI32());
+              this.preferred = TPlayer.findByValue(iprot.readI32());
+            } else { 
+              TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // USERNAME
+            if (field.type == TType.STRING) {
+              this.username = iprot.readString();
+            } else { 
+              TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 3: // JOIN
+            if (field.type == TType.BOOL) {
+              this.join = iprot.readBool();
+              setJoinIsSet(true);
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -1459,26 +1647,46 @@ public class TNetworkServer {
       validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (this.requester != null) {
-        oprot.writeFieldBegin(REQUESTER_FIELD_DESC);
-        oprot.writeI32(this.requester.getValue());
+      if (this.preferred != null) {
+        oprot.writeFieldBegin(PREFERRED_FIELD_DESC);
+        oprot.writeI32(this.preferred.getValue());
         oprot.writeFieldEnd();
       }
+      if (this.username != null) {
+        oprot.writeFieldBegin(USERNAME_FIELD_DESC);
+        oprot.writeString(this.username);
+        oprot.writeFieldEnd();
+      }
+      oprot.writeFieldBegin(JOIN_FIELD_DESC);
+      oprot.writeBool(this.join);
+      oprot.writeFieldEnd();
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("poll_args(");
+      StringBuilder sb = new StringBuilder("pickTeam_args(");
       boolean first = true;
 
-      sb.append("requester:");
-      if (this.requester == null) {
+      sb.append("preferred:");
+      if (this.preferred == null) {
         sb.append("null");
       } else {
-        sb.append(this.requester);
+        sb.append(this.preferred);
       }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("username:");
+      if (this.username == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.username);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("join:");
+      sb.append(this.join);
       first = false;
       sb.append(")");
       return sb.toString();
@@ -1490,16 +1698,19 @@ public class TNetworkServer {
 
   }
 
-  public static class poll_result implements TBase<poll_result, poll_result._Fields>, java.io.Serializable, Cloneable   {
-    private static final TStruct STRUCT_DESC = new TStruct("poll_result");
+  public static class sendChat_args implements TBase<sendChat_args, sendChat_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("sendChat_args");
 
-    private static final TField SUCCESS_FIELD_DESC = new TField("success", TType.STRUCT, (short)0);
+    private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.STRING, (short)1);
+    private static final TField USERNAME_FIELD_DESC = new TField("username", TType.STRING, (short)2);
 
-    public TGameState success;
+    public String message;
+    public String username;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
-      SUCCESS((short)0, "success");
+      MESSAGE((short)1, "message"),
+      USERNAME((short)2, "username");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1514,8 +1725,10 @@ public class TNetworkServer {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 0: // SUCCESS
-            return SUCCESS;
+          case 1: // MESSAGE
+            return MESSAGE;
+          case 2: // USERNAME
+            return USERNAME;
           default:
             return null;
         }
@@ -1560,71 +1773,111 @@ public class TNetworkServer {
     public static final Map<_Fields, FieldMetaData> metaDataMap;
     static {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.SUCCESS, new FieldMetaData("success", TFieldRequirementType.DEFAULT, 
-          new StructMetaData(TType.STRUCT, TGameState.class)));
+      tmpMap.put(_Fields.MESSAGE, new FieldMetaData("message", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      tmpMap.put(_Fields.USERNAME, new FieldMetaData("username", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      FieldMetaData.addStructMetaDataMap(poll_result.class, metaDataMap);
+      FieldMetaData.addStructMetaDataMap(sendChat_args.class, metaDataMap);
     }
 
-    public poll_result() {
+    public sendChat_args() {
     }
 
-    public poll_result(
-      TGameState success)
+    public sendChat_args(
+      String message,
+      String username)
     {
       this();
-      this.success = success;
+      this.message = message;
+      this.username = username;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public poll_result(poll_result other) {
-      if (other.isSetSuccess()) {
-        this.success = new TGameState(other.success);
+    public sendChat_args(sendChat_args other) {
+      if (other.isSetMessage()) {
+        this.message = other.message;
+      }
+      if (other.isSetUsername()) {
+        this.username = other.username;
       }
     }
 
-    public poll_result deepCopy() {
-      return new poll_result(this);
+    public sendChat_args deepCopy() {
+      return new sendChat_args(this);
     }
 
     @Override
     public void clear() {
-      this.success = null;
+      this.message = null;
+      this.username = null;
     }
 
-    public TGameState getSuccess() {
-      return this.success;
+    public String getMessage() {
+      return this.message;
     }
 
-    public poll_result setSuccess(TGameState success) {
-      this.success = success;
+    public sendChat_args setMessage(String message) {
+      this.message = message;
       return this;
     }
 
-    public void unsetSuccess() {
-      this.success = null;
+    public void unsetMessage() {
+      this.message = null;
     }
 
-    /** Returns true if field success is set (has been asigned a value) and false otherwise */
-    public boolean isSetSuccess() {
-      return this.success != null;
+    /** Returns true if field message is set (has been asigned a value) and false otherwise */
+    public boolean isSetMessage() {
+      return this.message != null;
     }
 
-    public void setSuccessIsSet(boolean value) {
+    public void setMessageIsSet(boolean value) {
       if (!value) {
-        this.success = null;
+        this.message = null;
+      }
+    }
+
+    public String getUsername() {
+      return this.username;
+    }
+
+    public sendChat_args setUsername(String username) {
+      this.username = username;
+      return this;
+    }
+
+    public void unsetUsername() {
+      this.username = null;
+    }
+
+    /** Returns true if field username is set (has been asigned a value) and false otherwise */
+    public boolean isSetUsername() {
+      return this.username != null;
+    }
+
+    public void setUsernameIsSet(boolean value) {
+      if (!value) {
+        this.username = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case SUCCESS:
+      case MESSAGE:
         if (value == null) {
-          unsetSuccess();
+          unsetMessage();
         } else {
-          setSuccess((TGameState)value);
+          setMessage((String)value);
+        }
+        break;
+
+      case USERNAME:
+        if (value == null) {
+          unsetUsername();
+        } else {
+          setUsername((String)value);
         }
         break;
 
@@ -1633,8 +1886,11 @@ public class TNetworkServer {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case SUCCESS:
-        return getSuccess();
+      case MESSAGE:
+        return getMessage();
+
+      case USERNAME:
+        return getUsername();
 
       }
       throw new IllegalStateException();
@@ -1647,8 +1903,10 @@ public class TNetworkServer {
       }
 
       switch (field) {
-      case SUCCESS:
-        return isSetSuccess();
+      case MESSAGE:
+        return isSetMessage();
+      case USERNAME:
+        return isSetUsername();
       }
       throw new IllegalStateException();
     }
@@ -1657,21 +1915,30 @@ public class TNetworkServer {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof poll_result)
-        return this.equals((poll_result)that);
+      if (that instanceof sendChat_args)
+        return this.equals((sendChat_args)that);
       return false;
     }
 
-    public boolean equals(poll_result that) {
+    public boolean equals(sendChat_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_success = true && this.isSetSuccess();
-      boolean that_present_success = true && that.isSetSuccess();
-      if (this_present_success || that_present_success) {
-        if (!(this_present_success && that_present_success))
+      boolean this_present_message = true && this.isSetMessage();
+      boolean that_present_message = true && that.isSetMessage();
+      if (this_present_message || that_present_message) {
+        if (!(this_present_message && that_present_message))
           return false;
-        if (!this.success.equals(that.success))
+        if (!this.message.equals(that.message))
+          return false;
+      }
+
+      boolean this_present_username = true && this.isSetUsername();
+      boolean that_present_username = true && that.isSetUsername();
+      if (this_present_username || that_present_username) {
+        if (!(this_present_username && that_present_username))
+          return false;
+        if (!this.username.equals(that.username))
           return false;
       }
 
@@ -1683,20 +1950,30 @@ public class TNetworkServer {
       return 0;
     }
 
-    public int compareTo(poll_result other) {
+    public int compareTo(sendChat_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      poll_result typedOther = (poll_result)other;
+      sendChat_args typedOther = (sendChat_args)other;
 
-      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetSuccess()) {
-        lastComparison = TBaseHelper.compareTo(this.success, typedOther.success);
+      if (isSetMessage()) {
+        lastComparison = TBaseHelper.compareTo(this.message, typedOther.message);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetUsername()).compareTo(typedOther.isSetUsername());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetUsername()) {
+        lastComparison = TBaseHelper.compareTo(this.username, typedOther.username);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -1718,10 +1995,16 @@ public class TNetworkServer {
           break;
         }
         switch (field.id) {
-          case 0: // SUCCESS
-            if (field.type == TType.STRUCT) {
-              this.success = new TGameState();
-              this.success.read(iprot);
+          case 1: // MESSAGE
+            if (field.type == TType.STRING) {
+              this.message = iprot.readString();
+            } else { 
+              TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
+          case 2: // USERNAME
+            if (field.type == TType.STRING) {
+              this.username = iprot.readString();
             } else { 
               TProtocolUtil.skip(iprot, field.type);
             }
@@ -1738,11 +2021,17 @@ public class TNetworkServer {
     }
 
     public void write(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
+      validate();
 
-      if (this.isSetSuccess()) {
-        oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
-        this.success.write(oprot);
+      oprot.writeStructBegin(STRUCT_DESC);
+      if (this.message != null) {
+        oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+        oprot.writeString(this.message);
+        oprot.writeFieldEnd();
+      }
+      if (this.username != null) {
+        oprot.writeFieldBegin(USERNAME_FIELD_DESC);
+        oprot.writeString(this.username);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -1751,14 +2040,22 @@ public class TNetworkServer {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("poll_result(");
+      StringBuilder sb = new StringBuilder("sendChat_args(");
       boolean first = true;
 
-      sb.append("success:");
-      if (this.success == null) {
+      sb.append("message:");
+      if (this.message == null) {
         sb.append("null");
       } else {
-        sb.append(this.success);
+        sb.append(this.message);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("username:");
+      if (this.username == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.username);
       }
       first = false;
       sb.append(")");
