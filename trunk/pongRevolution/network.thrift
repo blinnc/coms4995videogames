@@ -52,6 +52,15 @@ struct TGameState {
 	7: bool isWall;
 	8: TPowerUp playerUp;
 	9: TPowerUp allyUp; 
+	10: list<TPosition> connections;
+}
+
+struct TLobbyState {
+	1: string redOne;
+	2: string redTwo;
+	3: string blueOne;
+	4: string blueTwo;
+	5: string chat;
 }
 
 struct TSettings {
@@ -62,9 +71,11 @@ struct TSettings {
 }
 
 service TNetworkServer {
-	TSettings getSettings(1:TPlayer preferred),
+	TSettings getSettings(1:string username),
 
-	TGameState poll(1:TPlayer requester),
+	oneway void pickTeam(1:TPlayer preferred, 2:string username, 3: bool join),
+
+	oneway void sendChat(1:string message, 2: string username),
 
 	oneway void moveLeft(1:TPlayer requester),
 
@@ -73,4 +84,10 @@ service TNetworkServer {
 	oneway void usePowerUp(1:TPlayer requester),
 
 	oneway void jump(1:TPlayer requester),
+}
+
+service TPollServer {
+	TGameState poll(1:TPlayer requester),
+
+	TLobbyState pollLobby(1:string username),
 }
