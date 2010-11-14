@@ -132,6 +132,9 @@ public class Game {
 			if(paddleArray[i] == null) {
 				continue;
 			}
+			
+			System.out.println(paddleArray[i].getX() + ", " + paddleArray[i].getY());
+			
 			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
