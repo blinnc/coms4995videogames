@@ -156,6 +156,8 @@ public class ServerPaddle {
 		double y2 = ypoints[2];
 		double y3 = ypoints[3];
 		
+		System.out.println("(" + xpoints[0] + ", " + ypoints[0] + "), (" + xpoints[1] + ", " + ypoints[1] + "), ("+ xpoints[2] + ", " + ypoints[2] + "), ("+ xpoints[3] + ", " + ypoints[3] + ")");
+		
 		double m1 = (y2 - y1) / (x2 - x1);
 		double m2 = -1 / m1;
 		double b1 = y0 - m1 * x0;
