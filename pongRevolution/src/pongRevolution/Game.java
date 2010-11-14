@@ -85,7 +85,7 @@ public class Game {
 	
 	public void spawnBall() {
 		if(hasPlayers) {
-			System.out.println("New ball released");
+//			System.out.println("New ball released");
 			ballList.add(new ServerBall());
 		}
 	}
@@ -106,7 +106,7 @@ public class Game {
 		List<ServerBall> garbage = new ArrayList<ServerBall>();
 		for(ServerBall ball : ballList) {
 			ball.move();
-			if(ball.getR() > GameSettings.ARENA_RADIUS) {	// TODO: temporary until we figure out collision
+			if(ball.isOutsideArena()) {
 				garbage.add(ball);
 			}
 			//System.out.println("Ball: (" + ball.getX() + "," + ball.getY() + ")");
@@ -132,7 +132,6 @@ public class Game {
 			if(paddleArray[i] == null) {
 				continue;
 			}
-			
 			paddleArray[i].getBounds();
 			
 			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");

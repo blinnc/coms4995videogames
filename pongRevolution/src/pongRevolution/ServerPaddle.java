@@ -190,7 +190,7 @@ public class ServerPaddle {
 		points[2] = new Point2D.Double(x_2, y_2);
 		points[3] = new Point2D.Double(x_3, y_3);
 		
-		System.out.println("(" + x_0 + ", " + y_0 + "), (" + x_1 + ", " + y_1 + "), ("+ x_2 + ", " + y_2 + "), ("+ x_3 + ", " + y_3 + ")");
+		//System.out.println("(" + x_0 + ", " + y_0 + "), (" + x_1 + ", " + y_1 + "), ("+ x_2 + ", " + y_2 + "), ("+ x_3 + ", " + y_3 + ")");
 		
 		return points;
 	}
