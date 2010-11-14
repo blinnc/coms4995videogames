@@ -13,7 +13,7 @@ import network.TPosition;
 
 public class ServerBall {
 	private double vx, vy;
-	private int x, y;
+	private double x, y;
 	private double t;
 	
 	private int combo;
@@ -26,6 +26,8 @@ public class ServerBall {
 		y = 0;
 		combo = 0;
 		
+		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
+		
 		// Random direction
 		t = Math.random() * 360;
 		updateVelocity();
@@ -33,8 +35,6 @@ public class ServerBall {
 		// Random powerup
 		int pu = (int)(Math.random() * 8) + 1;
 		powerup = TPowerUp.findByValue(pu);
-		
-		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
 		updatePosition();
 	}
@@ -51,6 +51,7 @@ public class ServerBall {
 		double speed = GameSettings.COMBO_SPEED[combo];
 		vx = speed * Math.cos(Math.toRadians(t));
 		vy = speed * Math.sin(Math.toRadians(t));
+		System.out.println(t + ", " + vx + ", " + vy);
 	}
 	
 	/**
@@ -85,11 +86,11 @@ public class ServerBall {
 		return vy;
 	}
 	
-	public int getX() {
+	public double getX() {
 		return x;
 	}
 	
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 	
@@ -110,10 +111,6 @@ public class ServerBall {
 		x += vx;
 		y += vy;
 		updatePosition();
-			// TODO: change color
-			// TODO: change last hit
-			// TODO: change combo
-			// TODO: transfer powerup to player
 	}
 	
 	public void increaseCombo() {
@@ -127,11 +124,7 @@ public class ServerBall {
 	}
 
 	public boolean isOutsideArena() {
-		if (Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) >= GameSettings.ARENA_RADIUS) {
-			return true;
-		} else {
-			return false;
-		}
+		return getR() > GameSettings.ARENA_RADIUS + 10;
 	}
 	
 	/**
