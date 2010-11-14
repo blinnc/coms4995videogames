@@ -143,11 +143,13 @@ public class Game {
 				if (ball.contains(points[0])) {
 					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
 						ball.setT(180 + 2 * paddleArray[i].getT() - ball.getT());
+						System.out.println("Top");
 					}
 				}
 				if (ball.contains(points[1])) {
 					if (points[1].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						ball.setT(180 + 2 * paddleArray[i].getT() - ball.getT());
+						System.out.println("Bottom");
 					}
 				}
 				if (ball.contains(points[2])) {
@@ -155,6 +157,7 @@ public class Game {
 						if (!points[0].equals(points[1])) {
 							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
 							ball.setT(180 + 2 * (paddleArray[i].getT() + 180 + Math.toDegrees(angle)) - ball.getT());
+							System.out.println("Left");
 						}
 					}
 				}
@@ -163,6 +166,7 @@ public class Game {
 						if (!points[0].equals(points[1])) {
 							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
 							ball.setT(Math.PI + 2 * (paddleArray[i].getT() + Math.PI + angle) - ball.getT());
+							System.out.println("Right");
 						}
 					}
 				}
