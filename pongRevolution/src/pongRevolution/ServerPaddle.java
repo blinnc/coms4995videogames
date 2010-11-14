@@ -147,6 +147,7 @@ public class ServerPaddle {
 	 */
 	public Point2D[] getConnectionPoints(Point2D other) {
 		Point2D[] points = new Point2D[4];
+		getBounds();
 		double x0 = xpoints[0];
 		double x1 = xpoints[1];
 		double x2 = xpoints[2];
@@ -155,8 +156,6 @@ public class ServerPaddle {
 		double y1 = ypoints[1];
 		double y2 = ypoints[2];
 		double y3 = ypoints[3];
-		
-		System.out.println("(" + xpoints[0] + ", " + ypoints[0] + "), (" + xpoints[1] + ", " + ypoints[1] + "), ("+ xpoints[2] + ", " + ypoints[2] + "), ("+ xpoints[3] + ", " + ypoints[3] + ")");
 		
 		double m1 = (y2 - y1) / (x2 - x1);
 		double m2 = -1 / m1;
