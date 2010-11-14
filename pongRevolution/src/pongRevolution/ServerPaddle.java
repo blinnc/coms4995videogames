@@ -29,7 +29,7 @@ public class ServerPaddle {
 		this.player = player;
 		getBounds();
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];
-		r = GameSettings.ARENA_RADIUS;
+		r = GameSettings.ARENA_RADIUS - 10;
 		vt = GameSettings.PADDLE_VELOCITY;
 		isInvisible = false;
 		isSpeedup = false;
@@ -156,12 +156,12 @@ public class ServerPaddle {
 		double y2 = ypoints[2];
 		double y3 = ypoints[3];
 		
-		System.out.println("(" + xpoints[0] + ", " + ypoints[0] + "), (" + xpoints[1] + ", " + ypoints[1] + "), ("+ xpoints[2] + ", " + ypoints[2] + "), ("+ xpoints[3] + ", " + ypoints[3] + ")");
+		// System.out.println("(" + xpoints[0] + ", " + ypoints[0] + "), (" + xpoints[1] + ", " + ypoints[1] + "), ("+ xpoints[2] + ", " + ypoints[2] + "), ("+ xpoints[3] + ", " + ypoints[3] + ")");
 		
 		double m1 = (y2 - y1) / (x2 - x1);
 		double m2 = -1 / m1;
-		double b1 = y0 - m1 * x0;
-		double b2 = y2 - m1 * x2; 
+		double b1 = y2 - m1 * x2;
+		double b2 = y0 - m1 * x0; 
 		double b3 = other.getY() - m2 * other.getX();
 		
 		double x_0 = (b3 - b1) / (m1 - m2);
@@ -189,6 +189,8 @@ public class ServerPaddle {
 
 		points[2] = new Point2D.Double(x_2, y_2);
 		points[3] = new Point2D.Double(x_3, y_3);
+		
+		System.out.println("(" + x_0 + ", " + y_0 + "), (" + x_1 + ", " + y_1 + "), ("+ x_2 + ", " + y_2 + "), ("+ x_3 + ", " + y_3 + ")");
 		
 		return points;
 	}
