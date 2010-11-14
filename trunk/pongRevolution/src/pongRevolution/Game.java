@@ -133,7 +133,7 @@ public class Game {
 				continue;
 			}
 			
-			System.out.println(paddleArray[i].getX() + ", " + paddleArray[i].getY());
+			paddleArray[i].getBounds();
 			
 			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
