@@ -1,6 +1,6 @@
 package pongRevolution;
 
-import network.TCommandServer;
+import network.TPollServer;
 import network.TGameState;
 import network.TLobbyState;
 import network.TPlayer;
@@ -28,11 +28,11 @@ public class PollServer implements network.TPollServer.Iface {
 	
 	private void start(){
 	      try {
-	         TServerSocket serverTransport = new TServerSocket(12020);
-	         TCommandServer.Processor processor = new TCommandServer.Processor(new CommandServer(game));
+	         TServerSocket serverTransport = new TServerSocket(GameSettings.POLL_SERVER_PORT);
+	         TPollServer.Processor processor = new TPollServer.Processor(new PollServer(game));
 	         Factory protFactory = new TBinaryProtocol.Factory(true, true);
 	         TServer server = new TThreadPoolServer(processor, serverTransport, protFactory);
-	         System.out.println("Starting server on port 12020 ...");
+	         System.out.println("Starting poll server on port " + GameSettings.POLL_SERVER_PORT + "...");
 	         server.serve();
 	      } catch (TTransportException e) {
 	         e.printStackTrace();
@@ -41,7 +41,6 @@ public class PollServer implements network.TPollServer.Iface {
 	
 	@Override
 	public TGameState poll(TPlayer requester) throws TException {
-		TGameState state = game.getState();
 		return game.getState();
 	}
 

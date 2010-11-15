@@ -26,11 +26,11 @@ public class CommandServer implements network.TCommandServer.Iface{
 	
 	private void start(){
 	      try {
-	         TServerSocket serverTransport = new TServerSocket(12020);
+	         TServerSocket serverTransport = new TServerSocket(GameSettings.COMMAND_SERVER_PORT);
 	         TCommandServer.Processor processor = new TCommandServer.Processor(new CommandServer(game));
 	         Factory protFactory = new TBinaryProtocol.Factory(true, true);
 	         TServer server = new TThreadPoolServer(processor, serverTransport, protFactory);
-	         System.out.println("Starting server on port 12020 ...");
+	         System.out.println("Starting command server on port " + GameSettings.COMMAND_SERVER_PORT + "...");
 	         server.serve();
 	      } catch (TTransportException e) {
 	         e.printStackTrace();
