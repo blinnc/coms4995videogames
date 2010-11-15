@@ -67,12 +67,9 @@ struct TSettings {
 	1: i32 ballRadius;
 	2: i32 arenaRadius;
 	3: i32 timerRefresh;
-	4: TPlayer color;
 }
 
-service TNetworkServer {
-	TSettings getSettings(1:string username),
-
+service TCommandServer {
 	oneway void pickTeam(1:TPlayer preferred, 2:string username, 3: bool join),
 
 	oneway void sendChat(1:string message, 2: string username),
@@ -90,4 +87,6 @@ service TPollServer {
 	TGameState poll(1:TPlayer requester),
 
 	TLobbyState pollLobby(1:string username),
+
+	TSettings getSettings(1:string username),
 }
