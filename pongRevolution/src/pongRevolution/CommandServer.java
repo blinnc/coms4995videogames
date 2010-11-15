@@ -1,8 +1,5 @@
 package pongRevolution;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import network.TCommandServer;
 import network.TPlayer;
 
