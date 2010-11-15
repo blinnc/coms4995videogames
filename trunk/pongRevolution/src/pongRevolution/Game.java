@@ -8,6 +8,7 @@ import network.TBall;
 import network.TGameState;
 import network.TPaddle;
 import network.TPlayer;
+import network.TPosition;
 import network.TPowerUp;
 
 public class Game {	
@@ -189,6 +190,7 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			balls.add(ball.getTball());
 		}
-		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE);
+		List<TPosition> pos = new ArrayList<TPosition>();
+		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE, pos);
 	}
 }
