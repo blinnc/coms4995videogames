@@ -32,27 +32,16 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
   private static final TField BALL_RADIUS_FIELD_DESC = new TField("ballRadius", TType.I32, (short)1);
   private static final TField ARENA_RADIUS_FIELD_DESC = new TField("arenaRadius", TType.I32, (short)2);
   private static final TField TIMER_REFRESH_FIELD_DESC = new TField("timerRefresh", TType.I32, (short)3);
-  private static final TField COLOR_FIELD_DESC = new TField("color", TType.I32, (short)4);
 
   public int ballRadius;
   public int arenaRadius;
   public int timerRefresh;
-  /**
-   * 
-   * @see TPlayer
-   */
-  public TPlayer color;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
     BALL_RADIUS((short)1, "ballRadius"),
     ARENA_RADIUS((short)2, "arenaRadius"),
-    TIMER_REFRESH((short)3, "timerRefresh"),
-    /**
-     * 
-     * @see TPlayer
-     */
-    COLOR((short)4, "color");
+    TIMER_REFRESH((short)3, "timerRefresh");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -73,8 +62,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
           return ARENA_RADIUS;
         case 3: // TIMER_REFRESH
           return TIMER_REFRESH;
-        case 4: // COLOR
-          return COLOR;
         default:
           return null;
       }
@@ -129,8 +116,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
         new FieldValueMetaData(TType.I32)));
     tmpMap.put(_Fields.TIMER_REFRESH, new FieldMetaData("timerRefresh", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
-    tmpMap.put(_Fields.COLOR, new FieldMetaData("color", TFieldRequirementType.DEFAULT, 
-        new EnumMetaData(TType.ENUM, TPlayer.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TSettings.class, metaDataMap);
   }
@@ -141,8 +126,7 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
   public TSettings(
     int ballRadius,
     int arenaRadius,
-    int timerRefresh,
-    TPlayer color)
+    int timerRefresh)
   {
     this();
     this.ballRadius = ballRadius;
@@ -151,7 +135,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     setArenaRadiusIsSet(true);
     this.timerRefresh = timerRefresh;
     setTimerRefreshIsSet(true);
-    this.color = color;
   }
 
   /**
@@ -163,9 +146,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     this.ballRadius = other.ballRadius;
     this.arenaRadius = other.arenaRadius;
     this.timerRefresh = other.timerRefresh;
-    if (other.isSetColor()) {
-      this.color = other.color;
-    }
   }
 
   public TSettings deepCopy() {
@@ -180,7 +160,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     this.arenaRadius = 0;
     setTimerRefreshIsSet(false);
     this.timerRefresh = 0;
-    this.color = null;
   }
 
   public int getBallRadius() {
@@ -252,38 +231,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     __isset_bit_vector.set(__TIMERREFRESH_ISSET_ID, value);
   }
 
-  /**
-   * 
-   * @see TPlayer
-   */
-  public TPlayer getColor() {
-    return this.color;
-  }
-
-  /**
-   * 
-   * @see TPlayer
-   */
-  public TSettings setColor(TPlayer color) {
-    this.color = color;
-    return this;
-  }
-
-  public void unsetColor() {
-    this.color = null;
-  }
-
-  /** Returns true if field color is set (has been asigned a value) and false otherwise */
-  public boolean isSetColor() {
-    return this.color != null;
-  }
-
-  public void setColorIsSet(boolean value) {
-    if (!value) {
-      this.color = null;
-    }
-  }
-
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case BALL_RADIUS:
@@ -310,14 +257,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       }
       break;
 
-    case COLOR:
-      if (value == null) {
-        unsetColor();
-      } else {
-        setColor((TPlayer)value);
-      }
-      break;
-
     }
   }
 
@@ -331,9 +270,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
 
     case TIMER_REFRESH:
       return new Integer(getTimerRefresh());
-
-    case COLOR:
-      return getColor();
 
     }
     throw new IllegalStateException();
@@ -352,8 +288,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       return isSetArenaRadius();
     case TIMER_REFRESH:
       return isSetTimerRefresh();
-    case COLOR:
-      return isSetColor();
     }
     throw new IllegalStateException();
   }
@@ -395,15 +329,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       if (!(this_present_timerRefresh && that_present_timerRefresh))
         return false;
       if (this.timerRefresh != that.timerRefresh)
-        return false;
-    }
-
-    boolean this_present_color = true && this.isSetColor();
-    boolean that_present_color = true && that.isSetColor();
-    if (this_present_color || that_present_color) {
-      if (!(this_present_color && that_present_color))
-        return false;
-      if (!this.color.equals(that.color))
         return false;
     }
 
@@ -453,16 +378,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetColor()).compareTo(typedOther.isSetColor());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetColor()) {
-      lastComparison = TBaseHelper.compareTo(this.color, typedOther.color);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     return 0;
   }
 
@@ -504,13 +419,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // COLOR
-          if (field.type == TType.I32) {
-            this.color = TPlayer.findByValue(iprot.readI32());
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -535,11 +443,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     oprot.writeFieldBegin(TIMER_REFRESH_FIELD_DESC);
     oprot.writeI32(this.timerRefresh);
     oprot.writeFieldEnd();
-    if (this.color != null) {
-      oprot.writeFieldBegin(COLOR_FIELD_DESC);
-      oprot.writeI32(this.color.getValue());
-      oprot.writeFieldEnd();
-    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -559,14 +462,6 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     if (!first) sb.append(", ");
     sb.append("timerRefresh:");
     sb.append(this.timerRefresh);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("color:");
-    if (this.color == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.color);
-    }
     first = false;
     sb.append(")");
     return sb.toString();
