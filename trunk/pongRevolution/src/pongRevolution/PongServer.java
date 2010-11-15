@@ -17,8 +17,8 @@ public class PongServer {
 		game = new Game();
 		timer = new Timer();
 		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
-		CommandServer csrv = new CommandServer(game);
-		PollServer psrv = new PollServer(game);
+		new CommandServer(game);
+		new PollServer(game);
 	}
 	
 	class ClockThread extends TimerTask {
