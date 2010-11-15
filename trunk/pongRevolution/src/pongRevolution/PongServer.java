@@ -3,22 +3,29 @@ package pongRevolution;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import network.TCommandServer;
-import network.TGameState;
-import network.TPlayer;
-import network.TSettings;
-
-import org.apache.thrift.TException;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TBinaryProtocol.Factory;
-import org.apache.thrift.server.TServer;
-import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TTransportException;
-
-import org.apache.log4j.Logger;
-import org.apache.log4j.BasicConfigurator;
+//Class that starts the server
 
 public class PongServer {
+	private Game game;
+	private Timer timer;
 	
+	public static void main(String[] args) {
+		new PongServer();
+	}
+	
+	private PongServer() {
+		game = new Game();
+		timer = new Timer();
+		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
+		CommandServer csrv = new CommandServer(game);
+		PollServer psrv = new PollServer(game);
+	}
+	
+	class ClockThread extends TimerTask {
+		
+		public void run() {
+			// TODO: stuff
+			game.updateGame();
+		}
+	}
 }
