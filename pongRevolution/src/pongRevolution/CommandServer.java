@@ -19,14 +19,12 @@ import org.apache.log4j.BasicConfigurator;
 
 public class CommandServer implements network.TCommandServer.Iface{
 	private Game game;
-	private Timer timer;
 	Logger log = Logger.getLogger(CommandServer.class);
 	
 	public CommandServer(Game g) {
 		game = g;
-		timer = new Timer();
 		BasicConfigurator.configure();
-		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
+		this.start();
 	}
 	
 	private void start(){
@@ -41,20 +39,6 @@ public class CommandServer implements network.TCommandServer.Iface{
 	         e.printStackTrace();
 	      }
 	   }
-	
-	//TODO move main method to another class
-//	public static void main(String args[]){
-//	      CommandServer srv = new CommandServer();
-//	      srv.start();
-//	   }
-	
-	class ClockThread extends TimerTask {
-		
-		public void run() {
-			// TODO: stuff
-			game.updateGame();
-		}
-	}
 
 	@Override
 	public void jump(TPlayer requester) throws TException {
