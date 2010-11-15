@@ -6,6 +6,10 @@ public class GameSettings {
 	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;
 	public static final int BALL_RELEASE_INTERVAL = 5000 / CLOCK_INTERVAL;
 	
+	//Server settings
+	public static final int COMMAND_SERVER_PORT = 12021;
+	public static final int POLL_SERVER_PORT = 12022;
+	
 	// Arena settings
 	public static final int ARENA_RADIUS = 250;
 	public static final double STARTING_POSITIONS[] = {0, 0, 180, 90, 270};
@@ -21,4 +25,5 @@ public class GameSettings {
 	public static final int BALL_RADIUS = 10;
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
 	public static final double COMBO_SPEED[] = {2, 2.5, 3, 4, 5, 6};
+	
 }
