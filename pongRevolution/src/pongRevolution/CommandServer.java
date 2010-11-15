@@ -21,10 +21,9 @@ public class CommandServer implements network.TCommandServer.Iface{
 	public CommandServer(Game g) {
 		game = g;
 		BasicConfigurator.configure();
-		this.start();
 	}
 	
-	private void start(){
+	public void start(){
 	      try {
 	         TServerSocket serverTransport = new TServerSocket(GameSettings.COMMAND_SERVER_PORT);
 	         TCommandServer.Processor processor = new TCommandServer.Processor(new CommandServer(game));
@@ -65,7 +64,8 @@ public class CommandServer implements network.TCommandServer.Iface{
 	public void pickTeam(TPlayer preferred, String username, boolean join)
 			throws TException {
 		// TODO Auto-generated method stub
-		
+		System.out.println("PICK TEAM CALLED");
+		game.registerPlayer(preferred);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ public class GameSettings {
 	public static final int BALL_RELEASE_INTERVAL = 5000 / CLOCK_INTERVAL;
 	
 	//Server settings
-	public static final int COMMAND_SERVER_PORT = 12021;
+	public static final int COMMAND_SERVER_PORT = 12020;
 	public static final int POLL_SERVER_PORT = 12022;
 	
 	// Arena settings

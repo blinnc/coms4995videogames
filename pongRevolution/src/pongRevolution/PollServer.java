@@ -23,10 +23,9 @@ public class PollServer implements network.TPollServer.Iface {
 	public PollServer(Game g) {
 		game = g;
 		BasicConfigurator.configure();
-		this.start();
 	}
 	
-	private void start(){
+	public void start(){
 	      try {
 	         TServerSocket serverTransport = new TServerSocket(GameSettings.POLL_SERVER_PORT);
 	         TPollServer.Processor processor = new TPollServer.Processor(new PollServer(game));
@@ -41,6 +40,7 @@ public class PollServer implements network.TPollServer.Iface {
 	
 	@Override
 	public TGameState poll(TPlayer requester) throws TException {
+		System.out.println("POLL CALLED");
 		return game.getState();
 	}
 
@@ -52,6 +52,7 @@ public class PollServer implements network.TPollServer.Iface {
 
 	@Override
 	public TSettings getSettings(String username) throws TException {
+		System.out.println("GET SETTINGS CALLED");
 		//TODO username?
         TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL);
         return settings;
