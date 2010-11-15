@@ -74,8 +74,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private boolean d;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
-    
-	@SuppressWarnings("deprecation")
+
 	public pongRev()
 	{
 		super( "Pong Revolution" );
@@ -104,32 +103,41 @@ public class pongRev extends JFrame implements KeyListener {
 		//-----END LOGIC TO CONNECT TO THE SERVER-----
 		
 		//BEGIN SET UP AND DRAW THE SERVER GUI
-		final StartWindow start = new StartWindow();
-		start.joinButton.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				String hostAddress = start.serverInput.getText();
-				String team = null;
-				try {
-					team = start.teamList.getSelectedValue().toString();
-				} catch (NullPointerException e) {
-					System.out.println("Please select a team and try again.");
-				}
-				if(hostAddress.equals(""))
-				{
-					System.out.println("Please enter a server and try again.");
-				}
-				gameinfo = new GameInfo(hostAddress, team);
-				start.setVisible(false);
-				waitForInput = false;
-			}
-		});
+//		final StartWindow start = new StartWindow();
+//		start.joinButton.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent arg0) {
+//				String hostAddress = start.serverInput.getText();
+//				String team = null;
+//				try {
+//					team = start.teamList.getSelectedValue().toString();
+//				} catch (NullPointerException e) {
+//					System.out.println("Please select a team and try again.");
+//				}
+//				if(hostAddress.equals(""))
+//				{
+//					System.out.println("Please enter a server and try again.");
+//				}
+//				gameinfo = new GameInfo(hostAddress, team);
+//				start.setVisible(false);
+//				waitForInput = false;
+//			}
+//		});
+//		
+//		start.setVisible(true);
+//		
+//		while(waitForInput) {
+//			
+//		}
 		
-		start.setVisible(true);
-		
-		while(waitForInput) {
-			
+		gameinfo = new GameInfo("localhost", "test");
+		try {
+			gameinfo.commandClient.pickTeam(TPlayer.BLUE_ONE, "test", true);
+			System.out.println("TEAM PICKED?!");
+		} catch (TException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 		//END SET UP AND DRAW THE SERVER GUI
 		
@@ -144,6 +152,21 @@ public class pongRev extends JFrame implements KeyListener {
                 	}
                 }
                 catch(InterruptedException e) {}
+            }
+        }).start();
+		
+		(new Thread() {
+            public void run() {
+                try {
+                	while (true) {
+                		Thread.sleep(15);
+                		//gameinfo.state = gameinfo.pollClient.poll(TPlayer.BLUE_ONE);
+                	}
+                } catch(InterruptedException e) {
+            	//} catch (TException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
         }).start();
 
@@ -280,13 +303,13 @@ public class pongRev extends JFrame implements KeyListener {
 		}
 		
         dbg.setColor(Color.green);
-        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
-        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
-        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER,
-        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
-        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
-        	
-        	}}
+//        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
+//        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
+//        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER,
+//        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
+//        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
+//        	
+//        	}}
 		//paint(dbg); 		
 		//dbg.setColor(Color.white);
 		//dbg.drawOval(CIRCLE_X, CIRCLE_Y, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
@@ -322,43 +345,34 @@ public class pongRev extends JFrame implements KeyListener {
 	private void movePaddle() throws InterruptedException {
 	    while (true) {
 	        Thread.sleep(15);
-	        try {
-				gameinfo.state = gameinfo.client.poll(gameinfo.player);
-			} catch (TException e) {
-				e.printStackTrace();
-			}
-			if (gameinfo.state.paddles.get(1) != null) {
-		        AffineTransform tx1 = new AffineTransform();
-		        paddleRotation = gameinfo.state.paddles.get(1).angle;
-		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape1 = (Path2D) tx1.createTransformedShape(paddle1);
-			}
+//			if (gameinfo.state.paddles.get(1) != null) {
+//		        AffineTransform tx1 = new AffineTransform();
+//		        paddleRotation = gameinfo.state.paddles.get(1).angle;
+//		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//		        shape1 = (Path2D) tx1.createTransformedShape(paddle1);
+//			}
+//	        
+//			if (gameinfo.state.paddles.get(2) != null) {
+//		        AffineTransform tx2 = new AffineTransform();
+//		        paddleRotation = gameinfo.state.paddles.get(2).angle;
+//		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
+//			}
+//	        
+//			if (gameinfo.state.paddles.get(3) != null) {
+//		        AffineTransform tx3 = new AffineTransform();
+//		        paddleRotation = gameinfo.state.paddles.get(3).angle;
+//		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
+//			}
+//	        
+//			if (gameinfo.state.paddles.get(4) != null) {
+//		        AffineTransform tx4 = new AffineTransform();
+//		        paddleRotation = gameinfo.state.paddles.get(4).angle;
+//		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
+//		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
+//			}
 	        
-			if (gameinfo.state.paddles.get(2) != null) {
-		        AffineTransform tx2 = new AffineTransform();
-		        paddleRotation = gameinfo.state.paddles.get(2).angle;
-		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
-			}
-	        
-			if (gameinfo.state.paddles.get(3) != null) {
-		        AffineTransform tx3 = new AffineTransform();
-		        paddleRotation = gameinfo.state.paddles.get(3).angle;
-		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
-			}
-	        
-			if (gameinfo.state.paddles.get(4) != null) {
-		        AffineTransform tx4 = new AffineTransform();
-		        paddleRotation = gameinfo.state.paddles.get(4).angle;
-		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
-			}
-	        
-	        
-
-	        
-
 	        this.repaint();
 	        if (a && d) {
 	        } else if (a) {
@@ -371,7 +385,7 @@ public class pongRev extends JFrame implements KeyListener {
 	
 	private void moveA() {
 		try {
-			gameinfo.client.moveLeft(gameinfo.player);
+			gameinfo.commandClient.moveLeft(gameinfo.player);
 		} catch (TException e) {
 			e.printStackTrace();
 		}
@@ -379,7 +393,7 @@ public class pongRev extends JFrame implements KeyListener {
 
 	private void moveD() {
 		try {
-			gameinfo.client.moveRight(gameinfo.player);
+			gameinfo.commandClient.moveRight(gameinfo.player);
 		} catch (TException e) {
 			e.printStackTrace();
 		}
