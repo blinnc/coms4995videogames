@@ -52,6 +52,7 @@ struct TGameState {
 	7: bool isWall;
 	8: TPowerUp playerUp;
 	9: TPowerUp allyUp; 
+	10: list<TPosition> connections;
 }
 
 struct TSettings {

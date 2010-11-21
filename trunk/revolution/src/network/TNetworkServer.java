@@ -42,8 +42,6 @@ public class TNetworkServer {
 
     public void jump(TPlayer requester) throws TException;
 
-	TSettings getSettings() throws TException;
-
   }
 
   public interface AsyncIface {
@@ -230,12 +228,6 @@ public class TNetworkServer {
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
     }
-
-	@Override
-	public TSettings getSettings() throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
   }
   public static class AsyncClient extends TAsyncClient implements AsyncIface {
