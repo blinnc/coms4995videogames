@@ -98,10 +98,4 @@ public class PongServer implements network.TNetworkServer.Iface{
 		return settings;
 	}
 
-
-	@Override
-	public TSettings getSettings() throws TException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

@@ -206,7 +206,7 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     if (this.positions == null) {
       this.positions = new ArrayList<TPosition>();
     }
-    this.positions.set(0, elem);
+    this.positions.add(elem);
   }
 
   public List<TPosition> getPositions() {

@@ -286,7 +286,14 @@ public class pongRev extends JFrame implements KeyListener {
         			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
         			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
         	
-        	}}
+        	}
+        }
+        
+        dbg.setColor(Color.orange);
+        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
+        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
+        			(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
+        }
 		//paint(dbg); 		
 		//dbg.setColor(Color.white);
 		//dbg.drawOval(CIRCLE_X, CIRCLE_Y, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
