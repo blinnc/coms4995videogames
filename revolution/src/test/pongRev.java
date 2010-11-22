@@ -280,10 +280,9 @@ public class pongRev extends JFrame implements KeyListener {
 			((Graphics2D) dbg).fill(shape4);
 		}
 		
-        dbg.setColor(Color.green);
         for (int i = 0; i < gameinfo.state.balls.size(); i++) {
         	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
-        		dbg.setColor(Color.YELLOW);
+        		dbg.setColor(Color.GREEN);
         	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
         			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
         		dbg.setColor(Color.BLUE);
