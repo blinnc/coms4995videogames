@@ -29,7 +29,8 @@ public class ServerBall {
 		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
 		// Random direction
-		t = Math.random() * 360;
+		// t = Math.random() * 360;
+		t = 135;
 		updateVelocity();
 		
 		// Random powerup
@@ -132,8 +133,7 @@ public class ServerBall {
 	 * @param p the point
 	 */
 	public boolean contains(Point2D p) {
-		Ellipse2D circle = new Ellipse2D.Double(x, y, 2 * GameSettings.BALL_RADIUS, 2 * GameSettings.BALL_RADIUS);
-		return circle.contains(p);
+		return (Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(y - p.getY(), 2)) <= GameSettings.BALL_RADIUS);
 	}
 
 	/**

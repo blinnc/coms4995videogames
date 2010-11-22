@@ -17,6 +17,7 @@ public class Game {
 	private int redScore, blueScore;
 	private int ballSpawnCount;
 	private boolean hasPlayers;
+	private Point2D[] pointsTest;
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
@@ -138,6 +139,7 @@ public class Game {
 			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
+				pointsTest = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
 				double paddleDiagonal2 = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_TOP / 2, 2));
 				
@@ -166,7 +168,7 @@ public class Game {
 					if (points[3].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (!points[0].equals(points[1])) {
 							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-							ball.setT(Math.PI + 2 * (paddleArray[i].getT() + Math.PI + angle) - ball.getT());
+							ball.setT(180 + 2 * (paddleArray[i].getT() + 180 + angle) - ball.getT());
 							System.out.println("Right");
 						}
 					}
@@ -190,6 +192,13 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			balls.add(ball.getTball());
 		}
-		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE, new ArrayList<TPosition>());
+		List<TPosition> connections = new ArrayList<TPosition>();
+		if (pointsTest!= null) {
+			connections.add(new TPosition(pointsTest[0].getX(), pointsTest[0].getY()));
+			connections.add(new TPosition(pointsTest[1].getX(), pointsTest[1].getY()));
+			connections.add(new TPosition(pointsTest[2].getX(), pointsTest[2].getY()));
+			connections.add(new TPosition(pointsTest[3].getX(), pointsTest[3].getY()));
+		}
+		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections);
 	}
 }
