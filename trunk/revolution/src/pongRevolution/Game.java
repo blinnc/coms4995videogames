@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import network.TBall;
+import network.TDirection;
 import network.TGameState;
 import network.TPaddle;
 import network.TPlayer;
@@ -37,8 +38,8 @@ public class Game {
 		// TODO: wipe any paddle attributes
 	}
 	
-	public void movePaddle(TPlayer requester, boolean clockwise) {
-		paddleArray[requester.getValue()].move(clockwise);
+	public void movePaddle(TPlayer requester, TDirection dir) {
+		paddleArray[requester.getValue()].setDirection(dir);
 	}
 	
 	public void jumpPaddle(TPlayer requester) {
@@ -94,6 +95,7 @@ public class Game {
 	
 	public void updateGame() {
 		ballSpawnCount --;
+		movePaddles();
 		moveBalls();
 		if(ballSpawnCount < 0) {
 			spawnBall();
@@ -123,7 +125,12 @@ public class Game {
 	 * Updates the paddles to their next position (up/down-wise)
 	 */
 	public void movePaddles() {
-		
+		for(int i = 1; i < paddleArray.length; i++) {
+			if(paddleArray[i] == null) {
+				continue;
+			}
+			paddleArray[i].move();
+		}
 	}
 	
 	/**

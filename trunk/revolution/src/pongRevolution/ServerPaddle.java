@@ -3,6 +3,7 @@ package pongRevolution;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
+import network.TDirection;
 import network.TGameState;
 import network.TPaddle;
 import network.TPlayer;
@@ -25,6 +26,8 @@ public class ServerPaddle {
 	private TPlayer player;
 	private TPaddle tPaddle;
 	
+	private TDirection direction;
+	
 	public ServerPaddle(TPlayer player) {
 		this.player = player;
 		getBounds();
@@ -34,6 +37,7 @@ public class ServerPaddle {
 		isInvisible = false;
 		isSpeedup = false;
 		isMagnetic = false;
+		direction = TDirection.NONE;
 		
 		tPaddle = new TPaddle(r, t, length, player, isInvisible, isSpeedup, isMagnetic);
 	}
@@ -94,7 +98,21 @@ public class ServerPaddle {
 		return tPaddle;
 	}
 	
-	public void move(boolean clockwise) {
+	public TDirection getDirection() {
+		return direction;
+	}
+
+	public void setDirection(TDirection direction) {
+		this.direction = direction;
+	}
+
+	public void move() {
+		if(direction == TDirection.NONE) {
+			return;
+		}
+		
+		boolean clockwise = direction == TDirection.LEFT;
+		
 		t = clockwise ? t - vt : t + vt;
 		if(t > 360) {
 			t = t % 360;

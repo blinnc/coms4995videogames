@@ -29,13 +29,8 @@ public class ServerBall {
 		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
 		// Random direction
-		// t = Math.random() * 360;
-		t = 135;
+		t = Math.random() * 360;
 		updateVelocity();
-		
-		// Random powerup
-		int pu = (int)(Math.random() * 8) + 1;
-		powerup = TPowerUp.findByValue(pu);
 		
 		updatePosition();
 	}
