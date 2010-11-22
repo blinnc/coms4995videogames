@@ -1,5 +1,7 @@
 package pongRevolution;
 
+import network.TPlayer;
+
 public class GameSettings {
 	public static final int CLOCK_INTERVAL = 15;
 	
@@ -20,5 +22,15 @@ public class GameSettings {
 	// Ball settings
 	public static final int BALL_RADIUS = 5;
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
-	public static final double COMBO_SPEED[] = {2, 2.5, 3, 4, 5, 6};
+	public static final double COMBO_SPEED[] = {2, 2.5, 3, 3.5, 4, 4.5};
+	
+
+	
+	public static boolean isRed(TPlayer player) {
+		return player == TPlayer.RED_ONE || player == TPlayer.RED_TWO;
+	}
+
+	public static boolean isBlue(TPlayer player) {
+		return player == TPlayer.BLUE_ONE || player == TPlayer.BLUE_TWO;
+	}
 }

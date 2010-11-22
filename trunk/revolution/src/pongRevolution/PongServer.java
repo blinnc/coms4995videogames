@@ -54,7 +54,6 @@ public class PongServer implements network.TNetworkServer.Iface{
 	class ClockThread extends TimerTask {
 		
 		public void run() {
-			// TODO: stuff
 			game.updateGame();
 		}
 	}
@@ -74,7 +73,6 @@ public class PongServer implements network.TNetworkServer.Iface{
 	@Override
 	public TGameState poll(TPlayer requester) throws TException {
 		TGameState state = game.getState();
-//		System.out.println(state.getBalls().size());
 		return game.getState();
 	}
 
@@ -89,8 +87,6 @@ public class PongServer implements network.TNetworkServer.Iface{
 	public TSettings getSettings(TPlayer preferred) throws TException {
 		TPlayer player = game.registerPlayer(preferred);
 		TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL, player);
-//		System.out.println("getSettings()");
 		return settings;
 	}
-
 }
