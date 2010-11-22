@@ -46,7 +46,6 @@ public class ServerBall {
 		double speed = GameSettings.COMBO_SPEED[combo];
 		vx = speed * Math.cos(Math.toRadians(t));
 		vy = speed * Math.sin(Math.toRadians(t));
-		System.out.println(t + ", " + vx + ", " + vy);
 	}
 	
 	/**
@@ -97,6 +96,10 @@ public class ServerBall {
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 	
+	public int getCombo() {
+		return combo;
+	}
+
 	public TPlayer getLastHit() {
 		return lastHit;
 	}
@@ -104,6 +107,9 @@ public class ServerBall {
 	public void setLastHit(TPlayer player) {
 		if(GameSettings.isRed(lastHit) == GameSettings.isRed(player)) {
 			increaseCombo();
+		}
+		else {
+			resetCombo();
 		}
 		lastHit = player;
 		tball.player = player;
