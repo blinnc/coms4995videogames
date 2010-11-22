@@ -20,6 +20,12 @@ enum TPlayer {
 	BLUE_TWO = 4;
 }
 
+enum TDirection {
+	NONE = 0;
+	RIGHT = 1;
+	LEFT = 2;
+}
+
 struct TPosition {
 	1: double xPos;
 	2: double yPos;
@@ -67,9 +73,7 @@ service TNetworkServer {
 
 	TGameState poll(1:TPlayer requester),
 
-	oneway void moveLeft(1:TPlayer requester),
-
-	oneway void moveRight(1:TPlayer requester),
+	oneway void move(1:TPlayer requester, 2:TDirection dir),
 
 	oneway void usePowerUp(1:TPlayer requester),
 

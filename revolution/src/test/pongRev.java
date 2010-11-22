@@ -23,6 +23,7 @@ import javax.swing.JFrame;
 import org.apache.thrift.TException;
 
 import network.TBall;
+import network.TDirection;
 import network.TPlayer;
 import network.TPosition;
 import network.TPowerUp;
@@ -282,9 +283,9 @@ public class pongRev extends JFrame implements KeyListener {
         dbg.setColor(Color.green);
         for (int i = 0; i < gameinfo.state.balls.size(); i++) {
         	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
-        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER,
-        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER, 
-        			gameinfo.settings.ballRadius, gameinfo.settings.ballRadius);
+        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - gameinfo.settings.ballRadius,
+        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - gameinfo.settings.ballRadius, 
+        			gameinfo.settings.ballRadius*2, gameinfo.settings.ballRadius*2);
         	
         	}
         }
@@ -292,7 +293,7 @@ public class pongRev extends JFrame implements KeyListener {
         dbg.setColor(Color.orange);
         for (int i = 0; i < gameinfo.state.connections.size(); i++) {
         	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
-        			(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
+        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
         }
 		//paint(dbg); 		
 		//dbg.setColor(Color.white);
@@ -367,29 +368,26 @@ public class pongRev extends JFrame implements KeyListener {
 	        
 
 	        this.repaint();
-	        if (a && d) {
+	        if ((a && d) || (!a && !d)) {
+	        	try {
+	    			gameinfo.client.move(gameinfo.player, TDirection.NONE);
+	    		} catch (TException e) {
+	    			e.printStackTrace();
+	    		}
 	        } else if (a) {
-	            moveA();
+	        	try {
+	    			gameinfo.client.move(gameinfo.player, TDirection.LEFT);
+	    		} catch (TException e) {
+	    			e.printStackTrace();
+	    		}
 	        } else if (d) {
-	            moveD();
+	        	try {
+	    			gameinfo.client.move(gameinfo.player, TDirection.RIGHT);
+	    		} catch (TException e) {
+	    			e.printStackTrace();
+	    		}
 	        }
 	    }
-	}
-	
-	private void moveA() {
-		try {
-			gameinfo.client.moveLeft(gameinfo.player);
-		} catch (TException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void moveD() {
-		try {
-			gameinfo.client.moveRight(gameinfo.player);
-		} catch (TException e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
