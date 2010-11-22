@@ -18,7 +18,6 @@ public class ServerBall {
 	
 	private int combo;
 	private TPlayer lastHit;
-	private TPowerUp powerup;
 	private TBall tball;
 	
 	public ServerBall() {
@@ -98,6 +97,18 @@ public class ServerBall {
 		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 	
+	public TPlayer getLastHit() {
+		return lastHit;
+	}
+
+	public void setLastHit(TPlayer player) {
+		if(GameSettings.isRed(lastHit) == GameSettings.isRed(player)) {
+			increaseCombo();
+		}
+		lastHit = player;
+		tball.player = player;
+	}
+
 	public void setT(double t) {
 		this.t = t;
 		updateVelocity();
@@ -110,8 +121,10 @@ public class ServerBall {
 	}
 	
 	public void increaseCombo() {
-		combo++;
-		updateVelocity();
+		if(combo < 5) {
+			combo++;
+			updateVelocity();
+		}
 	}
 	
 	public void resetCombo() {
