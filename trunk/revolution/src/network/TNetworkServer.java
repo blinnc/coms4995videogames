@@ -34,9 +34,7 @@ public class TNetworkServer {
 
     public TGameState poll(TPlayer requester) throws TException;
 
-    public void moveLeft(TPlayer requester) throws TException;
-
-    public void moveRight(TPlayer requester) throws TException;
+    public void move(TPlayer requester, TDirection dir) throws TException;
 
     public void usePowerUp(TPlayer requester) throws TException;
 
@@ -50,9 +48,7 @@ public class TNetworkServer {
 
     public void poll(TPlayer requester, AsyncMethodCallback<AsyncClient.poll_call> resultHandler) throws TException;
 
-    public void moveLeft(TPlayer requester, AsyncMethodCallback<AsyncClient.moveLeft_call> resultHandler) throws TException;
-
-    public void moveRight(TPlayer requester, AsyncMethodCallback<AsyncClient.moveRight_call> resultHandler) throws TException;
+    public void move(TPlayer requester, TDirection dir, AsyncMethodCallback<AsyncClient.move_call> resultHandler) throws TException;
 
     public void usePowerUp(TPlayer requester, AsyncMethodCallback<AsyncClient.usePowerUp_call> resultHandler) throws TException;
 
@@ -169,31 +165,17 @@ public class TNetworkServer {
       throw new TApplicationException(TApplicationException.MISSING_RESULT, "poll failed: unknown result");
     }
 
-    public void moveLeft(TPlayer requester) throws TException
+    public void move(TPlayer requester, TDirection dir) throws TException
     {
-      send_moveLeft(requester);
+      send_move(requester, dir);
     }
 
-    public void send_moveLeft(TPlayer requester) throws TException
+    public void send_move(TPlayer requester, TDirection dir) throws TException
     {
-      oprot_.writeMessageBegin(new TMessage("moveLeft", TMessageType.CALL, ++seqid_));
-      moveLeft_args args = new moveLeft_args();
+      oprot_.writeMessageBegin(new TMessage("move", TMessageType.CALL, ++seqid_));
+      move_args args = new move_args();
       args.setRequester(requester);
-      args.write(oprot_);
-      oprot_.writeMessageEnd();
-      oprot_.getTransport().flush();
-    }
-
-    public void moveRight(TPlayer requester) throws TException
-    {
-      send_moveRight(requester);
-    }
-
-    public void send_moveRight(TPlayer requester) throws TException
-    {
-      oprot_.writeMessageBegin(new TMessage("moveRight", TMessageType.CALL, ++seqid_));
-      moveRight_args args = new moveRight_args();
-      args.setRequester(requester);
+      args.setDir(dir);
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
@@ -309,53 +291,26 @@ public class TNetworkServer {
       }
     }
 
-    public void moveLeft(TPlayer requester, AsyncMethodCallback<moveLeft_call> resultHandler) throws TException {
+    public void move(TPlayer requester, TDirection dir, AsyncMethodCallback<move_call> resultHandler) throws TException {
       checkReady();
-      moveLeft_call method_call = new moveLeft_call(requester, resultHandler, this, protocolFactory, transport);
+      move_call method_call = new move_call(requester, dir, resultHandler, this, protocolFactory, transport);
       manager.call(method_call);
     }
 
-    public static class moveLeft_call extends TAsyncMethodCall {
+    public static class move_call extends TAsyncMethodCall {
       private TPlayer requester;
-      public moveLeft_call(TPlayer requester, AsyncMethodCallback<moveLeft_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
+      private TDirection dir;
+      public move_call(TPlayer requester, TDirection dir, AsyncMethodCallback<move_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
         super(client, protocolFactory, transport, resultHandler, true);
         this.requester = requester;
+        this.dir = dir;
       }
 
       public void write_args(TProtocol prot) throws TException {
-        prot.writeMessageBegin(new TMessage("moveLeft", TMessageType.CALL, 0));
-        moveLeft_args args = new moveLeft_args();
+        prot.writeMessageBegin(new TMessage("move", TMessageType.CALL, 0));
+        move_args args = new move_args();
         args.setRequester(requester);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public void getResult() throws TException {
-        if (getState() != State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        TMemoryInputTransport memoryTransport = new TMemoryInputTransport(getFrameBuffer().array());
-        TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-      }
-    }
-
-    public void moveRight(TPlayer requester, AsyncMethodCallback<moveRight_call> resultHandler) throws TException {
-      checkReady();
-      moveRight_call method_call = new moveRight_call(requester, resultHandler, this, protocolFactory, transport);
-      manager.call(method_call);
-    }
-
-    public static class moveRight_call extends TAsyncMethodCall {
-      private TPlayer requester;
-      public moveRight_call(TPlayer requester, AsyncMethodCallback<moveRight_call> resultHandler, TAsyncClient client, TProtocolFactory protocolFactory, TNonblockingTransport transport) throws TException {
-        super(client, protocolFactory, transport, resultHandler, true);
-        this.requester = requester;
-      }
-
-      public void write_args(TProtocol prot) throws TException {
-        prot.writeMessageBegin(new TMessage("moveRight", TMessageType.CALL, 0));
-        moveRight_args args = new moveRight_args();
-        args.setRequester(requester);
+        args.setDir(dir);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -438,8 +393,7 @@ public class TNetworkServer {
       iface_ = iface;
       processMap_.put("getSettings", new getSettings());
       processMap_.put("poll", new poll());
-      processMap_.put("moveLeft", new moveLeft());
-      processMap_.put("moveRight", new moveRight());
+      processMap_.put("move", new move());
       processMap_.put("usePowerUp", new usePowerUp());
       processMap_.put("jump", new jump());
     }
@@ -521,44 +475,23 @@ public class TNetworkServer {
 
     }
 
-    private class moveLeft implements ProcessFunction {
+    private class move implements ProcessFunction {
       public void process(int seqid, TProtocol iprot, TProtocol oprot) throws TException
       {
-        moveLeft_args args = new moveLeft_args();
+        move_args args = new move_args();
         try {
           args.read(iprot);
         } catch (TProtocolException e) {
           iprot.readMessageEnd();
           TApplicationException x = new TApplicationException(TApplicationException.PROTOCOL_ERROR, e.getMessage());
-          oprot.writeMessageBegin(new TMessage("moveLeft", TMessageType.EXCEPTION, seqid));
+          oprot.writeMessageBegin(new TMessage("move", TMessageType.EXCEPTION, seqid));
           x.write(oprot);
           oprot.writeMessageEnd();
           oprot.getTransport().flush();
           return;
         }
         iprot.readMessageEnd();
-        iface_.moveLeft(args.requester);
-        return;
-      }
-    }
-
-    private class moveRight implements ProcessFunction {
-      public void process(int seqid, TProtocol iprot, TProtocol oprot) throws TException
-      {
-        moveRight_args args = new moveRight_args();
-        try {
-          args.read(iprot);
-        } catch (TProtocolException e) {
-          iprot.readMessageEnd();
-          TApplicationException x = new TApplicationException(TApplicationException.PROTOCOL_ERROR, e.getMessage());
-          oprot.writeMessageBegin(new TMessage("moveRight", TMessageType.EXCEPTION, seqid));
-          x.write(oprot);
-          oprot.writeMessageEnd();
-          oprot.getTransport().flush();
-          return;
-        }
-        iprot.readMessageEnd();
-        iface_.moveRight(args.requester);
+        iface_.move(args.requester, args.dir);
         return;
       }
     }
@@ -1763,16 +1696,22 @@ public class TNetworkServer {
 
   }
 
-  public static class moveLeft_args implements TBase<moveLeft_args, moveLeft_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final TStruct STRUCT_DESC = new TStruct("moveLeft_args");
+  public static class move_args implements TBase<move_args, move_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final TStruct STRUCT_DESC = new TStruct("move_args");
 
     private static final TField REQUESTER_FIELD_DESC = new TField("requester", TType.I32, (short)1);
+    private static final TField DIR_FIELD_DESC = new TField("dir", TType.I32, (short)2);
 
     /**
      * 
      * @see TPlayer
      */
     public TPlayer requester;
+    /**
+     * 
+     * @see TDirection
+     */
+    public TDirection dir;
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements TFieldIdEnum {
@@ -1780,7 +1719,12 @@ public class TNetworkServer {
        * 
        * @see TPlayer
        */
-      REQUESTER((short)1, "requester");
+      REQUESTER((short)1, "requester"),
+      /**
+       * 
+       * @see TDirection
+       */
+      DIR((short)2, "dir");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -1797,6 +1741,8 @@ public class TNetworkServer {
         switch(fieldId) {
           case 1: // REQUESTER
             return REQUESTER;
+          case 2: // DIR
+            return DIR;
           default:
             return null;
         }
@@ -1843,36 +1789,44 @@ public class TNetworkServer {
       Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
           new EnumMetaData(TType.ENUM, TPlayer.class)));
+      tmpMap.put(_Fields.DIR, new FieldMetaData("dir", TFieldRequirementType.DEFAULT, 
+          new EnumMetaData(TType.ENUM, TDirection.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      FieldMetaData.addStructMetaDataMap(moveLeft_args.class, metaDataMap);
+      FieldMetaData.addStructMetaDataMap(move_args.class, metaDataMap);
     }
 
-    public moveLeft_args() {
+    public move_args() {
     }
 
-    public moveLeft_args(
-      TPlayer requester)
+    public move_args(
+      TPlayer requester,
+      TDirection dir)
     {
       this();
       this.requester = requester;
+      this.dir = dir;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public moveLeft_args(moveLeft_args other) {
+    public move_args(move_args other) {
       if (other.isSetRequester()) {
         this.requester = other.requester;
       }
+      if (other.isSetDir()) {
+        this.dir = other.dir;
+      }
     }
 
-    public moveLeft_args deepCopy() {
-      return new moveLeft_args(this);
+    public move_args deepCopy() {
+      return new move_args(this);
     }
 
     @Override
     public void clear() {
       this.requester = null;
+      this.dir = null;
     }
 
     /**
@@ -1887,7 +1841,7 @@ public class TNetworkServer {
      * 
      * @see TPlayer
      */
-    public moveLeft_args setRequester(TPlayer requester) {
+    public move_args setRequester(TPlayer requester) {
       this.requester = requester;
       return this;
     }
@@ -1907,6 +1861,38 @@ public class TNetworkServer {
       }
     }
 
+    /**
+     * 
+     * @see TDirection
+     */
+    public TDirection getDir() {
+      return this.dir;
+    }
+
+    /**
+     * 
+     * @see TDirection
+     */
+    public move_args setDir(TDirection dir) {
+      this.dir = dir;
+      return this;
+    }
+
+    public void unsetDir() {
+      this.dir = null;
+    }
+
+    /** Returns true if field dir is set (has been asigned a value) and false otherwise */
+    public boolean isSetDir() {
+      return this.dir != null;
+    }
+
+    public void setDirIsSet(boolean value) {
+      if (!value) {
+        this.dir = null;
+      }
+    }
+
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
       case REQUESTER:
@@ -1917,6 +1903,14 @@ public class TNetworkServer {
         }
         break;
 
+      case DIR:
+        if (value == null) {
+          unsetDir();
+        } else {
+          setDir((TDirection)value);
+        }
+        break;
+
       }
     }
 
@@ -1924,6 +1918,9 @@ public class TNetworkServer {
       switch (field) {
       case REQUESTER:
         return getRequester();
+
+      case DIR:
+        return getDir();
 
       }
       throw new IllegalStateException();
@@ -1938,6 +1935,8 @@ public class TNetworkServer {
       switch (field) {
       case REQUESTER:
         return isSetRequester();
+      case DIR:
+        return isSetDir();
       }
       throw new IllegalStateException();
     }
@@ -1946,12 +1945,12 @@ public class TNetworkServer {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof moveLeft_args)
-        return this.equals((moveLeft_args)that);
+      if (that instanceof move_args)
+        return this.equals((move_args)that);
       return false;
     }
 
-    public boolean equals(moveLeft_args that) {
+    public boolean equals(move_args that) {
       if (that == null)
         return false;
 
@@ -1964,6 +1963,15 @@ public class TNetworkServer {
           return false;
       }
 
+      boolean this_present_dir = true && this.isSetDir();
+      boolean that_present_dir = true && that.isSetDir();
+      if (this_present_dir || that_present_dir) {
+        if (!(this_present_dir && that_present_dir))
+          return false;
+        if (!this.dir.equals(that.dir))
+          return false;
+      }
+
       return true;
     }
 
@@ -1972,13 +1980,13 @@ public class TNetworkServer {
       return 0;
     }
 
-    public int compareTo(moveLeft_args other) {
+    public int compareTo(move_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
-      moveLeft_args typedOther = (moveLeft_args)other;
+      move_args typedOther = (move_args)other;
 
       lastComparison = Boolean.valueOf(isSetRequester()).compareTo(typedOther.isSetRequester());
       if (lastComparison != 0) {
@@ -1986,6 +1994,16 @@ public class TNetworkServer {
       }
       if (isSetRequester()) {
         lastComparison = TBaseHelper.compareTo(this.requester, typedOther.requester);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetDir()).compareTo(typedOther.isSetDir());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetDir()) {
+        lastComparison = TBaseHelper.compareTo(this.dir, typedOther.dir);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -2014,6 +2032,13 @@ public class TNetworkServer {
               TProtocolUtil.skip(iprot, field.type);
             }
             break;
+          case 2: // DIR
+            if (field.type == TType.I32) {
+              this.dir = TDirection.findByValue(iprot.readI32());
+            } else { 
+              TProtocolUtil.skip(iprot, field.type);
+            }
+            break;
           default:
             TProtocolUtil.skip(iprot, field.type);
         }
@@ -2034,13 +2059,18 @@ public class TNetworkServer {
         oprot.writeI32(this.requester.getValue());
         oprot.writeFieldEnd();
       }
+      if (this.dir != null) {
+        oprot.writeFieldBegin(DIR_FIELD_DESC);
+        oprot.writeI32(this.dir.getValue());
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("moveLeft_args(");
+      StringBuilder sb = new StringBuilder("move_args(");
       boolean first = true;
 
       sb.append("requester:");
@@ -2050,301 +2080,12 @@ public class TNetworkServer {
         sb.append(this.requester);
       }
       first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws TException {
-      // check for required fields
-    }
-
-  }
-
-  public static class moveRight_args implements TBase<moveRight_args, moveRight_args._Fields>, java.io.Serializable, Cloneable   {
-    private static final TStruct STRUCT_DESC = new TStruct("moveRight_args");
-
-    private static final TField REQUESTER_FIELD_DESC = new TField("requester", TType.I32, (short)1);
-
-    /**
-     * 
-     * @see TPlayer
-     */
-    public TPlayer requester;
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements TFieldIdEnum {
-      /**
-       * 
-       * @see TPlayer
-       */
-      REQUESTER((short)1, "requester");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // REQUESTER
-            return REQUESTER;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-
-    public static final Map<_Fields, FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, FieldMetaData> tmpMap = new EnumMap<_Fields, FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.REQUESTER, new FieldMetaData("requester", TFieldRequirementType.DEFAULT, 
-          new EnumMetaData(TType.ENUM, TPlayer.class)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      FieldMetaData.addStructMetaDataMap(moveRight_args.class, metaDataMap);
-    }
-
-    public moveRight_args() {
-    }
-
-    public moveRight_args(
-      TPlayer requester)
-    {
-      this();
-      this.requester = requester;
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public moveRight_args(moveRight_args other) {
-      if (other.isSetRequester()) {
-        this.requester = other.requester;
-      }
-    }
-
-    public moveRight_args deepCopy() {
-      return new moveRight_args(this);
-    }
-
-    @Override
-    public void clear() {
-      this.requester = null;
-    }
-
-    /**
-     * 
-     * @see TPlayer
-     */
-    public TPlayer getRequester() {
-      return this.requester;
-    }
-
-    /**
-     * 
-     * @see TPlayer
-     */
-    public moveRight_args setRequester(TPlayer requester) {
-      this.requester = requester;
-      return this;
-    }
-
-    public void unsetRequester() {
-      this.requester = null;
-    }
-
-    /** Returns true if field requester is set (has been asigned a value) and false otherwise */
-    public boolean isSetRequester() {
-      return this.requester != null;
-    }
-
-    public void setRequesterIsSet(boolean value) {
-      if (!value) {
-        this.requester = null;
-      }
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case REQUESTER:
-        if (value == null) {
-          unsetRequester();
-        } else {
-          setRequester((TPlayer)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case REQUESTER:
-        return getRequester();
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been asigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case REQUESTER:
-        return isSetRequester();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof moveRight_args)
-        return this.equals((moveRight_args)that);
-      return false;
-    }
-
-    public boolean equals(moveRight_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_requester = true && this.isSetRequester();
-      boolean that_present_requester = true && that.isSetRequester();
-      if (this_present_requester || that_present_requester) {
-        if (!(this_present_requester && that_present_requester))
-          return false;
-        if (!this.requester.equals(that.requester))
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      return 0;
-    }
-
-    public int compareTo(moveRight_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-      moveRight_args typedOther = (moveRight_args)other;
-
-      lastComparison = Boolean.valueOf(isSetRequester()).compareTo(typedOther.isSetRequester());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetRequester()) {
-        lastComparison = TBaseHelper.compareTo(this.requester, typedOther.requester);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(TProtocol iprot) throws TException {
-      TField field;
-      iprot.readStructBegin();
-      while (true)
-      {
-        field = iprot.readFieldBegin();
-        if (field.type == TType.STOP) { 
-          break;
-        }
-        switch (field.id) {
-          case 1: // REQUESTER
-            if (field.type == TType.I32) {
-              this.requester = TPlayer.findByValue(iprot.readI32());
-            } else { 
-              TProtocolUtil.skip(iprot, field.type);
-            }
-            break;
-          default:
-            TProtocolUtil.skip(iprot, field.type);
-        }
-        iprot.readFieldEnd();
-      }
-      iprot.readStructEnd();
-
-      // check for required fields of primitive type, which can't be checked in the validate method
-      validate();
-    }
-
-    public void write(TProtocol oprot) throws TException {
-      validate();
-
-      oprot.writeStructBegin(STRUCT_DESC);
-      if (this.requester != null) {
-        oprot.writeFieldBegin(REQUESTER_FIELD_DESC);
-        oprot.writeI32(this.requester.getValue());
-        oprot.writeFieldEnd();
-      }
-      oprot.writeFieldStop();
-      oprot.writeStructEnd();
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("moveRight_args(");
-      boolean first = true;
-
-      sb.append("requester:");
-      if (this.requester == null) {
+      if (!first) sb.append(", ");
+      sb.append("dir:");
+      if (this.dir == null) {
         sb.append("null");
       } else {
-        sb.append(this.requester);
+        sb.append(this.dir);
       }
       first = false;
       sb.append(")");
