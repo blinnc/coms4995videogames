@@ -24,6 +24,7 @@ import org.apache.thrift.TException;
 
 import network.TBall;
 import network.TDirection;
+import network.TPaddle;
 import network.TPlayer;
 import network.TPosition;
 import network.TPowerUp;
@@ -38,16 +39,16 @@ public class pongRev extends JFrame implements KeyListener {
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
 	Rectangle paddle1 = new Rectangle(540, 280, 20, 40);
-	Shape shape1 = new Rectangle(540, 280, 20, 40);
+	Shape shape1 = null;//new Rectangle(540, 280, 20, 40);
 	
 	Rectangle paddle2 = new Rectangle(540, 280, 20, 40);
-	Shape shape2 = new Rectangle(540, 280, 20, 40);
+	Shape shape2 = null;//new Rectangle(540, 280, 20, 40);
 	
 	Rectangle paddle3 = new Rectangle(540, 280, 20, 40);
-	Shape shape3 = new Rectangle(540, 280, 20, 40);
+	Shape shape3 = null;//new Rectangle(540, 280, 20, 40);
 	
 	Rectangle paddle4 = new Rectangle(540, 280, 20, 40);
-	Shape shape4 = new Rectangle(540, 280, 20, 40);
+	Shape shape4 = null;//new Rectangle(540, 280, 20, 40);
 	boolean blah = false;
 	private Image dbImage;
 	private Graphics dbg; 
@@ -76,7 +77,6 @@ public class pongRev extends JFrame implements KeyListener {
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
     
-	@SuppressWarnings("deprecation")
 	public pongRev()
 	{
 		super( "Pong Revolution" );
@@ -279,30 +279,32 @@ public class pongRev extends JFrame implements KeyListener {
 		if(shape4 != null) {
 			((Graphics2D) dbg).fill(shape4);
 		}
-		
-        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
-        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
-        		dbg.setColor(Color.GREEN);
-        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
-        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
-        		dbg.setColor(Color.BLUE);
-        	} else if (gameinfo.state.balls.get(i).player == TPlayer.RED_ONE || 
-        			gameinfo.state.balls.get(i).player == TPlayer.RED_TWO) {
-        		dbg.setColor(Color.RED);
-        	}
-        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
-        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - gameinfo.settings.ballRadius,
-        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - gameinfo.settings.ballRadius, 
-        			gameinfo.settings.ballRadius*2, gameinfo.settings.ballRadius*2);
-        	
-        	}
-        }
+		if (gameinfo.state != null) {
+	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
+	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
+	        		dbg.setColor(Color.GREEN);
+	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
+	        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
+	        		dbg.setColor(Color.BLUE);
+	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.RED_ONE || 
+	        			gameinfo.state.balls.get(i).player == TPlayer.RED_TWO) {
+	        		dbg.setColor(Color.RED);
+	        	}
+	        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
+	        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - gameinfo.settings.ballRadius,
+	        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - gameinfo.settings.ballRadius, 
+	        			gameinfo.settings.ballRadius*2, gameinfo.settings.ballRadius*2);
+	        	
+	        	}
+	        }
+		}
         
-        dbg.setColor(Color.orange);
-        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
-        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
-        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
-        }
+//        dbg.setColor(Color.orange);
+//        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
+//        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
+//        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
+//        }
+        
 		//paint(dbg); 		
 		//dbg.setColor(Color.white);
 		//dbg.drawOval(CIRCLE_X, CIRCLE_Y, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
@@ -343,28 +345,28 @@ public class pongRev extends JFrame implements KeyListener {
 			} catch (TException e) {
 				e.printStackTrace();
 			}
-			if (gameinfo.state.paddles.get(1) != null) {
+			if (!gameinfo.state.paddles.get(1).equals(new TPaddle())) {
 		        AffineTransform tx1 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
 		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape1 = (Path2D) tx1.createTransformedShape(paddle1);
 			}
 	        
-			if (gameinfo.state.paddles.get(2) != null) {
+			if (!gameinfo.state.paddles.get(2).equals(new TPaddle())) {
 		        AffineTransform tx2 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(2).angle;
 		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
 			}
 	        
-			if (gameinfo.state.paddles.get(3) != null) {
+			if (!gameinfo.state.paddles.get(3).equals(new TPaddle())) {
 		        AffineTransform tx3 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(3).angle;
 		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
 			}
 	        
-			if (gameinfo.state.paddles.get(4) != null) {
+			if (!gameinfo.state.paddles.get(4).equals(new TPaddle())) {
 		        AffineTransform tx4 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(4).angle;
 		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
