@@ -3,6 +3,7 @@ package pongRevolution;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import network.TDirection;
 import network.TGameState;
 import network.TNetworkServer;
 import network.TPlayer;
@@ -65,14 +66,8 @@ public class PongServer implements network.TNetworkServer.Iface{
 
 
 	@Override
-	public void moveLeft(TPlayer requester) throws TException {
-		game.movePaddle(requester, true);
-	}
-
-
-	@Override
-	public void moveRight(TPlayer requester) throws TException {
-		game.movePaddle(requester, false);		
+	public void move(TPlayer requester, TDirection dir) throws TException {
+		game.movePaddle(requester, dir);
 	}
 
 
