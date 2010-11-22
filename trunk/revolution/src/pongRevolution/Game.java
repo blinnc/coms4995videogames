@@ -47,12 +47,11 @@ public class Game {
 	}
 	
 	public void usePowerup(TPlayer requester) {
-		// TODO: check which powerup the player has, apply effects, some sort of timer
 	}
 	
 	public TPlayer registerPlayer(TPlayer team) {
 		TPlayer player = team;		
-		if(team == TPlayer.RED_ONE || team == TPlayer.RED_TWO) {
+		if(GameSettings.isRed(team)) {
 			if(paddleArray[TPlayer.RED_ONE.getValue()] == null) {
 				player = TPlayer.RED_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
@@ -65,7 +64,7 @@ public class Game {
 				player = TPlayer.NONE;
 			}
 		}
-		else if(team == TPlayer.BLUE_ONE || team == TPlayer.BLUE_TWO){
+		else if(GameSettings.isBlue(team)){
 			if(paddleArray[TPlayer.BLUE_ONE.getValue()] == null) {
 				player = TPlayer.BLUE_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
@@ -88,7 +87,6 @@ public class Game {
 	
 	public void spawnBall() {
 		if(hasPlayers) {
-//			System.out.println("New ball released");
 			ballList.add(new ServerBall());
 		}
 	}
@@ -113,9 +111,14 @@ public class Game {
 			if(ball.isOutsideArena()) {
 				garbage.add(ball);
 			}
-			//System.out.println("Ball: (" + ball.getX() + "," + ball.getY() + ")");
 		}
 		for(ServerBall ball : garbage) {
+			if(GameSettings.isRed(ball.getLastHit())) {
+				redScore += GameSettings.COMBO_SCORE[ball.getCombo()];
+			}
+			else if(GameSettings.isBlue(ball.getLastHit())) {
+				blueScore += GameSettings.COMBO_SCORE[ball.getCombo()];
+			}
 			ballList.remove(ball);
 		}
 		checkCollision();
