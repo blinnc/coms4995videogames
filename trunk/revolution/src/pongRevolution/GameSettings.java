@@ -18,7 +18,7 @@ public class GameSettings {
 	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 2;
 	
 	// Ball settings
-	public static final int BALL_RADIUS = 10;
+	public static final int BALL_RADIUS = 5;
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
 	public static final double COMBO_SPEED[] = {2, 2.5, 3, 4, 5, 6};
 }
