@@ -359,7 +359,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
 		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx1.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER);
+				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(1).radius);
 			}
 	        
 			if (!gameinfo.state.paddles.get(2).equals(new TPaddle())) {
@@ -367,7 +367,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(2).angle;
 		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx2.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER);
+				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(2).radius);
 //		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
 			}
 	        
@@ -376,7 +376,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(3).angle;
 		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx3.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER);
+				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(3).radius);
 //		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
 			}
 	        
@@ -385,7 +385,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(4).angle;
 		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx4.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER);
+				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(4).radius);
 //		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
 			}
 	        
