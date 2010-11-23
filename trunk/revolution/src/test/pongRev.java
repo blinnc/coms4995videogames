@@ -33,8 +33,7 @@ import client.GameInfo;
 @SuppressWarnings("serial")
 public class pongRev extends JFrame implements KeyListener {
 	
-	private static final int CIRCLE_X = 25;
-	private static final int CIRCLE_Y = 25;
+	private static final int CIRCLE_X = 40;
 	private static final int CIRCLE_DIAMETER = 600;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
@@ -58,8 +57,6 @@ public class pongRev extends JFrame implements KeyListener {
 	int rotateChange = 0;
 	int rotateZ = 10;
 	int rotateChangeZ = 0;
-	private int otherColorZ = 0;
-	private int changeZ = 0;
 	int explode = 0;
 	int shardN=15;
 	int shardX[] = new int[shardN];
@@ -268,7 +265,8 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.setColor(new Color(otherColor,otherColor,255));
 		
 		AffineTransform tx22 = (AffineTransform) tx1.clone();
-		tx22.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER - red1.getHeight(null)/2);
+		tx22.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
+		tx22.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER);
 		((Graphics2D) dbg).drawImage(red1, tx22, this);
 
 		if(shape1 != null) {

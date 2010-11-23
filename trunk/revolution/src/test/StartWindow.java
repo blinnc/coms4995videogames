@@ -49,6 +49,7 @@ public class StartWindow extends javax.swing.JFrame {
 		super();
 		initGUI();
 		String[] teams = {"RED TEAM", "BLUE TEAM"};
+		serverInput.setText("localhost");
 		teamList.setListData(teams);
 	}
 	
