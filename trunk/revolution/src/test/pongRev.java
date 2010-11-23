@@ -35,20 +35,20 @@ public class pongRev extends JFrame implements KeyListener {
 	
 	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_Y = 50;
-	private static final int CIRCLE_DIAMETER = 510;
+	private static final int CIRCLE_DIAMETER = 700;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
-	Rectangle paddle1 = new Rectangle(540, 280, 20, 40);
-	Shape shape1 = null;//new Rectangle(540, 280, 20, 40);
+	Rectangle paddle1 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+	Shape shape1 = new Rectangle(540, 280, 20, 40);
 	
-	Rectangle paddle2 = new Rectangle(540, 280, 20, 40);
-	Shape shape2 = null;//new Rectangle(540, 280, 20, 40);
+	Rectangle paddle2 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+	Shape shape2 = new Rectangle(540, 280, 20, 40);
 	
-	Rectangle paddle3 = new Rectangle(540, 280, 20, 40);
-	Shape shape3 = null;//new Rectangle(540, 280, 20, 40);
+	Rectangle paddle3 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+	Shape shape3 = new Rectangle(540, 280, 20, 40);
 	
-	Rectangle paddle4 = new Rectangle(540, 280, 20, 40);
-	Shape shape4 = null;//new Rectangle(540, 280, 20, 40);
+	Rectangle paddle4 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+	Shape shape4 = new Rectangle(540, 280, 20, 40);
 	boolean blah = false;
 	private Image dbImage;
 	private Graphics dbg; 
@@ -70,10 +70,11 @@ public class pongRev extends JFrame implements KeyListener {
 	int shardYS[] = new int[shardN];
 	int shardS[] = new int[shardN];
 	Color shardC[] = new Color[shardN];
-	Image backG = Toolkit.getDefaultToolkit().getImage("assets/backZ.gif");
-	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
+	Image backG = Toolkit.getDefaultToolkit().getImage("assets/back.png");
+	Image red1 = Toolkit.getDefaultToolkit().getImage("assets/red1.png");
 	private boolean a;
 	private boolean d;
+	private boolean w;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
     
@@ -82,7 +83,7 @@ public class pongRev extends JFrame implements KeyListener {
 		super( "Pong Revolution" );
         setBackground(Color.black );
         setForeground(Color.white);
-        setSize( 900, 600 );
+        setSize( 1000, 800 );
         //paddle = new Rectangle(540, 280, 20, 40);
         this.addKeyListener(this);
         setVisible(true);
@@ -176,7 +177,6 @@ public class pongRev extends JFrame implements KeyListener {
 		//dbg.fillRect (0, 0, this.getSize().width, this.getSize().height); 
 		
 		dbg.drawImage(backG,6,6,this);
-		dbg.drawImage(score,600,50,this);
 		if(explode ==205)
 		{		
 			for(int z =0; z<shardN; z++)
@@ -329,7 +329,7 @@ public class pongRev extends JFrame implements KeyListener {
 		}
 		else if (c == 'w')
 		{
-			//explode = 205;
+			w = true;
 		}
 		else if (c == 's')
 		{
@@ -396,6 +396,14 @@ public class pongRev extends JFrame implements KeyListener {
 	    		} catch (TException e) {
 	    			e.printStackTrace();
 	    		}
+	        }
+	        if (w) {
+	        	w = false;
+	        	try {
+	        		gameinfo.client.jump(gameinfo.player);
+	        	} catch (TException e) {
+	        		e.printStackTrace();
+	        	}
 	        }
 	    }
 	}
