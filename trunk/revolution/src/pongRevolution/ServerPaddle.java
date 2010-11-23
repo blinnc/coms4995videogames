@@ -16,8 +16,9 @@ public class ServerPaddle {
 	double[] ypoints;
 	
 	private double length;
+	private int jumpCounter;
 	
-	private boolean isInvisible, isSpeedup, isMagnetic;
+	private boolean isInvisible, isSpeedup, isMagnetic, isJumping;
 	
 	private TPlayer player;
 	private TPaddle tPaddle;
@@ -34,16 +35,10 @@ public class ServerPaddle {
 		isSpeedup = false;
 		isMagnetic = false;
 		direction = TDirection.NONE;
+		isJumping = false;
+		jumpCounter = 0;
 		
 		tPaddle = new TPaddle(r, t, length, player, isInvisible, isSpeedup, isMagnetic);
-	}
-	
-	/**
-	 * Translate the paddle.
-	 */
-	public void translate(double dt, double dr) {
-		t += dt;
-		r += dr;
 	}
 	
 	public double getX() {
@@ -77,16 +72,17 @@ public class ServerPaddle {
 	public TPaddle getTPaddle() {
 		return tPaddle;
 	}
-	
-	public TDirection getDirection() {
-		return direction;
-	}
 
 	public void setDirection(TDirection direction) {
 		this.direction = direction;
 	}
 
 	public void move() {
+		if(isJumping) {
+			jumpCounter++;
+			r = GameSettings.ARENA_RADIUS - getJumpHeight();
+		}
+		
 		if(direction == TDirection.NONE) {
 			return;
 		}
@@ -104,6 +100,19 @@ public class ServerPaddle {
 	}
 	
 	public void jump() {
+		if(!isJumping) {
+			isJumping = true;
+			jumpCounter = 0;
+		}
+	}
+	
+	private double getJumpHeight() {
+		double height = GameSettings.PADDLE_JUMP_INIT_VELOCITY * jumpCounter - GameSettings.PADDLE_JUMP_ACCEL * Math.pow(jumpCounter, 2);
+		if(height < 0) {
+			height = 0;
+			isJumping = false;
+		}
+		return height;
 	}
 	
 	public void setSpeedUp(boolean enable) {
