@@ -29,7 +29,7 @@ public class ServerPaddle {
 		this.player = player;
 		getBounds();
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];
-		r = GameSettings.ARENA_RADIUS - 10;
+		r = GameSettings.ARENA_RADIUS;
 		vt = GameSettings.PADDLE_VELOCITY;
 		isInvisible = false;
 		isSpeedup = false;
