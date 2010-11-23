@@ -81,6 +81,7 @@ public class ServerPaddle {
 		if(isJumping) {
 			jumpCounter++;
 			r = GameSettings.ARENA_RADIUS - getJumpHeight();
+			tPaddle.setRadius(r);
 		}
 		
 		if(direction == TDirection.NONE) {
