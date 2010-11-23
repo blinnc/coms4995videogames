@@ -317,6 +317,10 @@ public class pongRev extends JFrame implements KeyListener {
 	        	    }
 	        	}
 	        }
+	        dbg.setColor(Color.red);
+	        dbg.drawString("Red Score: " + gameinfo.state.redScore, 550, 50);
+	        dbg.setColor(Color.blue);
+	        dbg.drawString("Blue Score: " + gameinfo.state.blueScore, 550, 65);
 		}
         
 //        dbg.setColor(Color.orange);
