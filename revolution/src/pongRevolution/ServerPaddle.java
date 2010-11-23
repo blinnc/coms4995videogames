@@ -1,13 +1,10 @@
 package pongRevolution;
 
-import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
 import network.TDirection;
-import network.TGameState;
 import network.TPaddle;
 import network.TPlayer;
-import network.TPowerUp;
 
 public class ServerPaddle {
 	double t;
@@ -20,9 +17,8 @@ public class ServerPaddle {
 	
 	private double length;
 	
-	private boolean isInvisible, isSpeedup, isMagnetic, isJumping;
+	private boolean isInvisible, isSpeedup, isMagnetic;
 	
-	private TPowerUp powerup;
 	private TPlayer player;
 	private TPaddle tPaddle;
 	
@@ -72,22 +68,6 @@ public class ServerPaddle {
 	
 	public double getLength() {
 		return length;
-	}
-	
-	public boolean isInvisible() {
-		return isInvisible;
-	}
-	
-	public boolean isSpeedup() {
-		return isSpeedup;
-	}
-	
-	public boolean isMagnetic() {
-		return isMagnetic;
-	}
-	
-	public boolean isJumping() {
-		return isJumping;
 	}
 	
 	public TPlayer getPlayer() {
