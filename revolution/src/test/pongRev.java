@@ -33,22 +33,22 @@ import client.GameInfo;
 @SuppressWarnings("serial")
 public class pongRev extends JFrame implements KeyListener {
 	
-	private static final int CIRCLE_X = 50;
-	private static final int CIRCLE_Y = 50;
-	private static final int CIRCLE_DIAMETER = 700;
+	private static final int CIRCLE_X = 25;
+	private static final int CIRCLE_Y = 25;
+	private static final int CIRCLE_DIAMETER = 600;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
 	Rectangle paddle1 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape1 = new Rectangle(540, 280, 20, 40);
+	Shape shape1 = null;//new Rectangle(540, 280, 20, 40);
 	
 	Rectangle paddle2 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape2 = new Rectangle(540, 280, 20, 40);
+	Shape shape2 = null;//new Rectangle(540, 280, 20, 40);
 	
 	Rectangle paddle3 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape3 = new Rectangle(540, 280, 20, 40);
+	Shape shape3 = null;//new Rectangle(540, 280, 20, 40);
 	
 	Rectangle paddle4 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape4 = new Rectangle(540, 280, 20, 40);
+	Shape shape4 = null;//new Rectangle(540, 280, 20, 40);
 	boolean blah = false;
 	private Image dbImage;
 	private Graphics dbg; 
@@ -84,7 +84,7 @@ public class pongRev extends JFrame implements KeyListener {
 		super( "Pong Revolution" );
         setBackground(Color.black );
         setForeground(Color.white);
-        setSize( 1000, 800 );
+        setSize( 800, 650 );
         //paddle = new Rectangle(540, 280, 20, 40);
         this.addKeyListener(this);
         setVisible(true);
@@ -177,7 +177,8 @@ public class pongRev extends JFrame implements KeyListener {
 		//dbg.setColor (getBackground ()); 
 		//dbg.fillRect (0, 0, this.getSize().width, this.getSize().height); 
 		
-		dbg.drawImage(backG,6,6,this);
+		
+		dbg.drawImage(backG,0,0,this);
 		if(explode ==205)
 		{		
 			for(int z =0; z<shardN; z++)
@@ -267,7 +268,7 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.setColor(new Color(otherColor,otherColor,255));
 		
 		AffineTransform tx22 = (AffineTransform) tx1.clone();
-		tx22.translate(400, 750);
+		tx22.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER - red1.getHeight(null)/2);
 		((Graphics2D) dbg).drawImage(red1, tx22, this);
 
 		if(shape1 != null) {
