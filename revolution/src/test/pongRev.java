@@ -33,7 +33,7 @@ import client.GameInfo;
 @SuppressWarnings("serial")
 public class pongRev extends JFrame implements KeyListener {
 	
-	private static final int CIRCLE_X = 40;
+	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_DIAMETER = 600;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
@@ -75,6 +75,8 @@ public class pongRev extends JFrame implements KeyListener {
 	Image redBall = Toolkit.getDefaultToolkit().getImage("assets/redball.png");
 	Image blueBall = Toolkit.getDefaultToolkit().getImage("assets/blueball.png");
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
+	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
+	Image AD = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -84,13 +86,13 @@ public class pongRev extends JFrame implements KeyListener {
 	AffineTransform tx2;
 	AffineTransform tx3;
 	AffineTransform tx4;
-    
+	AffineTransform txAD;
 	public pongRev()
 	{
 		super( "Pong Revolution" );
         setBackground(Color.black );
         setForeground(Color.white);
-        setSize( 800, 650 );
+        setSize( 1000, 700 );
         //paddle = new Rectangle(540, 280, 20, 40);
         this.addKeyListener(this);
         setVisible(true);
@@ -185,6 +187,7 @@ public class pongRev extends JFrame implements KeyListener {
 		
 		
 		dbg.drawImage(backG,0,0,this);
+		dbg.drawImage(score,700,0,this);
 		if(explode ==205)
 		{		
 			for(int z =0; z<shardN; z++)
@@ -274,6 +277,7 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.setColor(new Color(otherColor,otherColor,255));
 		
 		((Graphics2D) dbg).drawImage(red1, tx1, this);
+		((Graphics2D) dbg).drawImage(AD, tx1, this); //FIX THIS OFFSET FOR THE CONTROL AD
 		((Graphics2D) dbg).drawImage(red2, tx2, this);
 		((Graphics2D) dbg).drawImage(blue1, tx3, this);
 		((Graphics2D) dbg).drawImage(blue2, tx4, this);
@@ -364,6 +368,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private void movePaddle() throws InterruptedException {
 	    while (true) {
 	        Thread.sleep(15);
+	        int offset = 0;
 	        try {
 				gameinfo.state = gameinfo.client.poll(gameinfo.player);
 			} catch (TException e) {
@@ -374,7 +379,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
 		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx1.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(1).radius - 5);
+				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(1).radius + offset);
 			}
 	        
 			if (!gameinfo.state.paddles.get(2).equals(new TPaddle())) {
@@ -382,7 +387,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(2).angle;
 		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx2.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(2).radius - 5);
+				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(2).radius + offset);
 //		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
 			}
 	        
@@ -391,7 +396,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(3).angle;
 		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx3.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(3).radius - 5);
+				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(3).radius + offset);
 //		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
 			}
 	        
@@ -400,7 +405,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(4).angle;
 		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx4.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(4).radius - 5);
+				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(4).radius + offset);
 //		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
 			}
 	        
