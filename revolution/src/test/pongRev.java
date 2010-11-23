@@ -77,6 +77,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private boolean w;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
+	AffineTransform tx1;
     
 	public pongRev()
 	{
@@ -265,7 +266,10 @@ public class pongRev extends JFrame implements KeyListener {
 		
 		dbg.setColor(new Color(otherColor,otherColor,255));
 		
-		
+		AffineTransform tx22 = (AffineTransform) tx1.clone();
+		tx22.translate(400, 750);
+		((Graphics2D) dbg).drawImage(red1, tx22, this);
+
 		if(shape1 != null) {
 			//dbg.draw(shape);
 			((Graphics2D) dbg).fill(shape1);
@@ -346,7 +350,7 @@ public class pongRev extends JFrame implements KeyListener {
 				e.printStackTrace();
 			}
 			if (!gameinfo.state.paddles.get(1).equals(new TPaddle())) {
-		        AffineTransform tx1 = new AffineTransform();
+		        tx1 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
 		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        shape1 = (Path2D) tx1.createTransformedShape(paddle1);
