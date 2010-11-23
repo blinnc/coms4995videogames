@@ -72,6 +72,9 @@ public class pongRev extends JFrame implements KeyListener {
 	Image red2 = Toolkit.getDefaultToolkit().getImage("assets/red2.png");
 	Image blue1 = Toolkit.getDefaultToolkit().getImage("assets/blue1.png");
 	Image blue2 = Toolkit.getDefaultToolkit().getImage("assets/blue2.png");
+	Image redBall = Toolkit.getDefaultToolkit().getImage("assets/redball.png");
+	Image blueBall = Toolkit.getDefaultToolkit().getImage("assets/blueball.png");
+	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -290,20 +293,28 @@ public class pongRev extends JFrame implements KeyListener {
 //		}
 		if (gameinfo.state != null) {
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
+	            Image img = null;
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
 	        		dbg.setColor(Color.GREEN);
+	        		img = neutralBall;
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
 	        		dbg.setColor(Color.BLUE);
+	        		img = blueBall;
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.RED_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.RED_TWO) {
 	        		dbg.setColor(Color.RED);
+	        		img = redBall;
 	        	}
 	        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
-	        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - gameinfo.settings.ballRadius,
-	        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - gameinfo.settings.ballRadius, 
-	        			gameinfo.settings.ballRadius*2, gameinfo.settings.ballRadius*2);
-	        	
+	        	    if (j == 0) {
+	        	        dbg.drawImage(img, (int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - img.getWidth(null) / 2,
+	                            -(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - img.getHeight(null) / 2, this);
+	        	    } else {
+        	        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - gameinfo.settings.ballRadius,
+        	        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - gameinfo.settings.ballRadius, 
+        	        			gameinfo.settings.ballRadius*2, gameinfo.settings.ballRadius*2);
+	        	    }
 	        	}
 	        }
 		}
@@ -359,7 +370,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
 		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx1.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(1).radius);
+				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(1).radius - 5);
 			}
 	        
 			if (!gameinfo.state.paddles.get(2).equals(new TPaddle())) {
@@ -367,7 +378,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(2).angle;
 		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx2.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(2).radius);
+				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(2).radius - 5);
 //		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
 			}
 	        
@@ -376,7 +387,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(3).angle;
 		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx3.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(3).radius);
+				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(3).radius - 5);
 //		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
 			}
 	        
@@ -385,7 +396,7 @@ public class pongRev extends JFrame implements KeyListener {
 		        paddleRotation = gameinfo.state.paddles.get(4).angle;
 		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 		        tx4.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(4).radius);
+				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(4).radius - 5);
 //		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
 			}
 	        
