@@ -35,7 +35,6 @@ public class Game {
 		redScore = 0;
 		blueScore = 0;
 		ballSpawnCount = GameSettings.GAME_START_DELAY;
-		// TODO: wipe any paddle attributes
 	}
 	
 	public void movePaddle(TPlayer requester, TDirection dir) {
@@ -155,13 +154,13 @@ public class Game {
 				
 				if (ball.contains(points[0])) {
 					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
-						ball.setT(180 + 2 * paddleArray[i].getT() - ball.getT());
+						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
 						ball.setLastHit(paddleArray[i].getPlayer());
 					}
 				}
 				if (ball.contains(points[1])) {
 					if (points[1].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						ball.setT(180 + 2 * paddleArray[i].getT() - ball.getT());
+						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
 						ball.setLastHit(paddleArray[i].getPlayer());
 					}
 				}
@@ -169,7 +168,7 @@ public class Game {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (!points[0].equals(points[1])) {
 							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-							ball.setT(180 + 2 * (paddleArray[i].getT() + 180 + Math.toDegrees(angle)) - ball.getT());
+							ball.setAngle(180 + 2 * (paddleArray[i].getT() + 180 + Math.toDegrees(angle)) - ball.getAngle());
 							ball.setLastHit(paddleArray[i].getPlayer());
 						}
 					}
@@ -178,7 +177,7 @@ public class Game {
 					if (points[3].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (!points[0].equals(points[1])) {
 							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-							ball.setT(180 + 2 * (paddleArray[i].getT() + 180 + angle) - ball.getT());
+							ball.setAngle(180 + 2 * (paddleArray[i].getT() + 180 + angle) - ball.getAngle());
 							ball.setLastHit(paddleArray[i].getPlayer());
 						}
 					}
@@ -202,6 +201,7 @@ public class Game {
 		for(ServerBall ball : ballList) {
 			balls.add(ball.getTball());
 		}
+		
 		List<TPosition> connections = new ArrayList<TPosition>();
 		if (pointsTest!= null) {
 			connections.add(new TPosition(pointsTest[0].getX(), pointsTest[0].getY()));
@@ -209,6 +209,7 @@ public class Game {
 			connections.add(new TPosition(pointsTest[2].getX(), pointsTest[2].getY()));
 			connections.add(new TPosition(pointsTest[3].getX(), pointsTest[3].getY()));
 		}
-		return new TGameState(paddles,balls,0,0,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections);
+		
+		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections);
 	}
 }

@@ -1,8 +1,6 @@
 package pongRevolution;
 
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,13 +27,12 @@ public class ServerBall {
 		
 		// Random direction
 		t = Math.random() * 360;
-		updateVelocity();
 		
+		updateVelocity();
 		updatePosition();
 	}
 	
 	public void updatePosition() {
-		// TODO: fix this
 		TPosition pos = new TPosition(x, y);
 		List<TPosition> positions = new ArrayList<TPosition>();
 		positions.add(pos);
@@ -48,38 +45,6 @@ public class ServerBall {
 		vy = speed * Math.sin(Math.toRadians(t));
 	}
 	
-	/**
-	 * Sets the horizontal velocity.
-	 * @param vx the new horizontal velocity
-	 */
-	public void setVX(double vx) {
-		this.vx = vx;
-	}
-	
-	/**
-	 * Sets the vertical velocity.
-	 * @param vy the new vertical velocity
-	 */
-	public void setVY(double vy) {
-		this.vy = vy;
-	}
-	
-	/**
-	 * Gets the horizontal velocity.
-	 * @return the current horizontal velocity
-	 */
-	public double getVX() {
-		return vx;
-	}
-	
-	/**
-	 * Gets the vertical velocity.
-	 * @return the current vertical velocity
-	 */
-	public double getVY() {
-		return vy;
-	}
-	
 	public double getX() {
 		return x;
 	}
@@ -88,12 +53,8 @@ public class ServerBall {
 		return y;
 	}
 	
-	public double getT() {
+	public double getAngle() {
 		return t;
-	}
-	
-	public double getR() {
-		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 	}
 	
 	public int getCombo() {
@@ -115,7 +76,7 @@ public class ServerBall {
 		tball.player = player;
 	}
 
-	public void setT(double t) {
+	public void setAngle(double t) {
 		this.t = t;
 		updateVelocity();
 	}
@@ -139,7 +100,7 @@ public class ServerBall {
 	}
 
 	public boolean isOutsideArena() {
-		return getR() > GameSettings.ARENA_RADIUS + 10;
+		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) > GameSettings.ARENA_RADIUS + 10;
 	}
 	
 	/**
@@ -148,15 +109,6 @@ public class ServerBall {
 	 */
 	public boolean contains(Point2D p) {
 		return (Math.sqrt(Math.pow(x - p.getX(), 2) + Math.pow(y - p.getY(), 2)) <= GameSettings.BALL_RADIUS);
-	}
-
-	/**
-	 * Gets the bounds of the ball
-	 * 
-	 * @return the rectangle containing the bounds
-	 */
-	public Rectangle2D getBounds() {
-		return new Rectangle2D.Double(x, y, 2 * GameSettings.BALL_RADIUS, 2 * GameSettings.BALL_RADIUS);
 	}
 	
 	/**
