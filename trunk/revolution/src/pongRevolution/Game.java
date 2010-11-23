@@ -13,7 +13,7 @@ import network.TPosition;
 import network.TPowerUp;
 
 public class Game {	
-	private List<ServerBall> ballList;
+	private List<ServerBall> ballList, ballListCopy;
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
@@ -22,6 +22,7 @@ public class Game {
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
+		ballListCopy = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[5];
 		hasPlayers = false;
 		for(int i = 0; i < paddleArray.length; i++) {
@@ -98,6 +99,10 @@ public class Game {
 			spawnBall();
 			ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
 		}
+		synchronized (this) {
+			ballListCopy.clear();
+			ballListCopy.addAll(ballList);
+		}
 	}
 	
 	/**
@@ -147,6 +152,10 @@ public class Game {
 			
 			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
+				if(!ball.canHit(paddleArray[i].getPlayer())) {
+					continue;
+				}
+				
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				pointsTest = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
@@ -197,9 +206,13 @@ public class Game {
 				paddles.add(new TPaddle());
 			}
 		}
+		
 		List<TBall> balls = new ArrayList<TBall>();
-		for(ServerBall ball : ballList) {
-			balls.add(ball.getTball());
+		
+		synchronized (this) {
+			for(ServerBall ball : ballListCopy) {
+				balls.add(ball.getTball());
+			}
 		}
 		
 		List<TPosition> connections = new ArrayList<TPosition>();

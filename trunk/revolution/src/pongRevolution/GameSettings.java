@@ -10,6 +10,7 @@ public class GameSettings {
 	
 	// Arena settings
 	public static final int ARENA_RADIUS = 300;
+	public static final double BALL_OUT_BUFFER = 10;
 	public static final double STARTING_POSITIONS[] = {0, 0, 180, 90, 270};
 	
 	// Paddle settings
@@ -27,6 +28,7 @@ public class GameSettings {
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
 	public static final double COMBO_SPEED[] = {2, 2.75, 3.5, 4.25, 5, 5.75};
 	
+	public static final int BALL_REHIT_TIME = 50;
 
 	
 	public static boolean isRed(TPlayer player) {

@@ -14,7 +14,7 @@ public class ServerBall {
 	private double x, y;
 	private double t;
 	
-	private int combo;
+	private int combo, rehit;
 	private TPlayer lastHit;
 	private TBall tball;
 	
@@ -22,6 +22,7 @@ public class ServerBall {
 		x = 0;
 		y = 0;
 		combo = 0;
+		rehit = 0;
 		
 		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
@@ -65,6 +66,10 @@ public class ServerBall {
 	public TPlayer getLastHit() {
 		return lastHit;
 	}
+	
+	public boolean canHit(TPlayer player) {
+		return player != lastHit || rehit == 0;
+	}
 
 	public void setLastHit(TPlayer player) {
 		if(GameSettings.isRed(lastHit) == GameSettings.isRed(player)) {
@@ -75,6 +80,7 @@ public class ServerBall {
 		}
 		lastHit = player;
 		tball.player = player;
+		rehit = GameSettings.BALL_REHIT_TIME;
 	}
 
 	public void setAngle(double t) {
@@ -86,6 +92,9 @@ public class ServerBall {
 		x += vx;
 		y += vy;
 		updatePosition();
+		if(rehit > 0) {
+			rehit--;
+		}
 	}
 	
 	public void increaseCombo() {
@@ -101,7 +110,7 @@ public class ServerBall {
 	}
 
 	public boolean isOutsideArena() {
-		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) > GameSettings.ARENA_RADIUS + 10;
+		return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2)) > GameSettings.ARENA_RADIUS + GameSettings.BALL_OUT_BUFFER;
 	}
 	
 	/**
