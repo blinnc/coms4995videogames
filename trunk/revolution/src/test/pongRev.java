@@ -37,17 +37,17 @@ public class pongRev extends JFrame implements KeyListener {
 	private static final int CIRCLE_DIAMETER = 600;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
 	public double paddleRotation = 0;
-	Rectangle paddle1 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape1 = null;//new Rectangle(540, 280, 20, 40);
-	
-	Rectangle paddle2 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape2 = null;//new Rectangle(540, 280, 20, 40);
-	
-	Rectangle paddle3 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape3 = null;//new Rectangle(540, 280, 20, 40);
-	
-	Rectangle paddle4 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
-	Shape shape4 = null;//new Rectangle(540, 280, 20, 40);
+//	Rectangle paddle1 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+//	Shape shape1 = null;//new Rectangle(540, 280, 20, 40);
+//	
+//	Rectangle paddle2 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+//	Shape shape2 = null;//new Rectangle(540, 280, 20, 40);
+//	
+//	Rectangle paddle3 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+//	Shape shape3 = null;//new Rectangle(540, 280, 20, 40);
+//	
+//	Rectangle paddle4 = new Rectangle(CIRCLE_DIAMETER + CIRCLE_X, CIRCLE_DIAMETER / 2 + CIRCLE_X, 20, 40);
+//	Shape shape4 = null;//new Rectangle(540, 280, 20, 40);
 	boolean blah = false;
 	private Image dbImage;
 	private Graphics dbg; 
@@ -69,12 +69,18 @@ public class pongRev extends JFrame implements KeyListener {
 	Color shardC[] = new Color[shardN];
 	Image backG = Toolkit.getDefaultToolkit().getImage("assets/back.png");
 	Image red1 = Toolkit.getDefaultToolkit().getImage("assets/red1.png");
+	Image red2 = Toolkit.getDefaultToolkit().getImage("assets/red2.png");
+	Image blue1 = Toolkit.getDefaultToolkit().getImage("assets/blue1.png");
+	Image blue2 = Toolkit.getDefaultToolkit().getImage("assets/blue2.png");
 	private boolean a;
 	private boolean d;
 	private boolean w;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
 	AffineTransform tx1;
+	AffineTransform tx2;
+	AffineTransform tx3;
+	AffineTransform tx4;
     
 	public pongRev()
 	{
@@ -264,24 +270,24 @@ public class pongRev extends JFrame implements KeyListener {
 		
 		dbg.setColor(new Color(otherColor,otherColor,255));
 		
-		AffineTransform tx22 = (AffineTransform) tx1.clone();
-		tx22.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-		tx22.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER);
-		((Graphics2D) dbg).drawImage(red1, tx22, this);
+		((Graphics2D) dbg).drawImage(red1, tx1, this);
+		((Graphics2D) dbg).drawImage(red2, tx2, this);
+		((Graphics2D) dbg).drawImage(blue1, tx3, this);
+		((Graphics2D) dbg).drawImage(blue2, tx4, this);
 
-		if(shape1 != null) {
-			//dbg.draw(shape);
-			((Graphics2D) dbg).fill(shape1);
-		}
-		if(shape2 != null) {
-			((Graphics2D) dbg).fill(shape2);
-		}
-		if(shape3 != null) {
-			((Graphics2D) dbg).fill(shape3);
-		}
-		if(shape4 != null) {
-			((Graphics2D) dbg).fill(shape4);
-		}
+//		if(shape1 != null) {
+//			//dbg.draw(shape);
+//			((Graphics2D) dbg).fill(shape1);
+//		}
+//		if(shape2 != null) {
+//			((Graphics2D) dbg).fill(shape2);
+//		}
+//		if(shape3 != null) {
+//			((Graphics2D) dbg).fill(shape3);
+//		}
+//		if(shape4 != null) {
+//			((Graphics2D) dbg).fill(shape4);
+//		}
 		if (gameinfo.state != null) {
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
@@ -352,28 +358,35 @@ public class pongRev extends JFrame implements KeyListener {
 		        tx1 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(1).angle;
 		        tx1.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape1 = (Path2D) tx1.createTransformedShape(paddle1);
+		        tx1.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
+				tx1.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER);
 			}
 	        
 			if (!gameinfo.state.paddles.get(2).equals(new TPaddle())) {
-		        AffineTransform tx2 = new AffineTransform();
+		        tx2 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(2).angle;
 		        tx2.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
+		        tx2.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
+				tx2.translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER);
+//		        shape2 = (Path2D) tx2.createTransformedShape(paddle2);
 			}
 	        
 			if (!gameinfo.state.paddles.get(3).equals(new TPaddle())) {
-		        AffineTransform tx3 = new AffineTransform();
+		        tx3 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(3).angle;
 		        tx3.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
+		        tx3.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
+				tx3.translate(CIRCLE_CENTER - blue1.getWidth(null)/2, CIRCLE_DIAMETER);
+//		        shape3 = (Path2D) tx3.createTransformedShape(paddle3);
 			}
 	        
 			if (!gameinfo.state.paddles.get(4).equals(new TPaddle())) {
-		        AffineTransform tx4 = new AffineTransform();
+		        tx4 = new AffineTransform();
 		        paddleRotation = gameinfo.state.paddles.get(4).angle;
 		        tx4.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
-		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
+		        tx4.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
+				tx4.translate(CIRCLE_CENTER - blue2.getWidth(null)/2, CIRCLE_DIAMETER);
+//		        shape4 = (Path2D) tx4.createTransformedShape(paddle4);
 			}
 	        
 	        
