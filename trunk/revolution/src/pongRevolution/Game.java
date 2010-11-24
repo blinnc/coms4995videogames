@@ -175,19 +175,23 @@ public class Game {
 				}
 				if (ball.contains(points[2])) {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						if (!points[0].equals(points[1])) {
-							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-							ball.setAngle(180 + 2 * (paddleArray[i].getT() + 180 + Math.toDegrees(angle)) - ball.getAngle());
-							ball.setLastHit(paddleArray[i].getPlayer());
+						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
+							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
+								double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
+								ball.setAngle((ball.getAngle() - 180) + 2 * (Math.toDegrees(angle) + paddleArray[i].getT() - 180 - (ball.getAngle() - 180)));
+								ball.setLastHit(paddleArray[i].getPlayer());
+							}
 						}
 					}
 				}
 				if (ball.contains(points[3])) {
 					if (points[3].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						if (!points[0].equals(points[1])) {
-							double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-							ball.setAngle(180 + 2 * (paddleArray[i].getT() + 180 + angle) - ball.getAngle());
-							ball.setLastHit(paddleArray[i].getPlayer());
+						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
+							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
+								double angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
+								ball.setAngle((ball.getAngle() - 180) - 2 * (Math.toDegrees(angle) + paddleArray[i].getT() - 180 - (ball.getAngle() - 180)));
+								ball.setLastHit(paddleArray[i].getPlayer());
+							}
 						}
 					}
 				}

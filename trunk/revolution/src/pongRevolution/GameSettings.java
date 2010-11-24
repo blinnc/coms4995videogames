@@ -6,15 +6,15 @@ public class GameSettings {
 	public static final int CLOCK_INTERVAL = 15;
 	
 	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;
-	public static final int BALL_RELEASE_INTERVAL = 1000 / CLOCK_INTERVAL;
+	public static final int BALL_RELEASE_INTERVAL = 2000 / CLOCK_INTERVAL;
 	
 	// Arena settings
-	public static final int ARENA_RADIUS = 300;
+	public static final int ARENA_RADIUS = 290;
 	public static final double BALL_OUT_BUFFER = 10;
 	public static final double STARTING_POSITIONS[] = {0, 0, 180, 90, 270};
 	
 	// Paddle settings
-	public static final double PADDLE_LENGTH = 40;
+	public static final double PADDLE_LENGTH = 100;
 	public static final double PADDLE_TOP = 40;
 	public static final double PADDLE_HEIGHT = 20;
 	public static final double PADDLE_VELOCITY = 1.5;
