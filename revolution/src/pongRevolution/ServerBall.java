@@ -10,7 +10,7 @@ import network.TBall;
 import network.TPosition;
 
 public class ServerBall {
-	private static final int NUM_POSITIONS = 50;
+	private static final int NUM_POSITIONS = 20;
 	
 	private double vx, vy;
 	private double x, y;
