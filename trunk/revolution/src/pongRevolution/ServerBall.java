@@ -10,6 +10,8 @@ import network.TBall;
 import network.TPosition;
 
 public class ServerBall {
+	private static final int NUM_POSITIONS = 50;
+	
 	private double vx, vy;
 	private double x, y;
 	private double t;
@@ -18,11 +20,14 @@ public class ServerBall {
 	private TPlayer lastHit;
 	private TBall tball;
 	
+	private ArrayList<TPosition> prevPositions;
+	
 	public ServerBall() {
 		x = 0;
 		y = 0;
 		combo = 0;
 		rehit = 0;
+		prevPositions = new ArrayList<TPosition>();
 		
 		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
@@ -30,14 +35,23 @@ public class ServerBall {
 		t = Math.random() * 360;
 //		t = 270;
 		
+		addPosition(x, y);
 		updateVelocity();
 		updatePosition();
 	}
 	
 	public void updatePosition() {
-		TPosition pos = new TPosition(x, y);
 		List<TPosition> positions = new ArrayList<TPosition>();
-		positions.add(pos);
+		int[] comboSlot = GameSettings.COMBO_SLOTS[combo];
+		if(combo == 0) {
+			positions.add(prevPositions.get(0));
+		}
+		else {
+			for(int i = 0; i < combo; i++) {
+				positions.add(prevPositions.get(comboSlot[i]));
+			}
+		}
+		
 		tball.positions = positions;
 	}
 	
@@ -91,9 +105,18 @@ public class ServerBall {
 	public void move() {
 		x += vx;
 		y += vy;
-		updatePosition();
+		addPosition(x, y);		
 		if(rehit > 0) {
 			rehit--;
+		}
+		updatePosition();
+	}
+	
+	private void addPosition(double x, double y) {
+		TPosition pos = new TPosition(x, y);
+		prevPositions.add(0, pos);
+		if(prevPositions.size() > NUM_POSITIONS) {
+			prevPositions.remove(prevPositions.size() - 1);
 		}
 	}
 	
