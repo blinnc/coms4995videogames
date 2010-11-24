@@ -256,7 +256,7 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.setColor(new Color(otherColor,otherColor,255));
 		
 		for (int i = 1; i < paddles.length; i++) {
-			if (i != gameinfo.player.getValue()) {
+			if (i != gameinfo.player.getValue() && tx[i] != null) {
 				((Graphics2D) dbg).drawImage(paddles[i], tx[i], this);
 			}
 		}
