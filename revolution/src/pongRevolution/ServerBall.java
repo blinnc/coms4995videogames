@@ -33,7 +33,6 @@ public class ServerBall {
 		
 		// Random direction
 		t = Math.random() * 360;
-//		t = 270;
 		
 		addPosition(x, y);
 		updateVelocity();
