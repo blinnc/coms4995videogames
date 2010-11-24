@@ -65,7 +65,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private static boolean waitForInput = true;
 	AffineTransform tx[] = new AffineTransform[5];
 	AffineTransform txAD;
-    int offset = 18;
+    int offset = 24;
 
 	public pongRev()
 	{
@@ -296,11 +296,11 @@ public class pongRev extends JFrame implements KeyListener {
 	        dbg.drawString("Blue Score: " + gameinfo.state.blueScore, 550, 65);
 		}
         
-        dbg.setColor(Color.orange);
-        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
-        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
-        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
-        }
+//        dbg.setColor(Color.orange);
+//        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
+//        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
+//        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
+//        }
         
 		//paint(dbg); 		
 		//dbg.setColor(Color.white);
