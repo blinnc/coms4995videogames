@@ -315,19 +315,19 @@ public class pongRev extends JFrame implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
-		if(c == 'a') 
+		if(c == 'a' || c == 'A') 
 		{
 			a = true;
 		} 
-		else if (c == 'd') 
+		else if (c == 'd' || c == 'D') 
 		{
 			d = true;
 		}
-		else if (c == 'w')
+		else if (c == 'w' || c == 'W')
 		{
 			w = true;
 		}
-		else if (c == 's')
+		else if (c == 's' || c == 'S')
 		{
 			explode = 205;
 		}
@@ -391,9 +391,9 @@ public class pongRev extends JFrame implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
-		if(c == 'a') {
+		if(c == 'a' || c == 'A') {
 			a = false;
-		} else if (c == 'd') {
+		} else if (c == 'd' || c == 'D') {
 			d = false;
 		}
 	}
