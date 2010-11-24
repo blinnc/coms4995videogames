@@ -66,6 +66,7 @@ public class pongRev extends JFrame implements KeyListener {
 	AffineTransform tx[] = new AffineTransform[5];
 	AffineTransform txAD;
     int offset = 24;
+    double ballRadius = 7.5;
 
 	public pongRev()
 	{
@@ -284,9 +285,10 @@ public class pongRev extends JFrame implements KeyListener {
 	        	        dbg.drawImage(img, (int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - img.getWidth(null) / 2,
 	                            -(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - img.getHeight(null) / 2, this);
 	        	    } else {
-        	        	dbg.fillOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - gameinfo.settings.ballRadius,
-        	        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - gameinfo.settings.ballRadius, 
-        	        			gameinfo.settings.ballRadius*2, gameinfo.settings.ballRadius*2);
+	        	        int br = (int) (ballRadius - j) *2;
+        	        	dbg.drawOval((int)gameinfo.state.balls.get(i).positions.get(j).xPos + CIRCLE_CENTER - br / 2,
+        	        			-(int)gameinfo.state.balls.get(i).positions.get(j).yPos + CIRCLE_CENTER - br / 2, 
+        	        			br, br);
 	        	    }
 	        	}
 	        }
@@ -302,9 +304,6 @@ public class pongRev extends JFrame implements KeyListener {
 //        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
 //        }
         
-		//paint(dbg); 		
-		//dbg.setColor(Color.white);
-		//dbg.drawOval(CIRCLE_X, CIRCLE_Y, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
 		g.drawImage(dbImage, 0, 0, this);
 	}
 	
