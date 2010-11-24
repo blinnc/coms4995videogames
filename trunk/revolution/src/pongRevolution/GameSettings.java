@@ -28,12 +28,12 @@ public class GameSettings {
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
 	public static final double COMBO_SPEED[] = {2, 2.75, 3.5, 4.25, 5, 5.75};
 	
-	public static final int COMBO_SLOTS[][] = {		{0, 0, 0, 0, 0, 0},
-													{0, 3, 0, 0, 0, 0},
-													{0, 2, 4, 0, 0, 0},
-													{0, 3, 6, 9, 0, 0},
-													{0, 2, 4, 6, 8, 0},
-													{0, 1, 2, 3, 4, 5} };
+	public static final int COMBO_SLOTS[][] = {		{0, 0, 0, 0, 0},
+													{0, 0, 0, 0, 0},
+													{0, 4, 0, 0, 0},
+													{0, 2, 4, 0, 0},
+													{0, 3, 6, 9, 0},
+													{0, 3, 6, 9, 12} };
 	
 	public static final int BALL_REHIT_TIME = 50;
 
