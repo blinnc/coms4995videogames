@@ -177,7 +177,17 @@ public class Game {
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
 				double paddleDiagonal2 = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_TOP / 2, 2));
 				
-				if (ball.contains(points[2])) {
+				if (ball.contains(points[0])) {
+					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
+						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
+						ball.setLastHit(paddleArray[i].getPlayer());
+					}
+				} else if (ball.contains(points[1])) {
+					if (points[1].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
+						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
+						ball.setLastHit(paddleArray[i].getPlayer());
+					}
+				} else if (ball.contains(points[2])) {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
 							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
@@ -210,16 +220,6 @@ public class Game {
 								ball.setLastHit(paddleArray[i].getPlayer());
 							}
 						}
-					}
-				} else if (ball.contains(points[0])) {
-					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
-						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
-						ball.setLastHit(paddleArray[i].getPlayer());
-					}
-				} else if (ball.contains(points[1])) {
-					if (points[1].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
-						ball.setLastHit(paddleArray[i].getPlayer());
 					}
 				}
 			}
