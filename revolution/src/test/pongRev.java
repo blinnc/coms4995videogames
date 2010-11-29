@@ -309,11 +309,11 @@ public class pongRev extends JFrame implements KeyListener {
 	        }
 		}
         
-        dbg.setColor(Color.green);
-        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
-        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
-        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
-        }
+//        dbg.setColor(Color.orange);
+//        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
+//        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
+//        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 4, 4);
+//        }
         
 		g.drawImage(dbImage, 0, 0, this);
 	}
