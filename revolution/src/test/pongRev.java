@@ -299,14 +299,12 @@ public class pongRev extends JFrame implements KeyListener {
 	        int yScore = 130;
 	        for(int temp = 0; temp < tempScore.length(); temp++)
 	        {
-	        	System.out.println(tempScore.charAt(temp)*30);
 	        	 dbg.drawImage(number, xScore + 0 + temp*30, yScore + 0, xScore + 30 + temp*30, yScore + 40, 0 + Character.getNumericValue(tempScore.charAt(temp))*30, 0, 30 + Character.getNumericValue(tempScore.charAt(temp))*30, 40, this);
 	        }
 	        xScore = 880;
 	        tempScore = Integer.toString(gameinfo.state.blueScore);
 	        for(int temp = 0; temp < tempScore.length(); temp++)
 	        {
-	        	System.out.println(tempScore.charAt(temp)*30);
 	        	dbg.drawImage(number, xScore + 0 + temp*30, yScore + 0, xScore + 30 + temp*30, yScore + 40, 0 + Character.getNumericValue(tempScore.charAt(temp))*30, 40, 30 + Character.getNumericValue(tempScore.charAt(temp))*30, 80, this);
 	        }
 		}
