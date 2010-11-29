@@ -163,6 +163,13 @@ public class ServerPaddle {
 		
 		double m1 = (y2 - y1) / (x2 - x1);
 		double m2 = -1 / m1;
+		if (x2 - x1 == 0) {
+			m1 = 999999999;
+			m2 = 0.0000001;
+		} else if (m1 == 0) {
+			m1 = 0.0000001;
+			m2 = 999999999;
+		}
 		double b1 = y2 - m1 * x2;
 		double b2 = y0 - m1 * x0; 
 		double b3 = other.getY() - m2 * other.getX();
@@ -177,9 +184,22 @@ public class ServerPaddle {
 		
 		double m3 = (y1 - y0) / (x1 - x0);
 		double m4 = -1 / m3;
+		if (x1 - x0 == 0) {
+			m3 = 999999999;
+			m4 = 0.0000001;
+		} else if (m3 == 0) {
+			m3 = 0.0000001;
+			m4 = 999999999;
+		}
 		double m5 = (y3 - y2) / (x3 - x2);
 		double m6 = -1 / m5;
-		
+		if (x3 - x2 == 0) {
+			m5 = 999999999;
+			m6 = 0.0000001;
+		} else if (m5 == 0) {
+			m5 = 0.0000001;
+			m6 = 999999999;
+		}
 		double b4 = y0 - m3 * x0;
 		double b5 = y2 - m5 * x2;
 		double b6 = other.getY() - m4 * other.getX();
