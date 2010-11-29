@@ -136,6 +136,14 @@ public class ServerPaddle {
 		ypoints[3] = (r * Math.sin(Math.toRadians(t)) + GameSettings.PADDLE_LENGTH / 2 * Math.cos(Math.toRadians(t)) + GameSettings.PADDLE_HEIGHT / 2 * Math.sin(Math.toRadians(t)));
 	}
 	
+	public Point2D[] getBoundPoints() {
+		Point2D[] points = new Point2D[4];
+		for(int i = 0; i < 4; i++) {
+			points[i] = new Point2D.Double(xpoints[i], ypoints[i]);
+		}
+		return points;
+	}
+	
 	/**
 	 * Gets the optimal horizontal connection point on the paddle.
 	 * @param other the other point that connects to the paddle
