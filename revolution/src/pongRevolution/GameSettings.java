@@ -20,7 +20,7 @@ public class GameSettings {
 	public static final double PADDLE_VELOCITY = 1.5;
 	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 2;
 	
-	public static final double PADDLE_JUMP_INIT_VELOCITY = 11;
+	public static final double PADDLE_JUMP_INIT_VELOCITY = 8;
 	public static final double PADDLE_JUMP_ACCEL = 0.3;
 	
 	// Ball settings
@@ -36,7 +36,7 @@ public class GameSettings {
 	
 	public static final int COMBO_SLOTS[][] = {		{0, 0, 0, 0, 0},
 													{0, 0, 0, 0, 0},
-													{0, 5, 0, 0, 0},
+													{0, 4, 0, 0, 0},
 													{0, 4, 7, 0, 0},
 													{0, 3, 6, 9, 0},
 													{0, 3, 6, 9, 12} };
