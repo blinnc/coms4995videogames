@@ -98,7 +98,11 @@ public class Game {
 	
 	public void spawnBall() {
 //		if(hasPlayers) {
-		if(fourPlayers) {
+		if (GameSettings.WAIT_FOR_FOUR) {
+			if (fourPlayers) {
+				ballList.add(new ServerBall());
+			}
+		} else {
 			ballList.add(new ServerBall());
 		}
 	}
