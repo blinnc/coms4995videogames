@@ -4,7 +4,7 @@ import network.TPlayer;
 
 public class GameSettings {
 	public static final int CLOCK_INTERVAL = 15;
-	public static final boolean WAIT_FOR_FOUR = true;
+	public static final boolean WAIT_FOR_FOUR = false;
 	
 	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;
 	public static final int BALL_RELEASE_INTERVAL = 2000 / CLOCK_INTERVAL;
@@ -24,10 +24,12 @@ public class GameSettings {
 	public static final double PADDLE_JUMP_INIT_VELOCITY = 8;
 	public static final double PADDLE_JUMP_ACCEL = 0.3;
 	
-	public static final double PADDLE_BOUNCE_ANGLE = 20;
+	public static final double PADDLE_BOUNCE_ANGLE = -44.4;
 	public static final boolean DEFAULT_BOUNCE_ANGLE = false;
 	
 	// Ball settings
+	public static final double RANDOM_DIRECTION = -1;
+	public static final double BALL_SPAWN_DIRECTION = RANDOM_DIRECTION;
 	public static final int BALL_RADIUS = 5;
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
 	public static final double INITIAL_SPEED = 3.5;
@@ -46,6 +48,8 @@ public class GameSettings {
 													{0, 3, 6, 9, 12} };
 	
 	public static final int BALL_REHIT_TIME = 20;
+	
+	
 
 	
 	public static boolean isRed(TPlayer player) {

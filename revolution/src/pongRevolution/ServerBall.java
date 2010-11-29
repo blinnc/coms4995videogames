@@ -32,7 +32,7 @@ public class ServerBall {
 		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
 		
 		// Random direction
-		t = Math.random() * 360;
+		t = GameSettings.BALL_SPAWN_DIRECTION == GameSettings.RANDOM_DIRECTION ? Math.random() * 360 : GameSettings.BALL_SPAWN_DIRECTION;
 		
 		addPosition(x, y);
 		updateVelocity();
