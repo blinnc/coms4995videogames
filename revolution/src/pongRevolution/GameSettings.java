@@ -41,7 +41,7 @@ public class GameSettings {
 													{0, 3, 6, 9, 0},
 													{0, 3, 6, 9, 12} };
 	
-	public static final int BALL_REHIT_TIME = 50;
+	public static final int BALL_REHIT_TIME = 20;
 
 	
 	public static boolean isRed(TPlayer player) {

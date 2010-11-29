@@ -81,7 +81,8 @@ public class ServerBall {
 	}
 	
 	public boolean canHit(TPlayer player) {
-		return player != lastHit || rehit == 0;
+//		return player != lastHit || rehit == 0;
+		return rehit == 0;
 	}
 
 	public void setLastHit(TPlayer player) {

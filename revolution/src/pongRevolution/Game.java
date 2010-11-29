@@ -17,7 +17,7 @@ public class Game {
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
-	private boolean hasPlayers;
+	private boolean hasPlayers, fourPlayers;
 	private Point2D[] pointsTest;
 	
 	public Game() {
@@ -25,6 +25,7 @@ public class Game {
 		ballListCopy = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[5];
 		hasPlayers = false;
+		fourPlayers = false;
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
@@ -82,11 +83,22 @@ public class Game {
 		}
 		System.out.println("Registed new player: " + player);
 		hasPlayers = player != TPlayer.NONE;
+		boolean missing = false;
+		for(int i = 1; i < 5; i++) {
+			if(paddleArray[i] == null) {
+				missing = true;
+			}
+		}
+		if(!missing) {
+			fourPlayers = true;
+		}
+		
 		return player;
 	}
 	
 	public void spawnBall() {
-		if(hasPlayers) {
+//		if(hasPlayers) {
+		if(fourPlayers) {
 			ballList.add(new ServerBall());
 		}
 	}
