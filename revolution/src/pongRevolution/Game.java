@@ -149,7 +149,7 @@ public class Game {
 				continue;
 			}
 			paddleArray[i].getBounds();
-			
+			pointsTest = paddleArray[i].getBoundPoints();
 			//System.out.println("Paddle: (" + paddleArray[i].getX() + "," + paddleArray[i].getY() + ")");
 			for (ServerBall ball : ballList) {
 				if(!ball.canHit(paddleArray[i].getPlayer())) {
@@ -157,7 +157,7 @@ public class Game {
 				}
 				
 				Point2D[] points = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
-				pointsTest = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
+//				pointsTest = paddleArray[i].getConnectionPoints(new Point2D.Double(ball.getX(), ball.getY()));
 				double paddleDiagonal = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_LENGTH / 2, 2));
 				double paddleDiagonal2 = Math.sqrt(Math.pow(GameSettings.PADDLE_HEIGHT / 2, 2) + Math.pow(GameSettings.PADDLE_TOP / 2, 2));
 				
@@ -226,6 +226,7 @@ public class Game {
 			connections.add(new TPosition(pointsTest[2].getX(), pointsTest[2].getY()));
 			connections.add(new TPosition(pointsTest[3].getX(), pointsTest[3].getY()));
 		}
+		
 		
 		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections);
 	}

@@ -27,7 +27,7 @@ public class pongRev extends JFrame implements KeyListener {
 	
 	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_DIAMETER = 600;
-	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2);
+	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2) + 6;
 	public double paddleRotation = 0;
 	private Image dbImage;
 	private Graphics dbg; 
@@ -66,7 +66,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private static boolean waitForInput = true;
 	AffineTransform tx[] = new AffineTransform[5];
 	AffineTransform txAD;
-    int offset = 24;
+    int offset = 33;
     double ballRadius = 7.5;
 
 	public pongRev()
@@ -167,7 +167,7 @@ public class pongRev extends JFrame implements KeyListener {
 		//dbg.fillRect (0, 0, this.getSize().width, this.getSize().height); 
 		
 		
-		dbg.drawImage(backG,0,0,this);
+		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
 		if(explode ==205)
 		{		
@@ -311,11 +311,11 @@ public class pongRev extends JFrame implements KeyListener {
 	        }
 		}
         
-//        dbg.setColor(Color.orange);
-//        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
-//        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
-//        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
-//        }
+        dbg.setColor(Color.green);
+        for (int i = 0; i < gameinfo.state.connections.size(); i++) {
+        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
+        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 3, 3);
+        }
         
 		g.drawImage(dbImage, 0, 0, this);
 	}

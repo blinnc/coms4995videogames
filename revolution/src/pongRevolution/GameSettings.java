@@ -9,14 +9,14 @@ public class GameSettings {
 	public static final int BALL_RELEASE_INTERVAL = 2000 / CLOCK_INTERVAL;
 	
 	// Arena settings
-	public static final int ARENA_RADIUS = 282;
+	public static final int ARENA_RADIUS = 278;
 	public static final double BALL_OUT_BUFFER = 22;
 	public static final double STARTING_POSITIONS[] = {0, 0, 180, 90, 270};
 	
 	// Paddle settings
-	public static final double PADDLE_LENGTH = 100;
+	public static final double PADDLE_LENGTH = 84;
 	public static final double PADDLE_TOP = 40;
-	public static final double PADDLE_HEIGHT = 20;
+	public static final double PADDLE_HEIGHT = 14;
 	public static final double PADDLE_VELOCITY = 1.5;
 	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 2;
 	
