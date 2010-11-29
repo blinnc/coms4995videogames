@@ -58,6 +58,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	Image ad = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
+	Image number = Toolkit.getDefaultToolkit().getImage("assets/number.png");
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -292,10 +293,22 @@ public class pongRev extends JFrame implements KeyListener {
 	        	    }
 	        	}
 	        }
-	        dbg.setColor(Color.red);
-	        dbg.drawString("Red Score: " + gameinfo.state.redScore, 550, 50);
-	        dbg.setColor(Color.blue);
-	        dbg.drawString("Blue Score: " + gameinfo.state.blueScore, 550, 65);
+	        
+	        String tempScore = Integer.toString(gameinfo.state.redScore);
+	        int xScore = 720;
+	        int yScore = 130;
+	        for(int temp = 0; temp < tempScore.length(); temp++)
+	        {
+	        	System.out.println(tempScore.charAt(temp)*30);
+	        	 dbg.drawImage(number, xScore + 0 + temp*30, yScore + 0, xScore + 30 + temp*30, yScore + 40, 0 + Character.getNumericValue(tempScore.charAt(temp))*30, 0, 30 + Character.getNumericValue(tempScore.charAt(temp))*30, 40, this);
+	        }
+	        xScore = 880;
+	        tempScore = Integer.toString(gameinfo.state.blueScore);
+	        for(int temp = 0; temp < tempScore.length(); temp++)
+	        {
+	        	System.out.println(tempScore.charAt(temp)*30);
+	        	dbg.drawImage(number, xScore + 0 + temp*30, yScore + 0, xScore + 30 + temp*30, yScore + 40, 0 + Character.getNumericValue(tempScore.charAt(temp))*30, 40, 30 + Character.getNumericValue(tempScore.charAt(temp))*30, 80, this);
+	        }
 		}
         
 //        dbg.setColor(Color.orange);
