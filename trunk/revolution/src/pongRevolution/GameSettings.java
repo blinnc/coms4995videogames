@@ -24,6 +24,9 @@ public class GameSettings {
 	public static final double PADDLE_JUMP_INIT_VELOCITY = 8;
 	public static final double PADDLE_JUMP_ACCEL = 0.3;
 	
+	public static final double PADDLE_BOUNCE_ANGLE = 20;
+	public static final boolean DEFAULT_BOUNCE_ANGLE = false;
+	
 	// Ball settings
 	public static final int BALL_RADIUS = 5;
 	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
