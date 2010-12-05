@@ -28,6 +28,7 @@ public class GameSettings {
 	public static final boolean DEFAULT_BOUNCE_ANGLE = false;
 	
 	// Ball settings
+	public static final boolean SPAWN_TOWARDS_LOSER = true;
 	public static final double RANDOM_DIRECTION = -1;
 	public static final double BALL_SPAWN_DIRECTION = RANDOM_DIRECTION;
 	public static final int BALL_RADIUS = 5;

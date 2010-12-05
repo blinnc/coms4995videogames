@@ -95,12 +95,39 @@ public class Game {
 	}
 	
 	public void spawnBall() {
+		ServerBall ball;
+		if(GameSettings.SPAWN_TOWARDS_LOSER) {
+			boolean one = Math.random() < 0.5;
+			if(redScore > blueScore) {
+				if(one) {
+					ball = new ServerBall(paddleArray[TPlayer.BLUE_ONE.getValue()].getT());
+				}
+				else {
+					ball = new ServerBall(paddleArray[TPlayer.BLUE_TWO.getValue()].getT());
+				}
+			}
+			else if(redScore < blueScore) {
+				if(one) {
+					ball = new ServerBall(paddleArray[TPlayer.RED_ONE.getValue()].getT());
+				}
+				else {
+					ball = new ServerBall(paddleArray[TPlayer.RED_TWO.getValue()].getT());
+				}
+			}
+			else {
+				ball = new ServerBall();
+			}
+		}
+		else {
+			ball = new ServerBall();
+		}
+		
 		if (GameSettings.WAIT_FOR_FOUR) {
 			if (fourPlayers) {
-				ballList.add(new ServerBall());
+				ballList.add(ball);
 			}
 		} else {
-			ballList.add(new ServerBall());
+			ballList.add(ball);
 		}
 	}
 	
