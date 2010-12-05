@@ -30,13 +30,19 @@ public class ServerBall {
 		prevPositions = new ArrayList<TPosition>();
 		
 		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
+		addPosition(x, y);
+		updatePosition();
 		
 		// Random direction
 		t = GameSettings.BALL_SPAWN_DIRECTION == GameSettings.RANDOM_DIRECTION ? Math.random() * 360 : GameSettings.BALL_SPAWN_DIRECTION;
 		
-		addPosition(x, y);
 		updateVelocity();
-		updatePosition();
+	}
+	
+	public ServerBall(double angle) {
+		this();
+		t = angle;
+		updateVelocity();
 	}
 	
 	public void updatePosition() {
