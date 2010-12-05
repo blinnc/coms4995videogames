@@ -3,11 +3,14 @@ package pongRevolution;
 import network.TPlayer;
 
 public class GameSettings {
+	public static final int SERVER_PORT = 12020;
+	
 	public static final int CLOCK_INTERVAL = 15;
-	public static final boolean WAIT_FOR_FOUR = false;
 	
 	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;
 	public static final int BALL_RELEASE_INTERVAL = 2000 / CLOCK_INTERVAL;
+	
+	public static final boolean WITH_POWERUPS = false;
 	
 	// Arena settings
 	public static final int ARENA_RADIUS = 278;

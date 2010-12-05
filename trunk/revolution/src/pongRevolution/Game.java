@@ -17,14 +17,14 @@ public class Game {
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
-	private boolean fourPlayers;
+	private int numPlayers;
 	private Point2D[] pointsTest;
 	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		ballListCopy = new ArrayList<ServerBall>();
 		paddleArray = new ServerPaddle[5];
-		fourPlayers = false;
+		numPlayers = 0;
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
@@ -36,6 +36,10 @@ public class Game {
 		redScore = 0;
 		blueScore = 0;
 		ballSpawnCount = GameSettings.GAME_START_DELAY;
+	}
+	
+	public void startGame() {
+		numPlayers = 5;
 	}
 	
 	public void movePaddle(TPlayer requester, TDirection dir) {
@@ -55,10 +59,12 @@ public class Game {
 			if(paddleArray[TPlayer.RED_ONE.getValue()] == null) {
 				player = TPlayer.RED_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
+				numPlayers++;
 			}
 			else if(paddleArray[TPlayer.RED_TWO.getValue()] == null) {
 				player = TPlayer.RED_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
+				numPlayers++;
 			}
 			else {
 				player = TPlayer.NONE;
@@ -68,10 +74,12 @@ public class Game {
 			if(paddleArray[TPlayer.BLUE_ONE.getValue()] == null) {
 				player = TPlayer.BLUE_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
+				numPlayers++;
 			}
 			else if(paddleArray[TPlayer.BLUE_TWO.getValue()] == null) {
 				player = TPlayer.BLUE_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
+				numPlayers++;
 			}
 			else {
 				player = TPlayer.NONE;
@@ -81,15 +89,6 @@ public class Game {
 			player = TPlayer.NONE;
 		}
 		System.out.println("Registed new player: " + player);
-		boolean missing = false;
-		for(int i = 1; i < 5; i++) {
-			if(paddleArray[i] == null) {
-				missing = true;
-			}
-		}
-		if(!missing) {
-			fourPlayers = true;
-		}
 		
 		return player;
 	}
@@ -130,20 +129,14 @@ public class Game {
 			ball = new ServerBall();
 		}
 		
-		if (GameSettings.WAIT_FOR_FOUR) {
-			if (fourPlayers) {
-				ballList.add(ball);
-			}
-		} else {
-			ballList.add(ball);
-		}
+		ballList.add(ball);
 	}
 	
 	public void updateGame() {
 		ballSpawnCount --;
 		movePaddles();
 		moveBalls();
-		if(ballSpawnCount < 0) {
+		if(ballSpawnCount < 0 && numPlayers >= 4) {
 			spawnBall();
 			ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
 		}

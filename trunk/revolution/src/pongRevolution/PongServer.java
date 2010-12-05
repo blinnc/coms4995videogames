@@ -30,9 +30,7 @@ import org.apache.thrift.transport.TTransportException;
 import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
 
-public class PongServer implements network.TNetworkServer.Iface{
-	private static final int PORT = 12020;
-	
+public class PongServer implements network.TNetworkServer.Iface{	
 	private Game game;
 	private Timer timer;
 	Logger log = Logger.getLogger(PongServer.class);
@@ -54,9 +52,14 @@ public class PongServer implements network.TNetworkServer.Iface{
 		buttonPanel.add(resetButton);
 		buttonPanel.add(exitButton);
 		
+		final JButton startButton = new JButton("Start");
+		final JPanel buttonPanel2 = new JPanel();
+		buttonPanel2.add(startButton);
+		
 		final JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.add(buttonPanel, BorderLayout.CENTER);
+		frame.add(buttonPanel2, BorderLayout.SOUTH);
 		try {
 			final JLabel ipLabel = new JLabel(InetAddress.getLocalHost().getHostAddress());
 			final JPanel ipPanel = new JPanel();
@@ -93,15 +96,20 @@ public class PongServer implements network.TNetworkServer.Iface{
 				System.exit(0);
 			}
 		});
+		startButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				game.startGame();
+			}
+		});
 	}
 	
 	private void start(){
 	      try {
-	         TServerSocket serverTransport = new TServerSocket(PORT);
+	         TServerSocket serverTransport = new TServerSocket(GameSettings.SERVER_PORT);
 	         TNetworkServer.Processor processor = new TNetworkServer.Processor(this);
 	         Factory protFactory = new TBinaryProtocol.Factory(true, true);
 	         TServer server = new TThreadPoolServer(processor, serverTransport, protFactory);
-	         System.out.println("Starting server on port " + PORT + "...");
+	         System.out.println("Starting server on port " + GameSettings.SERVER_PORT + "...");
 	         server.serve();
 	      } catch (TTransportException e) {
 	         e.printStackTrace();
