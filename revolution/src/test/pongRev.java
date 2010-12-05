@@ -22,6 +22,13 @@ import network.TPaddle;
 import network.TPlayer;
 import client.GameInfo;
 
+import java.io.File;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+ 
 @SuppressWarnings("serial")
 public class pongRev extends JFrame implements KeyListener {
 	
@@ -147,6 +154,25 @@ public class pongRev extends JFrame implements KeyListener {
              }
 		});
 		//END SET UP AND DRAW THE GAME GUI
+		
+		  try {
+		         AudioInputStream stream =
+		                  AudioSystem.getAudioInputStream(
+		                    new File("assets/song.wav"));
+		 
+		 	AudioFormat format = stream.getFormat();
+		        DataLine.Info info =
+		                  new DataLine.Info(Clip.class,
+		                          stream.getFormat());
+		        Clip clip = (Clip) AudioSystem.getLine(info);
+		 
+		        clip.open(stream);
+		        clip.start();
+		        clip.loop(Clip.LOOP_CONTINUOUSLY);
+		 
+		      } catch (Exception e) {
+		           e.printStackTrace();
+		      }
 	}
 	
 	public void paint(Graphics g)
@@ -367,7 +393,7 @@ public class pongRev extends JFrame implements KeyListener {
 					}
 				}
 			}
-
+			      
 	        this.repaint();
 	        if ((a && d) || (!a && !d)) {
 	        	try {
