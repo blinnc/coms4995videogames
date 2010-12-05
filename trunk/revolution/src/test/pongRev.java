@@ -240,7 +240,7 @@ public class pongRev extends JFrame implements KeyListener {
 				otherColorZ -= 1; 
 			
 			if(otherColorZ>=255)
-				changeZ = 1;
+			changeZ = 1;
 			if(otherColorZ<=0)
 				changeZ = 0;
 		}*/
@@ -326,15 +326,15 @@ public class pongRev extends JFrame implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
-		if(c == 'a' || c == 'A') 
+		if(c == 'a' || c == 'A' || c == 'j' || c == 'J') 
 		{
 			a = true;
 		} 
-		else if (c == 'd' || c == 'D') 
+		else if (c == 'd' || c == 'D' || c == 'l' || c == 'L') 
 		{
 			d = true;
 		}
-		else if (c == 'w' || c == 'W')
+		else if (c == 'w' || c == 'W' || c == 'i' || c == 'I' || c == ' ')
 		{
 			w = true;
 		}
@@ -402,9 +402,9 @@ public class pongRev extends JFrame implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent arg0) {
 		char c = arg0.getKeyChar();
-		if(c == 'a' || c == 'A') {
+		if(c == 'a' || c == 'A' || c == 'j' || c == 'J') {
 			a = false;
-		} else if (c == 'd' || c == 'D') {
+		} else if (c == 'd' || c == 'D' || c == 'l' || c == 'L') {
 			d = false;
 		}
 	}
