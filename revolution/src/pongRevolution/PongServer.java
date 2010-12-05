@@ -1,12 +1,16 @@
 package pongRevolution;
 
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import network.TDirection;
@@ -49,8 +53,18 @@ public class PongServer implements network.TNetworkServer.Iface{
 		buttonPanel.add(pauseButton);
 		buttonPanel.add(resetButton);
 		buttonPanel.add(exitButton);
+		
 		final JFrame frame = new JFrame();
-		frame.add(buttonPanel);
+		frame.setLayout(new BorderLayout());
+		frame.add(buttonPanel, BorderLayout.CENTER);
+		try {
+			final JLabel ipLabel = new JLabel(InetAddress.getLocalHost().getHostAddress());
+			final JPanel ipPanel = new JPanel();
+			ipPanel.add(ipLabel);
+			frame.add(ipPanel, BorderLayout.NORTH);
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
