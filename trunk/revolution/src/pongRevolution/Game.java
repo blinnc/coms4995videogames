@@ -98,24 +98,32 @@ public class Game {
 		ServerBall ball;
 		if(GameSettings.SPAWN_TOWARDS_LOSER) {
 			boolean one = Math.random() < 0.5;
+			ServerPaddle paddle;
 			if(redScore > blueScore) {
 				if(one) {
-					ball = new ServerBall(paddleArray[TPlayer.BLUE_ONE.getValue()].getT());
+					paddle = paddleArray[TPlayer.BLUE_ONE.getValue()];
 				}
 				else {
-					ball = new ServerBall(paddleArray[TPlayer.BLUE_TWO.getValue()].getT());
+					paddle = paddleArray[TPlayer.BLUE_TWO.getValue()];
 				}
 			}
 			else if(redScore < blueScore) {
 				if(one) {
-					ball = new ServerBall(paddleArray[TPlayer.RED_ONE.getValue()].getT());
+					paddle = paddleArray[TPlayer.RED_ONE.getValue()];
 				}
 				else {
-					ball = new ServerBall(paddleArray[TPlayer.RED_TWO.getValue()].getT());
+					paddle = paddleArray[TPlayer.RED_TWO.getValue()];
 				}
 			}
 			else {
+				paddle = null;
+			}
+			
+			if(paddle == null) {
 				ball = new ServerBall();
+			}
+			else {
+				ball = new ServerBall(paddle.getT());
 			}
 		}
 		else {
