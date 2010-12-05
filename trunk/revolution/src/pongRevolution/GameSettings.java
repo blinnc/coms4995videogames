@@ -31,7 +31,7 @@ public class GameSettings {
 	public static final double RANDOM_DIRECTION = -1;
 	public static final double BALL_SPAWN_DIRECTION = RANDOM_DIRECTION;
 	public static final int BALL_RADIUS = 5;
-	public static final int COMBO_SCORE[] = {0, 10, 20, 40, 70, 110};
+	public static final int COMBO_SCORE[] = {0, 10, 20, 35, 55, 80};
 	public static final double INITIAL_SPEED = 3.5;
 	public static final double COMBO_SPEED[] = {INITIAL_SPEED, 
 												INITIAL_SPEED + .75, 
