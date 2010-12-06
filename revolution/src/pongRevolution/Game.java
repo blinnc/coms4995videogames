@@ -19,6 +19,7 @@ public class Game {
 	private int ballSpawnCount;
 	private int numPlayers;
 	private Point2D[] pointsTest;
+	private TGameState state;
 	
 	private int count;	//For debugging/testing
 	
@@ -148,6 +149,7 @@ public class Game {
 			ballListCopy.clear();
 			ballListCopy.addAll(ballList);
 		}
+		makeGameState();
 	}
 	
 	/**
@@ -255,7 +257,7 @@ public class Game {
 		}
 	}
 	
-	public TGameState getState() {
+	private void makeGameState() {
 		List<TPaddle> paddles = new ArrayList<TPaddle>();
 		for(int i = 0; i < 5; i++) {
 			ServerPaddle paddle = paddleArray[i];
@@ -286,6 +288,10 @@ public class Game {
 		List<String> messageList = new ArrayList<String>();
 		messageList.add("" + count);
 		
-		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, messageList);
+		state = new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, messageList);
+	}
+	
+	public TGameState getState() {
+		return state;
 	}
 }
