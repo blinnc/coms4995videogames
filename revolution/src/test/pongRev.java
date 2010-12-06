@@ -55,6 +55,7 @@ public class pongRev extends JFrame implements KeyListener {
 	int shardS[] = new int[shardN];
 	Color shardC[] = new Color[shardN];
 	Image backG = Toolkit.getDefaultToolkit().getImage("assets/back.png");
+	Image front = Toolkit.getDefaultToolkit().getImage("assets/front.png");
 	Image red1 = Toolkit.getDefaultToolkit().getImage("assets/red1.png");
 	Image red2 = Toolkit.getDefaultToolkit().getImage("assets/red2.png");
 	Image blue1 = Toolkit.getDefaultToolkit().getImage("assets/blue1.png");
@@ -62,6 +63,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Image[] paddles = {null, red1, red2, blue1, blue2};
 	Image redBall = Toolkit.getDefaultToolkit().getImage("assets/redball.png");
 	Image blueBall = Toolkit.getDefaultToolkit().getImage("assets/blueball.png");
+	Image blueMax = Toolkit.getDefaultToolkit().getImage("assets/blueMax.gif");
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	Image ad = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
@@ -195,102 +197,6 @@ public class pongRev extends JFrame implements KeyListener {
 		
 		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
-		if(explode ==205)
-		{		
-			for(int z =0; z<shardN; z++)
-			{
-				shardX[z]=300+(int)(Math.random()*10);
-				shardY[z]=300+(int)(Math.random()*10);
-				shardXZ[z]=(int)(Math.random()*3);
-				shardYZ[z]=(int)(Math.random()*3);
-				shardXS[z]=(int)(Math.random()*5);
-				shardYS[z]=(int)(Math.random()*5);
-				shardS[z]=4;
-				shardC[z]=new Color((int)(Math.random()*256),(int)(Math.random()*256),(int)(Math.random()*256));
-			}
-		}
-		if(explode>=100)
-		{
-			explode--;
-			for(int z =0; z<shardN; z++)
-			{
-				if(shardXZ[z]==0)
-					shardX[z]+=shardXS[z];
-				else
-					shardX[z]-=shardXS[z];
-				if(shardYZ[z]==0)
-					shardY[z]+=shardYS[z];
-				else
-					shardY[z]-=shardYS[z];
-			
-				dbg.setColor(shardC[z]);
-				if(explode%50==0)
-					shardS[z]--;
-				dbg.fillOval(shardX[z], shardY[z], shardS[z], shardS[z]);
-			}
-		}
-		
-		/*else
-		{
-			dbg.setColor(Color.green);
-			dbg.fillOval(300, 300, 10, 10);
-			
-			dbg.setColor(new Color(otherColorZ,255,otherColorZ));
-			dbg.drawOval(305-rotate/2, 295, rotate, 20);
-			
-			dbg.setColor(new Color(otherColor,255,otherColor));
-			dbg.drawOval(295, 305-rotateZ/2, 20, rotateZ);
-			if(rotateChange == 0)
-				rotate ++;
-			if(rotateChange == 1)
-				rotate --;
-			
-			if(rotate >= 20)
-				rotateChange = 1;
-			if(rotate <= 0)
-				rotateChange = 0;
-				
-			if(rotateChangeZ == 0)
-				rotateZ ++;
-			if(rotateChangeZ == 1)
-				rotateZ --;
-			
-			if(rotateZ >= 20)
-				rotateChangeZ = 1;
-			if(rotateZ <= 0)
-				rotateChangeZ = 0;
-			
-			if(changeZ == 0)
-				otherColorZ +=1;
-			if(changeZ == 1)
-				otherColorZ -= 1; 
-			
-			if(otherColorZ>=255)
-			changeZ = 1;
-			if(otherColorZ<=0)
-				changeZ = 0;
-		}*/
-		
-		if(change == 0)
-			otherColor +=1;
-		if(change == 1)
-			otherColor -= 1; 
-		
-		if(otherColor>=255)
-			change = 1;
-		if(otherColor<=0)
-			change = 0;
-		
-		dbg.setColor(new Color(otherColor,otherColor,255));
-		
-		for (int i = 1; i < paddles.length; i++) {
-			if (i != gameinfo.player.getValue() && tx[i] != null) {
-				((Graphics2D) dbg).drawImage(paddles[i], tx[i], this);
-			}
-		}
-		
-		((Graphics2D) dbg).drawImage(paddles[gameinfo.player.getValue()], tx[gameinfo.player.getValue()], this);
-		((Graphics2D) dbg).drawImage(ad, txAD, this); //FIX THIS OFFSET FOR THE CONTROL AD
 		
 		if (gameinfo.state != null) {
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
@@ -301,7 +207,10 @@ public class pongRev extends JFrame implements KeyListener {
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
 	        		dbg.setColor(Color.BLUE);
-	        		img = blueBall;
+	        		if(gameinfo.state.balls.get(i).positions.size()==5)
+	        			img = blueMax;
+	        		else
+	        			img = blueBall;
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.RED_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.RED_TWO) {
 	        		dbg.setColor(Color.RED);
@@ -340,7 +249,17 @@ public class pongRev extends JFrame implements KeyListener {
 //        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
 //        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 4, 4);
 //        }
-        
+		
+		for (int i = 1; i < paddles.length; i++) {
+			if (i != gameinfo.player.getValue() && tx[i] != null) {
+				((Graphics2D) dbg).drawImage(paddles[i], tx[i], this);
+			}
+		}
+		dbg.drawImage(front,6,6,this);
+		
+		((Graphics2D) dbg).drawImage(paddles[gameinfo.player.getValue()], tx[gameinfo.player.getValue()], this);
+		((Graphics2D) dbg).drawImage(ad, txAD, this); //FIX THIS OFFSET FOR THE CONTROL AD
+		
 		g.drawImage(dbImage, 0, 0, this);
 	}
 	
