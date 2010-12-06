@@ -280,6 +280,6 @@ public class Game {
 		}
 		
 		
-		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections);
+		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, new ArrayList<String>());
 	}
 }
