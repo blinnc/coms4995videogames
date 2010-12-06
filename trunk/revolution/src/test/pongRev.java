@@ -64,6 +64,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Image redBall = Toolkit.getDefaultToolkit().getImage("assets/redball.png");
 	Image blueBall = Toolkit.getDefaultToolkit().getImage("assets/blueball.png");
 	Image blueMax = Toolkit.getDefaultToolkit().getImage("assets/blueMax.gif");
+	Image redMax = Toolkit.getDefaultToolkit().getImage("assets/redMax.gif");
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	Image ad = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
@@ -214,7 +215,10 @@ public class pongRev extends JFrame implements KeyListener {
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.RED_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.RED_TWO) {
 	        		dbg.setColor(Color.RED);
-	        		img = redBall;
+	        		if(gameinfo.state.balls.get(i).positions.size()==5)
+	        			img = redMax;
+	        		else
+	        			img = redBall;
 	        	}
 	        	for (int j = 0; j < gameinfo.state.balls.get(i).positions.size(); j++) {
 	        	    if (j == 0) {
