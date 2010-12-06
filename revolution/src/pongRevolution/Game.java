@@ -20,6 +20,8 @@ public class Game {
 	private int numPlayers;
 	private Point2D[] pointsTest;
 	
+	private int count;	//For debugging/testing
+	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		ballListCopy = new ArrayList<ServerBall>();
@@ -36,6 +38,7 @@ public class Game {
 		redScore = 0;
 		blueScore = 0;
 		ballSpawnCount = GameSettings.GAME_START_DELAY;
+		count = 0;
 	}
 	
 	public void startGame() {
@@ -133,7 +136,8 @@ public class Game {
 	}
 	
 	public void updateGame() {
-		ballSpawnCount --;
+		count++;
+		ballSpawnCount--;
 		movePaddles();
 		moveBalls();
 		if(ballSpawnCount < 0 && numPlayers >= 4) {
@@ -279,7 +283,9 @@ public class Game {
 			connections.add(new TPosition(pointsTest[3].getX(), pointsTest[3].getY()));
 		}
 		
+		List<String> messageList = new ArrayList<String>();
+		messageList.add("" + count);
 		
-		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, new ArrayList<String>());
+		return new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, messageList);
 	}
 }
