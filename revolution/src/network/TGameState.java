@@ -39,6 +39,7 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
   private static final TField PLAYER_UP_FIELD_DESC = new TField("playerUp", TType.I32, (short)8);
   private static final TField ALLY_UP_FIELD_DESC = new TField("allyUp", TType.I32, (short)9);
   private static final TField CONNECTIONS_FIELD_DESC = new TField("connections", TType.LIST, (short)10);
+  private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.LIST, (short)11);
 
   public List<TPaddle> paddles;
   public List<TBall> balls;
@@ -58,6 +59,7 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
    */
   public TPowerUp allyUp;
   public List<TPosition> connections;
+  public List<String> message;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
@@ -78,7 +80,8 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
      * @see TPowerUp
      */
     ALLY_UP((short)9, "allyUp"),
-    CONNECTIONS((short)10, "connections");
+    CONNECTIONS((short)10, "connections"),
+    MESSAGE((short)11, "message");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -113,6 +116,8 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
           return ALLY_UP;
         case 10: // CONNECTIONS
           return CONNECTIONS;
+        case 11: // MESSAGE
+          return MESSAGE;
         default:
           return null;
       }
@@ -186,6 +191,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     tmpMap.put(_Fields.CONNECTIONS, new FieldMetaData("connections", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
             new StructMetaData(TType.STRUCT, TPosition.class))));
+    tmpMap.put(_Fields.MESSAGE, new FieldMetaData("message", TFieldRequirementType.DEFAULT, 
+        new ListMetaData(TType.LIST, 
+            new FieldValueMetaData(TType.STRING))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TGameState.class, metaDataMap);
   }
@@ -203,7 +211,8 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     boolean isWall,
     TPowerUp playerUp,
     TPowerUp allyUp,
-    List<TPosition> connections)
+    List<TPosition> connections,
+    List<String> message)
   {
     this();
     this.paddles = paddles;
@@ -221,6 +230,7 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     this.playerUp = playerUp;
     this.allyUp = allyUp;
     this.connections = connections;
+    this.message = message;
   }
 
   /**
@@ -261,6 +271,13 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       }
       this.connections = __this__connections;
     }
+    if (other.isSetMessage()) {
+      List<String> __this__message = new ArrayList<String>();
+      for (String other_element : other.message) {
+        __this__message.add(other_element);
+      }
+      this.message = __this__message;
+    }
   }
 
   public TGameState deepCopy() {
@@ -284,6 +301,7 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     this.playerUp = null;
     this.allyUp = null;
     this.connections = null;
+    this.message = null;
   }
 
   public int getPaddlesSize() {
@@ -582,6 +600,45 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     }
   }
 
+  public int getMessageSize() {
+    return (this.message == null) ? 0 : this.message.size();
+  }
+
+  public java.util.Iterator<String> getMessageIterator() {
+    return (this.message == null) ? null : this.message.iterator();
+  }
+
+  public void addToMessage(String elem) {
+    if (this.message == null) {
+      this.message = new ArrayList<String>();
+    }
+    this.message.add(elem);
+  }
+
+  public List<String> getMessage() {
+    return this.message;
+  }
+
+  public TGameState setMessage(List<String> message) {
+    this.message = message;
+    return this;
+  }
+
+  public void unsetMessage() {
+    this.message = null;
+  }
+
+  /** Returns true if field message is set (has been asigned a value) and false otherwise */
+  public boolean isSetMessage() {
+    return this.message != null;
+  }
+
+  public void setMessageIsSet(boolean value) {
+    if (!value) {
+      this.message = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case PADDLES:
@@ -664,6 +721,14 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       }
       break;
 
+    case MESSAGE:
+      if (value == null) {
+        unsetMessage();
+      } else {
+        setMessage((List<String>)value);
+      }
+      break;
+
     }
   }
 
@@ -699,6 +764,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     case CONNECTIONS:
       return getConnections();
 
+    case MESSAGE:
+      return getMessage();
+
     }
     throw new IllegalStateException();
   }
@@ -730,6 +798,8 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       return isSetAllyUp();
     case CONNECTIONS:
       return isSetConnections();
+    case MESSAGE:
+      return isSetMessage();
     }
     throw new IllegalStateException();
   }
@@ -834,6 +904,15 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       if (!(this_present_connections && that_present_connections))
         return false;
       if (!this.connections.equals(that.connections))
+        return false;
+    }
+
+    boolean this_present_message = true && this.isSetMessage();
+    boolean that_present_message = true && that.isSetMessage();
+    if (this_present_message || that_present_message) {
+      if (!(this_present_message && that_present_message))
+        return false;
+      if (!this.message.equals(that.message))
         return false;
     }
 
@@ -949,6 +1028,16 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     }
     if (isSetConnections()) {
       lastComparison = TBaseHelper.compareTo(this.connections, typedOther.connections);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetMessage()).compareTo(typedOther.isSetMessage());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetMessage()) {
+      lastComparison = TBaseHelper.compareTo(this.message, typedOther.message);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1078,6 +1167,23 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 11: // MESSAGE
+          if (field.type == TType.LIST) {
+            {
+              TList _list13 = iprot.readListBegin();
+              this.message = new ArrayList<String>(_list13.size);
+              for (int _i14 = 0; _i14 < _list13.size; ++_i14)
+              {
+                String _elem15;
+                _elem15 = iprot.readString();
+                this.message.add(_elem15);
+              }
+              iprot.readListEnd();
+            }
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -1097,9 +1203,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       oprot.writeFieldBegin(PADDLES_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.paddles.size()));
-        for (TPaddle _iter13 : this.paddles)
+        for (TPaddle _iter16 : this.paddles)
         {
-          _iter13.write(oprot);
+          _iter16.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1109,9 +1215,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       oprot.writeFieldBegin(BALLS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.balls.size()));
-        for (TBall _iter14 : this.balls)
+        for (TBall _iter17 : this.balls)
         {
-          _iter14.write(oprot);
+          _iter17.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1146,9 +1252,21 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       oprot.writeFieldBegin(CONNECTIONS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.connections.size()));
-        for (TPosition _iter15 : this.connections)
+        for (TPosition _iter18 : this.connections)
         {
-          _iter15.write(oprot);
+          _iter18.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
+      oprot.writeFieldEnd();
+    }
+    if (this.message != null) {
+      oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
+      {
+        oprot.writeListBegin(new TList(TType.STRING, this.message.size()));
+        for (String _iter19 : this.message)
+        {
+          oprot.writeString(_iter19);
         }
         oprot.writeListEnd();
       }
@@ -1220,6 +1338,14 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       sb.append("null");
     } else {
       sb.append(this.connections);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("message:");
+    if (this.message == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.message);
     }
     first = false;
     sb.append(")");
