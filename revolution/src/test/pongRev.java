@@ -72,6 +72,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private boolean a;
 	private boolean d;
 	private boolean w;
+	private boolean s;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
 	AffineTransform tx[] = new AffineTransform[5];
@@ -287,9 +288,9 @@ public class pongRev extends JFrame implements KeyListener {
 		{
 			w = true;
 		}
-		else if (c == 's' || c == 'S')
+		else if (c == 's' || c == 'S' || c == 'k' || c == 'K')
 		{
-			explode = 205;
+			s = true;
 		}
 	}
 	
@@ -345,6 +346,14 @@ public class pongRev extends JFrame implements KeyListener {
 	        		e.printStackTrace();
 	        	}
 	        }
+	        if (s) {
+                s = false;
+                try {
+                    gameinfo.client.usePowerUp(gameinfo.player);
+                } catch (TException e) {
+                    e.printStackTrace();
+                }
+            }
 	    }
 	}
 
