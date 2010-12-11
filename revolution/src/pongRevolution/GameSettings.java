@@ -10,7 +10,7 @@ public class GameSettings {
 	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;
 	public static final int BALL_RELEASE_INTERVAL = 2000 / CLOCK_INTERVAL;
 	
-	public static final boolean WITH_POWERUPS = false;
+	public static final boolean WITH_POWERUPS = true;
 	
 	// Arena settings
 	public static final int ARENA_RADIUS = 278;
@@ -32,6 +32,7 @@ public class GameSettings {
 	
 	// Ball settings
 	public static final boolean SPAWN_TOWARDS_LOSER = true;
+	public static final double BALL_SPAWN_RANGE = 15;
 	public static final double RANDOM_DIRECTION = -1;
 	public static final double BALL_SPAWN_DIRECTION = RANDOM_DIRECTION;
 	public static final int BALL_RADIUS = 5;
@@ -54,6 +55,9 @@ public class GameSettings {
 	public static final int BALL_REHIT_TIME = 20;
 	
 	
+	// Powerup settings
+	public static final double POWERUP_SPAWN_RATE = 1;
+	public static final int[] POWERUP_TIME = {0, 5000 / CLOCK_INTERVAL, 5000 / CLOCK_INTERVAL, 0, 0, 0, 0 , 0};
 
 	
 	public static boolean isRed(TPlayer player) {

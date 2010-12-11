@@ -4,6 +4,7 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import network.TPaddle;
 import network.TPlayer;
 import network.TPowerUp;
 import network.TBall;
@@ -20,6 +21,8 @@ public class ServerBall {
 	private TPlayer lastHit;
 	private TBall tball;
 	
+	private TPowerUp power;
+	
 	private ArrayList<TPosition> prevPositions;
 	
 	public ServerBall() {
@@ -29,7 +32,14 @@ public class ServerBall {
 		rehit = 0;
 		prevPositions = new ArrayList<TPosition>();
 		
-		tball = new TBall(new ArrayList<TPosition>(), TPowerUp.NONE, TPlayer.NONE, false);
+		if(GameSettings.WITH_POWERUPS && Math.random() < GameSettings.POWERUP_SPAWN_RATE) {
+			power = getRandomPowerup();
+		}
+		else {
+			power = TPowerUp.NONE;
+		}
+		
+		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, false);
 		addPosition(x, y);
 		updatePosition();
 		
@@ -41,8 +51,14 @@ public class ServerBall {
 	
 	public ServerBall(double angle) {
 		this();
-		t = angle;
+		double dif = Math.random() * 2 * GameSettings.BALL_SPAWN_RANGE - GameSettings.BALL_SPAWN_RANGE;
+		t = angle + dif;
 		updateVelocity();
+	}
+	
+	private TPowerUp getRandomPowerup() {
+		int num = (int)(Math.random() * 2) + 1;
+		return TPowerUp.findByValue(num);
 	}
 	
 	public void updatePosition() {
@@ -91,7 +107,8 @@ public class ServerBall {
 		return rehit == 0;
 	}
 
-	public void setLastHit(TPlayer player) {
+	public void setLastHit(ServerPaddle paddle) {
+		TPlayer player = paddle.getPlayer();
 		if(GameSettings.isRed(lastHit) == GameSettings.isRed(player)) {
 			increaseCombo();
 		}
@@ -101,6 +118,9 @@ public class ServerBall {
 		lastHit = player;
 		tball.player = player;
 		rehit = GameSettings.BALL_REHIT_TIME;
+		if(power != TPowerUp.NONE) {
+			paddle.setPowerup(power);
+		}
 	}
 
 	public void setAngle(double t) {

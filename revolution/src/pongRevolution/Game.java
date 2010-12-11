@@ -55,6 +55,7 @@ public class Game {
 	}
 	
 	public void usePowerup(TPlayer requester) {
+		paddleArray[requester.getValue()].usePowerup();
 	}
 	
 	public TPlayer registerPlayer(TPlayer team) {
@@ -211,12 +212,12 @@ public class Game {
 				if (ball.contains(points[0])) {
 					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
 						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
-						ball.setLastHit(paddleArray[i].getPlayer());
+						ball.setLastHit(paddleArray[i]);
 					}
 				} else if (ball.contains(points[1])) {
 					if (points[1].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
-						ball.setLastHit(paddleArray[i].getPlayer());
+						ball.setLastHit(paddleArray[i]);
 					}
 				} else if (ball.contains(points[2])) {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
@@ -231,7 +232,7 @@ public class Game {
 									difference = 360 - difference;
 								}
 								ball.setAngle((ball.getAngle() - 180) + 2 * Math.abs(difference));
-								ball.setLastHit(paddleArray[i].getPlayer());
+								ball.setLastHit(paddleArray[i]);
 							}
 						}
 					}
@@ -248,7 +249,7 @@ public class Game {
 									difference = 360 - difference;
 								}
 								ball.setAngle((ball.getAngle() - 180) - 2 * Math.abs(difference));
-								ball.setLastHit(paddleArray[i].getPlayer());
+								ball.setLastHit(paddleArray[i]);
 							}
 						}
 					}

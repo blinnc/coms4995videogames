@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import network.TDirection;
 import network.TPaddle;
 import network.TPlayer;
+import network.TPowerUp;
 
 public class ServerPaddle {
 	double t;
@@ -17,11 +18,13 @@ public class ServerPaddle {
 	
 	private double length;
 	private int jumpCounter;
+	private int powerCounter;
 	
-	private boolean isInvisible, isSpeedup, isMagnetic, isJumping;
+	private boolean isJumping;
 	
 	private TPlayer player;
 	private TPaddle tPaddle;
+	private TPowerUp power;
 	
 	private TDirection direction;
 	
@@ -31,14 +34,13 @@ public class ServerPaddle {
 		t = GameSettings.STARTING_POSITIONS[player.getValue()];
 		r = GameSettings.ARENA_RADIUS;
 		vt = GameSettings.PADDLE_VELOCITY;
-		isInvisible = false;
-		isSpeedup = false;
-		isMagnetic = false;
 		direction = TDirection.NONE;
 		isJumping = false;
 		jumpCounter = 0;
+		power = TPowerUp.NONE;
+		powerCounter = -1;
 		
-		tPaddle = new TPaddle(r, t, length, player, isInvisible, isSpeedup, isMagnetic);
+		tPaddle = new TPaddle(r, t, length, player, false, false, false);
 	}
 	
 	public double getX() {
@@ -84,6 +86,13 @@ public class ServerPaddle {
 			tPaddle.setRadius(r);
 		}
 		
+		if(powerCounter > 0) {
+			powerCounter--;
+		}
+		else if(powerCounter == 0){
+			restore();
+		}
+		
 		if(direction == TDirection.NONE) {
 			return;
 		}
@@ -105,6 +114,33 @@ public class ServerPaddle {
 			isJumping = true;
 			jumpCounter = 0;
 		}
+	}
+	
+	public void setPowerup(TPowerUp p) {
+		power = p;
+		System.out.println(power);
+	}
+	
+	public void usePowerup() {
+		if(TPowerUp.SPEED == power) {
+			setSpeedUp(true);
+			tPaddle.isSpeedup = true;
+			powerCounter = GameSettings.POWERUP_TIME[TPowerUp.SPEED.getValue()];
+		}
+		else if(TPowerUp.INVIS == power) {
+			tPaddle.isInvisible = true;
+			powerCounter = GameSettings.POWERUP_TIME[TPowerUp.INVIS.getValue()];
+		}
+	}
+	
+	private void restore() {
+		tPaddle.isSpeedup = false;
+		setSpeedUp(false);
+		
+		tPaddle.isInvisible = false;
+		
+		power = TPowerUp.NONE;
+		powerCounter = -1;
 	}
 	
 	private double getJumpHeight() {
