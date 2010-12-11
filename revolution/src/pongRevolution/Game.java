@@ -56,6 +56,9 @@ public class Game {
 	
 	public void usePowerup(TPlayer requester) {
 		paddleArray[requester.getValue()].usePowerup();
+		if(paddleArray[requester.getValue()].getPower() == TPowerUp.SHADOW) {
+			
+		}
 	}
 	
 	public TPlayer registerPlayer(TPlayer team) {
@@ -292,7 +295,8 @@ public class Game {
 		state = new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, messageList);
 	}
 	
-	public TGameState getState() {
+	public TGameState getState(TPlayer requester) {
+		state.playerUp = paddleArray[requester.getValue()].getPower();
 		return state;
 	}
 }

@@ -71,6 +71,10 @@ public class ServerPaddle {
 		return player;
 	}
 	
+	public TPowerUp getPower() {
+		return power;
+	}
+	
 	public TPaddle getTPaddle() {
 		return tPaddle;
 	}
@@ -130,6 +134,9 @@ public class ServerPaddle {
 		else if(TPowerUp.INVIS == power) {
 			tPaddle.isInvisible = true;
 			powerCounter = GameSettings.POWERUP_TIME[TPowerUp.INVIS.getValue()];
+		}
+		else if(TPowerUp.SHADOW == power) {
+			
 		}
 	}
 	
