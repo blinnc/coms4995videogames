@@ -42,6 +42,7 @@ public class ServerPaddle {
 		isJumping = false;
 		jumpCounter = 0;
 		power = GameSettings.getNullPower();
+		effect = GameSettings.getNullPower();
 		effectCounter = -1;
 		
 		tPaddle = new TPaddle(r, t, player, power, power);
@@ -125,8 +126,9 @@ public class ServerPaddle {
 	}
 	
 	public void setPowerup(TPower p) {
-		power = p;
-		System.out.println(power);
+		if(effect.type != TPowerUp.SPEED && effect.type != TPowerUp.INVIS) {
+			power = p;
+		}
 	}
 	
 	public void usePowerup() {

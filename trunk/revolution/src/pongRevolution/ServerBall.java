@@ -69,7 +69,7 @@ public class ServerBall {
 	}
 	
 	public void updatePosition() {
-		List<TPosition> positions = tball.getPositions();
+		List<TPosition> positions = new ArrayList<TPosition>();
 		positions.clear();
 		int[] comboSlot = GameSettings.COMBO_SLOTS[combo];
 		if(combo == 0) {
@@ -80,6 +80,7 @@ public class ServerBall {
 				positions.add(prevPositions.get(comboSlot[i]));
 			}
 		}
+		tball.positions = positions;
 	}
 	
 	private void updateVelocity() {
