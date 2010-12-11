@@ -67,6 +67,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Image blueMax = Toolkit.getDefaultToolkit().getImage("assets/blueMax.gif");
 	Image redMax = Toolkit.getDefaultToolkit().getImage("assets/redMax.gif");
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
+	Image yellowBall = Toolkit.getDefaultToolkit().getImage("assets/yellowball.png");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	Image ad = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
 	Image number = Toolkit.getDefaultToolkit().getImage("assets/number.png");
@@ -206,11 +207,11 @@ public class pongRev extends JFrame implements KeyListener {
 	            Image img = null;
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
 	        	    if (gameinfo.state.balls.get(i).type == TPowerUp.NONE) {
-	        		dbg.setColor(Color.GREEN);
-	        		img = neutralBall;
+    	        		dbg.setColor(Color.GREEN);
+    	        		img = neutralBall;
 	        	    } else {
 	        	        dbg.setColor(Color.YELLOW);
-	        	        img = blueMax; //CHANGE TO YELLOW BALL
+	        	        img = yellowBall; // TODO: CHANGE TO YELLOW BALL
 	        	    }
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
@@ -260,6 +261,8 @@ public class pongRev extends JFrame implements KeyListener {
 //        	dbg.fillOval((int) gameinfo.state.connections.get(i).xPos + CIRCLE_CENTER,
 //        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 4, 4);
 //        }
+		
+		// DRAW PADDLES
 		
 		for (int i = 1; i < paddles.length; i++) {
 			if (i != gameinfo.player.getValue() && tx[i] != null) {
@@ -319,7 +322,7 @@ public class pongRev extends JFrame implements KeyListener {
 						txAD = new AffineTransform();
 						txAD.rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 				        txAD.rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
-						txAD.translate(CIRCLE_CENTER - ad.getWidth(null)/2, CIRCLE_DIAMETER + CIRCLE_X);
+						txAD.translate(CIRCLE_CENTER - ad.getWidth(null)/2, CIRCLE_DIAMETER + CIRCLE_X + 10);
 					}
 				}
 			}
