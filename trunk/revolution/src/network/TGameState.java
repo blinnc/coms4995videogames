@@ -33,31 +33,19 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
   private static final TField BALLS_FIELD_DESC = new TField("balls", TType.LIST, (short)2);
   private static final TField RED_SCORE_FIELD_DESC = new TField("redScore", TType.I32, (short)3);
   private static final TField BLUE_SCORE_FIELD_DESC = new TField("blueScore", TType.I32, (short)4);
-  private static final TField IS_LASER_RED_FIELD_DESC = new TField("isLaserRed", TType.BOOL, (short)5);
-  private static final TField IS_LASER_BLUE_FIELD_DESC = new TField("isLaserBlue", TType.BOOL, (short)6);
-  private static final TField IS_WALL_FIELD_DESC = new TField("isWall", TType.BOOL, (short)7);
-  private static final TField PLAYER_UP_FIELD_DESC = new TField("playerUp", TType.I32, (short)8);
-  private static final TField ALLY_UP_FIELD_DESC = new TField("allyUp", TType.I32, (short)9);
-  private static final TField CONNECTIONS_FIELD_DESC = new TField("connections", TType.LIST, (short)10);
-  private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.LIST, (short)11);
+  private static final TField SPAWNING_FIELD_DESC = new TField("spawning", TType.I32, (short)5);
+  private static final TField OUT_FIELD_DESC = new TField("out", TType.LIST, (short)6);
+  private static final TField COLLISIONS_FIELD_DESC = new TField("collisions", TType.LIST, (short)7);
+  private static final TField CONNECTIONS_FIELD_DESC = new TField("connections", TType.LIST, (short)8);
+  private static final TField MESSAGE_FIELD_DESC = new TField("message", TType.LIST, (short)9);
 
   public List<TPaddle> paddles;
   public List<TBall> balls;
   public int redScore;
   public int blueScore;
-  public boolean isLaserRed;
-  public boolean isLaserBlue;
-  public boolean isWall;
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TPowerUp playerUp;
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TPowerUp allyUp;
+  public int spawning;
+  public List<TBall> out;
+  public List<TCollision> collisions;
   public List<TPosition> connections;
   public List<String> message;
 
@@ -67,21 +55,11 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     BALLS((short)2, "balls"),
     RED_SCORE((short)3, "redScore"),
     BLUE_SCORE((short)4, "blueScore"),
-    IS_LASER_RED((short)5, "isLaserRed"),
-    IS_LASER_BLUE((short)6, "isLaserBlue"),
-    IS_WALL((short)7, "isWall"),
-    /**
-     * 
-     * @see TPowerUp
-     */
-    PLAYER_UP((short)8, "playerUp"),
-    /**
-     * 
-     * @see TPowerUp
-     */
-    ALLY_UP((short)9, "allyUp"),
-    CONNECTIONS((short)10, "connections"),
-    MESSAGE((short)11, "message");
+    SPAWNING((short)5, "spawning"),
+    OUT((short)6, "out"),
+    COLLISIONS((short)7, "collisions"),
+    CONNECTIONS((short)8, "connections"),
+    MESSAGE((short)9, "message");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -104,19 +82,15 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
           return RED_SCORE;
         case 4: // BLUE_SCORE
           return BLUE_SCORE;
-        case 5: // IS_LASER_RED
-          return IS_LASER_RED;
-        case 6: // IS_LASER_BLUE
-          return IS_LASER_BLUE;
-        case 7: // IS_WALL
-          return IS_WALL;
-        case 8: // PLAYER_UP
-          return PLAYER_UP;
-        case 9: // ALLY_UP
-          return ALLY_UP;
-        case 10: // CONNECTIONS
+        case 5: // SPAWNING
+          return SPAWNING;
+        case 6: // OUT
+          return OUT;
+        case 7: // COLLISIONS
+          return COLLISIONS;
+        case 8: // CONNECTIONS
           return CONNECTIONS;
-        case 11: // MESSAGE
+        case 9: // MESSAGE
           return MESSAGE;
         default:
           return null;
@@ -160,10 +134,8 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
   // isset id assignments
   private static final int __REDSCORE_ISSET_ID = 0;
   private static final int __BLUESCORE_ISSET_ID = 1;
-  private static final int __ISLASERRED_ISSET_ID = 2;
-  private static final int __ISLASERBLUE_ISSET_ID = 3;
-  private static final int __ISWALL_ISSET_ID = 4;
-  private BitSet __isset_bit_vector = new BitSet(5);
+  private static final int __SPAWNING_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
@@ -178,16 +150,14 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
         new FieldValueMetaData(TType.I32)));
     tmpMap.put(_Fields.BLUE_SCORE, new FieldMetaData("blueScore", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
-    tmpMap.put(_Fields.IS_LASER_RED, new FieldMetaData("isLaserRed", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
-    tmpMap.put(_Fields.IS_LASER_BLUE, new FieldMetaData("isLaserBlue", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
-    tmpMap.put(_Fields.IS_WALL, new FieldMetaData("isWall", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
-    tmpMap.put(_Fields.PLAYER_UP, new FieldMetaData("playerUp", TFieldRequirementType.DEFAULT, 
-        new EnumMetaData(TType.ENUM, TPowerUp.class)));
-    tmpMap.put(_Fields.ALLY_UP, new FieldMetaData("allyUp", TFieldRequirementType.DEFAULT, 
-        new EnumMetaData(TType.ENUM, TPowerUp.class)));
+    tmpMap.put(_Fields.SPAWNING, new FieldMetaData("spawning", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
+    tmpMap.put(_Fields.OUT, new FieldMetaData("out", TFieldRequirementType.DEFAULT, 
+        new ListMetaData(TType.LIST, 
+            new StructMetaData(TType.STRUCT, TBall.class))));
+    tmpMap.put(_Fields.COLLISIONS, new FieldMetaData("collisions", TFieldRequirementType.DEFAULT, 
+        new ListMetaData(TType.LIST, 
+            new StructMetaData(TType.STRUCT, TCollision.class))));
     tmpMap.put(_Fields.CONNECTIONS, new FieldMetaData("connections", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
             new StructMetaData(TType.STRUCT, TPosition.class))));
@@ -206,11 +176,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     List<TBall> balls,
     int redScore,
     int blueScore,
-    boolean isLaserRed,
-    boolean isLaserBlue,
-    boolean isWall,
-    TPowerUp playerUp,
-    TPowerUp allyUp,
+    int spawning,
+    List<TBall> out,
+    List<TCollision> collisions,
     List<TPosition> connections,
     List<String> message)
   {
@@ -221,14 +189,10 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     setRedScoreIsSet(true);
     this.blueScore = blueScore;
     setBlueScoreIsSet(true);
-    this.isLaserRed = isLaserRed;
-    setIsLaserRedIsSet(true);
-    this.isLaserBlue = isLaserBlue;
-    setIsLaserBlueIsSet(true);
-    this.isWall = isWall;
-    setIsWallIsSet(true);
-    this.playerUp = playerUp;
-    this.allyUp = allyUp;
+    this.spawning = spawning;
+    setSpawningIsSet(true);
+    this.out = out;
+    this.collisions = collisions;
     this.connections = connections;
     this.message = message;
   }
@@ -255,14 +219,20 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     }
     this.redScore = other.redScore;
     this.blueScore = other.blueScore;
-    this.isLaserRed = other.isLaserRed;
-    this.isLaserBlue = other.isLaserBlue;
-    this.isWall = other.isWall;
-    if (other.isSetPlayerUp()) {
-      this.playerUp = other.playerUp;
+    this.spawning = other.spawning;
+    if (other.isSetOut()) {
+      List<TBall> __this__out = new ArrayList<TBall>();
+      for (TBall other_element : other.out) {
+        __this__out.add(new TBall(other_element));
+      }
+      this.out = __this__out;
     }
-    if (other.isSetAllyUp()) {
-      this.allyUp = other.allyUp;
+    if (other.isSetCollisions()) {
+      List<TCollision> __this__collisions = new ArrayList<TCollision>();
+      for (TCollision other_element : other.collisions) {
+        __this__collisions.add(new TCollision(other_element));
+      }
+      this.collisions = __this__collisions;
     }
     if (other.isSetConnections()) {
       List<TPosition> __this__connections = new ArrayList<TPosition>();
@@ -292,14 +262,10 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     this.redScore = 0;
     setBlueScoreIsSet(false);
     this.blueScore = 0;
-    setIsLaserRedIsSet(false);
-    this.isLaserRed = false;
-    setIsLaserBlueIsSet(false);
-    this.isLaserBlue = false;
-    setIsWallIsSet(false);
-    this.isWall = false;
-    this.playerUp = null;
-    this.allyUp = null;
+    setSpawningIsSet(false);
+    this.spawning = 0;
+    this.out = null;
+    this.collisions = null;
     this.connections = null;
     this.message = null;
   }
@@ -428,136 +394,104 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     __isset_bit_vector.set(__BLUESCORE_ISSET_ID, value);
   }
 
-  public boolean isIsLaserRed() {
-    return this.isLaserRed;
+  public int getSpawning() {
+    return this.spawning;
   }
 
-  public TGameState setIsLaserRed(boolean isLaserRed) {
-    this.isLaserRed = isLaserRed;
-    setIsLaserRedIsSet(true);
+  public TGameState setSpawning(int spawning) {
+    this.spawning = spawning;
+    setSpawningIsSet(true);
     return this;
   }
 
-  public void unsetIsLaserRed() {
-    __isset_bit_vector.clear(__ISLASERRED_ISSET_ID);
+  public void unsetSpawning() {
+    __isset_bit_vector.clear(__SPAWNING_ISSET_ID);
   }
 
-  /** Returns true if field isLaserRed is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsLaserRed() {
-    return __isset_bit_vector.get(__ISLASERRED_ISSET_ID);
+  /** Returns true if field spawning is set (has been asigned a value) and false otherwise */
+  public boolean isSetSpawning() {
+    return __isset_bit_vector.get(__SPAWNING_ISSET_ID);
   }
 
-  public void setIsLaserRedIsSet(boolean value) {
-    __isset_bit_vector.set(__ISLASERRED_ISSET_ID, value);
+  public void setSpawningIsSet(boolean value) {
+    __isset_bit_vector.set(__SPAWNING_ISSET_ID, value);
   }
 
-  public boolean isIsLaserBlue() {
-    return this.isLaserBlue;
+  public int getOutSize() {
+    return (this.out == null) ? 0 : this.out.size();
   }
 
-  public TGameState setIsLaserBlue(boolean isLaserBlue) {
-    this.isLaserBlue = isLaserBlue;
-    setIsLaserBlueIsSet(true);
+  public java.util.Iterator<TBall> getOutIterator() {
+    return (this.out == null) ? null : this.out.iterator();
+  }
+
+  public void addToOut(TBall elem) {
+    if (this.out == null) {
+      this.out = new ArrayList<TBall>();
+    }
+    this.out.add(elem);
+  }
+
+  public List<TBall> getOut() {
+    return this.out;
+  }
+
+  public TGameState setOut(List<TBall> out) {
+    this.out = out;
     return this;
   }
 
-  public void unsetIsLaserBlue() {
-    __isset_bit_vector.clear(__ISLASERBLUE_ISSET_ID);
+  public void unsetOut() {
+    this.out = null;
   }
 
-  /** Returns true if field isLaserBlue is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsLaserBlue() {
-    return __isset_bit_vector.get(__ISLASERBLUE_ISSET_ID);
+  /** Returns true if field out is set (has been asigned a value) and false otherwise */
+  public boolean isSetOut() {
+    return this.out != null;
   }
 
-  public void setIsLaserBlueIsSet(boolean value) {
-    __isset_bit_vector.set(__ISLASERBLUE_ISSET_ID, value);
-  }
-
-  public boolean isIsWall() {
-    return this.isWall;
-  }
-
-  public TGameState setIsWall(boolean isWall) {
-    this.isWall = isWall;
-    setIsWallIsSet(true);
-    return this;
-  }
-
-  public void unsetIsWall() {
-    __isset_bit_vector.clear(__ISWALL_ISSET_ID);
-  }
-
-  /** Returns true if field isWall is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsWall() {
-    return __isset_bit_vector.get(__ISWALL_ISSET_ID);
-  }
-
-  public void setIsWallIsSet(boolean value) {
-    __isset_bit_vector.set(__ISWALL_ISSET_ID, value);
-  }
-
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TPowerUp getPlayerUp() {
-    return this.playerUp;
-  }
-
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TGameState setPlayerUp(TPowerUp playerUp) {
-    this.playerUp = playerUp;
-    return this;
-  }
-
-  public void unsetPlayerUp() {
-    this.playerUp = null;
-  }
-
-  /** Returns true if field playerUp is set (has been asigned a value) and false otherwise */
-  public boolean isSetPlayerUp() {
-    return this.playerUp != null;
-  }
-
-  public void setPlayerUpIsSet(boolean value) {
+  public void setOutIsSet(boolean value) {
     if (!value) {
-      this.playerUp = null;
+      this.out = null;
     }
   }
 
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TPowerUp getAllyUp() {
-    return this.allyUp;
+  public int getCollisionsSize() {
+    return (this.collisions == null) ? 0 : this.collisions.size();
   }
 
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TGameState setAllyUp(TPowerUp allyUp) {
-    this.allyUp = allyUp;
+  public java.util.Iterator<TCollision> getCollisionsIterator() {
+    return (this.collisions == null) ? null : this.collisions.iterator();
+  }
+
+  public void addToCollisions(TCollision elem) {
+    if (this.collisions == null) {
+      this.collisions = new ArrayList<TCollision>();
+    }
+    this.collisions.add(elem);
+  }
+
+  public List<TCollision> getCollisions() {
+    return this.collisions;
+  }
+
+  public TGameState setCollisions(List<TCollision> collisions) {
+    this.collisions = collisions;
     return this;
   }
 
-  public void unsetAllyUp() {
-    this.allyUp = null;
+  public void unsetCollisions() {
+    this.collisions = null;
   }
 
-  /** Returns true if field allyUp is set (has been asigned a value) and false otherwise */
-  public boolean isSetAllyUp() {
-    return this.allyUp != null;
+  /** Returns true if field collisions is set (has been asigned a value) and false otherwise */
+  public boolean isSetCollisions() {
+    return this.collisions != null;
   }
 
-  public void setAllyUpIsSet(boolean value) {
+  public void setCollisionsIsSet(boolean value) {
     if (!value) {
-      this.allyUp = null;
+      this.collisions = null;
     }
   }
 
@@ -673,43 +607,27 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       }
       break;
 
-    case IS_LASER_RED:
+    case SPAWNING:
       if (value == null) {
-        unsetIsLaserRed();
+        unsetSpawning();
       } else {
-        setIsLaserRed((Boolean)value);
+        setSpawning((Integer)value);
       }
       break;
 
-    case IS_LASER_BLUE:
+    case OUT:
       if (value == null) {
-        unsetIsLaserBlue();
+        unsetOut();
       } else {
-        setIsLaserBlue((Boolean)value);
+        setOut((List<TBall>)value);
       }
       break;
 
-    case IS_WALL:
+    case COLLISIONS:
       if (value == null) {
-        unsetIsWall();
+        unsetCollisions();
       } else {
-        setIsWall((Boolean)value);
-      }
-      break;
-
-    case PLAYER_UP:
-      if (value == null) {
-        unsetPlayerUp();
-      } else {
-        setPlayerUp((TPowerUp)value);
-      }
-      break;
-
-    case ALLY_UP:
-      if (value == null) {
-        unsetAllyUp();
-      } else {
-        setAllyUp((TPowerUp)value);
+        setCollisions((List<TCollision>)value);
       }
       break;
 
@@ -746,20 +664,14 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     case BLUE_SCORE:
       return new Integer(getBlueScore());
 
-    case IS_LASER_RED:
-      return new Boolean(isIsLaserRed());
+    case SPAWNING:
+      return new Integer(getSpawning());
 
-    case IS_LASER_BLUE:
-      return new Boolean(isIsLaserBlue());
+    case OUT:
+      return getOut();
 
-    case IS_WALL:
-      return new Boolean(isIsWall());
-
-    case PLAYER_UP:
-      return getPlayerUp();
-
-    case ALLY_UP:
-      return getAllyUp();
+    case COLLISIONS:
+      return getCollisions();
 
     case CONNECTIONS:
       return getConnections();
@@ -786,16 +698,12 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       return isSetRedScore();
     case BLUE_SCORE:
       return isSetBlueScore();
-    case IS_LASER_RED:
-      return isSetIsLaserRed();
-    case IS_LASER_BLUE:
-      return isSetIsLaserBlue();
-    case IS_WALL:
-      return isSetIsWall();
-    case PLAYER_UP:
-      return isSetPlayerUp();
-    case ALLY_UP:
-      return isSetAllyUp();
+    case SPAWNING:
+      return isSetSpawning();
+    case OUT:
+      return isSetOut();
+    case COLLISIONS:
+      return isSetCollisions();
     case CONNECTIONS:
       return isSetConnections();
     case MESSAGE:
@@ -853,48 +761,30 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
         return false;
     }
 
-    boolean this_present_isLaserRed = true;
-    boolean that_present_isLaserRed = true;
-    if (this_present_isLaserRed || that_present_isLaserRed) {
-      if (!(this_present_isLaserRed && that_present_isLaserRed))
+    boolean this_present_spawning = true;
+    boolean that_present_spawning = true;
+    if (this_present_spawning || that_present_spawning) {
+      if (!(this_present_spawning && that_present_spawning))
         return false;
-      if (this.isLaserRed != that.isLaserRed)
-        return false;
-    }
-
-    boolean this_present_isLaserBlue = true;
-    boolean that_present_isLaserBlue = true;
-    if (this_present_isLaserBlue || that_present_isLaserBlue) {
-      if (!(this_present_isLaserBlue && that_present_isLaserBlue))
-        return false;
-      if (this.isLaserBlue != that.isLaserBlue)
+      if (this.spawning != that.spawning)
         return false;
     }
 
-    boolean this_present_isWall = true;
-    boolean that_present_isWall = true;
-    if (this_present_isWall || that_present_isWall) {
-      if (!(this_present_isWall && that_present_isWall))
+    boolean this_present_out = true && this.isSetOut();
+    boolean that_present_out = true && that.isSetOut();
+    if (this_present_out || that_present_out) {
+      if (!(this_present_out && that_present_out))
         return false;
-      if (this.isWall != that.isWall)
-        return false;
-    }
-
-    boolean this_present_playerUp = true && this.isSetPlayerUp();
-    boolean that_present_playerUp = true && that.isSetPlayerUp();
-    if (this_present_playerUp || that_present_playerUp) {
-      if (!(this_present_playerUp && that_present_playerUp))
-        return false;
-      if (!this.playerUp.equals(that.playerUp))
+      if (!this.out.equals(that.out))
         return false;
     }
 
-    boolean this_present_allyUp = true && this.isSetAllyUp();
-    boolean that_present_allyUp = true && that.isSetAllyUp();
-    if (this_present_allyUp || that_present_allyUp) {
-      if (!(this_present_allyUp && that_present_allyUp))
+    boolean this_present_collisions = true && this.isSetCollisions();
+    boolean that_present_collisions = true && that.isSetCollisions();
+    if (this_present_collisions || that_present_collisions) {
+      if (!(this_present_collisions && that_present_collisions))
         return false;
-      if (!this.allyUp.equals(that.allyUp))
+      if (!this.collisions.equals(that.collisions))
         return false;
     }
 
@@ -972,52 +862,32 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsLaserRed()).compareTo(typedOther.isSetIsLaserRed());
+    lastComparison = Boolean.valueOf(isSetSpawning()).compareTo(typedOther.isSetSpawning());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsLaserRed()) {
-      lastComparison = TBaseHelper.compareTo(this.isLaserRed, typedOther.isLaserRed);
+    if (isSetSpawning()) {
+      lastComparison = TBaseHelper.compareTo(this.spawning, typedOther.spawning);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsLaserBlue()).compareTo(typedOther.isSetIsLaserBlue());
+    lastComparison = Boolean.valueOf(isSetOut()).compareTo(typedOther.isSetOut());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsLaserBlue()) {
-      lastComparison = TBaseHelper.compareTo(this.isLaserBlue, typedOther.isLaserBlue);
+    if (isSetOut()) {
+      lastComparison = TBaseHelper.compareTo(this.out, typedOther.out);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsWall()).compareTo(typedOther.isSetIsWall());
+    lastComparison = Boolean.valueOf(isSetCollisions()).compareTo(typedOther.isSetCollisions());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsWall()) {
-      lastComparison = TBaseHelper.compareTo(this.isWall, typedOther.isWall);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetPlayerUp()).compareTo(typedOther.isSetPlayerUp());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetPlayerUp()) {
-      lastComparison = TBaseHelper.compareTo(this.playerUp, typedOther.playerUp);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetAllyUp()).compareTo(typedOther.isSetAllyUp());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetAllyUp()) {
-      lastComparison = TBaseHelper.compareTo(this.allyUp, typedOther.allyUp);
+    if (isSetCollisions()) {
+      lastComparison = TBaseHelper.compareTo(this.collisions, typedOther.collisions);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -1111,55 +981,25 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // IS_LASER_RED
-          if (field.type == TType.BOOL) {
-            this.isLaserRed = iprot.readBool();
-            setIsLaserRedIsSet(true);
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 6: // IS_LASER_BLUE
-          if (field.type == TType.BOOL) {
-            this.isLaserBlue = iprot.readBool();
-            setIsLaserBlueIsSet(true);
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 7: // IS_WALL
-          if (field.type == TType.BOOL) {
-            this.isWall = iprot.readBool();
-            setIsWallIsSet(true);
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 8: // PLAYER_UP
+        case 5: // SPAWNING
           if (field.type == TType.I32) {
-            this.playerUp = TPowerUp.findByValue(iprot.readI32());
+            this.spawning = iprot.readI32();
+            setSpawningIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 9: // ALLY_UP
-          if (field.type == TType.I32) {
-            this.allyUp = TPowerUp.findByValue(iprot.readI32());
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 10: // CONNECTIONS
+        case 6: // OUT
           if (field.type == TType.LIST) {
             {
               TList _list10 = iprot.readListBegin();
-              this.connections = new ArrayList<TPosition>(_list10.size);
+              this.out = new ArrayList<TBall>(_list10.size);
               for (int _i11 = 0; _i11 < _list10.size; ++_i11)
               {
-                TPosition _elem12;
-                _elem12 = new TPosition();
+                TBall _elem12;
+                _elem12 = new TBall();
                 _elem12.read(iprot);
-                this.connections.add(_elem12);
+                this.out.add(_elem12);
               }
               iprot.readListEnd();
             }
@@ -1167,16 +1007,52 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 11: // MESSAGE
+        case 7: // COLLISIONS
           if (field.type == TType.LIST) {
             {
               TList _list13 = iprot.readListBegin();
-              this.message = new ArrayList<String>(_list13.size);
+              this.collisions = new ArrayList<TCollision>(_list13.size);
               for (int _i14 = 0; _i14 < _list13.size; ++_i14)
               {
-                String _elem15;
-                _elem15 = iprot.readString();
-                this.message.add(_elem15);
+                TCollision _elem15;
+                _elem15 = new TCollision();
+                _elem15.read(iprot);
+                this.collisions.add(_elem15);
+              }
+              iprot.readListEnd();
+            }
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 8: // CONNECTIONS
+          if (field.type == TType.LIST) {
+            {
+              TList _list16 = iprot.readListBegin();
+              this.connections = new ArrayList<TPosition>(_list16.size);
+              for (int _i17 = 0; _i17 < _list16.size; ++_i17)
+              {
+                TPosition _elem18;
+                _elem18 = new TPosition();
+                _elem18.read(iprot);
+                this.connections.add(_elem18);
+              }
+              iprot.readListEnd();
+            }
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 9: // MESSAGE
+          if (field.type == TType.LIST) {
+            {
+              TList _list19 = iprot.readListBegin();
+              this.message = new ArrayList<String>(_list19.size);
+              for (int _i20 = 0; _i20 < _list19.size; ++_i20)
+              {
+                String _elem21;
+                _elem21 = iprot.readString();
+                this.message.add(_elem21);
               }
               iprot.readListEnd();
             }
@@ -1203,9 +1079,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       oprot.writeFieldBegin(PADDLES_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.paddles.size()));
-        for (TPaddle _iter16 : this.paddles)
+        for (TPaddle _iter22 : this.paddles)
         {
-          _iter16.write(oprot);
+          _iter22.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1215,9 +1091,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       oprot.writeFieldBegin(BALLS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.balls.size()));
-        for (TBall _iter17 : this.balls)
+        for (TBall _iter23 : this.balls)
         {
-          _iter17.write(oprot);
+          _iter23.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1229,32 +1105,40 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     oprot.writeFieldBegin(BLUE_SCORE_FIELD_DESC);
     oprot.writeI32(this.blueScore);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(IS_LASER_RED_FIELD_DESC);
-    oprot.writeBool(this.isLaserRed);
+    oprot.writeFieldBegin(SPAWNING_FIELD_DESC);
+    oprot.writeI32(this.spawning);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(IS_LASER_BLUE_FIELD_DESC);
-    oprot.writeBool(this.isLaserBlue);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(IS_WALL_FIELD_DESC);
-    oprot.writeBool(this.isWall);
-    oprot.writeFieldEnd();
-    if (this.playerUp != null) {
-      oprot.writeFieldBegin(PLAYER_UP_FIELD_DESC);
-      oprot.writeI32(this.playerUp.getValue());
+    if (this.out != null) {
+      oprot.writeFieldBegin(OUT_FIELD_DESC);
+      {
+        oprot.writeListBegin(new TList(TType.STRUCT, this.out.size()));
+        for (TBall _iter24 : this.out)
+        {
+          _iter24.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
       oprot.writeFieldEnd();
     }
-    if (this.allyUp != null) {
-      oprot.writeFieldBegin(ALLY_UP_FIELD_DESC);
-      oprot.writeI32(this.allyUp.getValue());
+    if (this.collisions != null) {
+      oprot.writeFieldBegin(COLLISIONS_FIELD_DESC);
+      {
+        oprot.writeListBegin(new TList(TType.STRUCT, this.collisions.size()));
+        for (TCollision _iter25 : this.collisions)
+        {
+          _iter25.write(oprot);
+        }
+        oprot.writeListEnd();
+      }
       oprot.writeFieldEnd();
     }
     if (this.connections != null) {
       oprot.writeFieldBegin(CONNECTIONS_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRUCT, this.connections.size()));
-        for (TPosition _iter18 : this.connections)
+        for (TPosition _iter26 : this.connections)
         {
-          _iter18.write(oprot);
+          _iter26.write(oprot);
         }
         oprot.writeListEnd();
       }
@@ -1264,9 +1148,9 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
       oprot.writeFieldBegin(MESSAGE_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.STRING, this.message.size()));
-        for (String _iter19 : this.message)
+        for (String _iter27 : this.message)
         {
-          oprot.writeString(_iter19);
+          oprot.writeString(_iter27);
         }
         oprot.writeListEnd();
       }
@@ -1305,31 +1189,23 @@ public class TGameState implements TBase<TGameState, TGameState._Fields>, java.i
     sb.append(this.blueScore);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isLaserRed:");
-    sb.append(this.isLaserRed);
+    sb.append("spawning:");
+    sb.append(this.spawning);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isLaserBlue:");
-    sb.append(this.isLaserBlue);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("isWall:");
-    sb.append(this.isWall);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("playerUp:");
-    if (this.playerUp == null) {
+    sb.append("out:");
+    if (this.out == null) {
       sb.append("null");
     } else {
-      sb.append(this.playerUp);
+      sb.append(this.out);
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("allyUp:");
-    if (this.allyUp == null) {
+    sb.append("collisions:");
+    if (this.collisions == null) {
       sb.append("null");
     } else {
-      sb.append(this.allyUp);
+      sb.append(this.collisions);
     }
     first = false;
     if (!first) sb.append(", ");

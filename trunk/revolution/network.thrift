@@ -4,12 +4,8 @@ enum TPowerUp {
 	NONE = 0;
 	SPEED = 1;
 	INVIS = 2;
-	SHADOW = 3;
-	MAGNET = 4;
-	EXTEND = 5;
-	PUSH = 6;
-	LASER = 7;
-	WALL = 8;
+	STUN = 3;
+    STUNNED = 4;
 }
 
 enum TPlayer {
@@ -31,21 +27,32 @@ struct TPosition {
 	2: double yPos;
 }
 
+struct TCollision {
+    1: TPlayer player;
+    2: i32 ballCombo;
+    3: i32 id;
+    4: i32 decay;
+}
+
+struct TPower {
+    1: i32 id;
+    2: TPowerUp type;
+}
+
 struct TPaddle {
 	1: double radius;
 	2: double angle;
-	3: double length;
-	4: TPlayer player;
-	5: bool isInvisible;
-	6: bool isSpeedup;
-	7: bool isMagnetic;
+	3: TPlayer player;
+	4: TPower store;
+    5: TPower used;
 }
 
 struct TBall {
 	1: list<TPosition> positions;
-	2: TPowerUp type;
+	2: TPower store;
 	3: TPlayer player;
-	4: bool isShadow;
+    4: i32 id;
+    5: double angle;
 }
 
 struct TGameState {
@@ -53,12 +60,11 @@ struct TGameState {
 	2: list<TBall> balls;
 	3: i32 redScore;
 	4: i32 blueScore;
-	5: bool isLaserRed;
-	6: bool isLaserBlue;
-	7: bool isWall;
-	8: TPowerUp playerUp;
-	9: TPowerUp allyUp; 
-	10: list<TPosition> connections;
+    5: i32 spawning;
+    6: list<TBall> out;
+    7: list<TCollision> collisions;
+	8: list<TPosition> connections;
+    9: list<string> message;
 }
 
 struct TSettings {
@@ -66,6 +72,7 @@ struct TSettings {
 	2: i32 arenaRadius;
 	3: i32 timerRefresh;
 	4: TPlayer color;
+    5: list<i32> combos;
 }
 
 service TNetworkServer {

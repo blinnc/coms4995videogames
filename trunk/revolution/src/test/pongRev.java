@@ -162,23 +162,22 @@ public class pongRev extends JFrame implements KeyListener {
 		//END SET UP AND DRAW THE GAME GUI
 		
 		  try {
-		         AudioInputStream stream =
-		                  AudioSystem.getAudioInputStream(
-		                    new File("assets/song.wav"));
+	         AudioInputStream stream =
+	                  AudioSystem.getAudioInputStream(
+	                    new File("assets/game_song.wav"));
 		 
-		 	AudioFormat format = stream.getFormat();
-		        DataLine.Info info =
-		                  new DataLine.Info(Clip.class,
-		                          stream.getFormat());
-		        Clip clip = (Clip) AudioSystem.getLine(info);
+	        DataLine.Info info =
+	                  new DataLine.Info(Clip.class,
+	                          stream.getFormat());
+	        Clip clip = (Clip) AudioSystem.getLine(info);
+	 
+	        clip.open(stream);
+	        clip.start();
+	        clip.loop(Clip.LOOP_CONTINUOUSLY);
 		 
-		        clip.open(stream);
-		        clip.start();
-		        clip.loop(Clip.LOOP_CONTINUOUSLY);
-		 
-		      } catch (Exception e) {
-		           e.printStackTrace();
-		      }
+	      } catch (Exception e) {
+	           e.printStackTrace();
+	      }
 	}
 	
 	public void paint(Graphics g)
@@ -206,7 +205,7 @@ public class pongRev extends JFrame implements KeyListener {
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
 	            Image img = null;
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
-	        	    if (gameinfo.state.balls.get(i).type == TPowerUp.NONE) {
+	        	    if (gameinfo.state.balls.get(i).store.type == TPowerUp.NONE) {
     	        		dbg.setColor(Color.GREEN);
     	        		img = neutralBall;
 	        	    } else {
@@ -272,7 +271,7 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.drawImage(front,6,6,this);
 		
 		((Graphics2D) dbg).drawImage(paddles[gameinfo.player.getValue()], tx[gameinfo.player.getValue()], this);
-		((Graphics2D) dbg).drawImage(ad, txAD, this); //FIX THIS OFFSET FOR THE CONTROL AD
+		((Graphics2D) dbg).drawImage(ad, txAD, this);
 		
 		g.drawImage(dbImage, 0, 0, this);
 	}
