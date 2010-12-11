@@ -31,37 +31,31 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
 
   private static final TField RADIUS_FIELD_DESC = new TField("radius", TType.DOUBLE, (short)1);
   private static final TField ANGLE_FIELD_DESC = new TField("angle", TType.DOUBLE, (short)2);
-  private static final TField LENGTH_FIELD_DESC = new TField("length", TType.DOUBLE, (short)3);
-  private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)4);
-  private static final TField IS_INVISIBLE_FIELD_DESC = new TField("isInvisible", TType.BOOL, (short)5);
-  private static final TField IS_SPEEDUP_FIELD_DESC = new TField("isSpeedup", TType.BOOL, (short)6);
-  private static final TField IS_MAGNETIC_FIELD_DESC = new TField("isMagnetic", TType.BOOL, (short)7);
+  private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)3);
+  private static final TField STORE_FIELD_DESC = new TField("store", TType.STRUCT, (short)4);
+  private static final TField USED_FIELD_DESC = new TField("used", TType.STRUCT, (short)5);
 
   public double radius;
   public double angle;
-  public double length;
   /**
    * 
    * @see TPlayer
    */
   public TPlayer player;
-  public boolean isInvisible;
-  public boolean isSpeedup;
-  public boolean isMagnetic;
+  public TPower store;
+  public TPower used;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
     RADIUS((short)1, "radius"),
     ANGLE((short)2, "angle"),
-    LENGTH((short)3, "length"),
     /**
      * 
      * @see TPlayer
      */
-    PLAYER((short)4, "player"),
-    IS_INVISIBLE((short)5, "isInvisible"),
-    IS_SPEEDUP((short)6, "isSpeedup"),
-    IS_MAGNETIC((short)7, "isMagnetic");
+    PLAYER((short)3, "player"),
+    STORE((short)4, "store"),
+    USED((short)5, "used");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -80,16 +74,12 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
           return RADIUS;
         case 2: // ANGLE
           return ANGLE;
-        case 3: // LENGTH
-          return LENGTH;
-        case 4: // PLAYER
+        case 3: // PLAYER
           return PLAYER;
-        case 5: // IS_INVISIBLE
-          return IS_INVISIBLE;
-        case 6: // IS_SPEEDUP
-          return IS_SPEEDUP;
-        case 7: // IS_MAGNETIC
-          return IS_MAGNETIC;
+        case 4: // STORE
+          return STORE;
+        case 5: // USED
+          return USED;
         default:
           return null;
       }
@@ -132,11 +122,7 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
   // isset id assignments
   private static final int __RADIUS_ISSET_ID = 0;
   private static final int __ANGLE_ISSET_ID = 1;
-  private static final int __LENGTH_ISSET_ID = 2;
-  private static final int __ISINVISIBLE_ISSET_ID = 3;
-  private static final int __ISSPEEDUP_ISSET_ID = 4;
-  private static final int __ISMAGNETIC_ISSET_ID = 5;
-  private BitSet __isset_bit_vector = new BitSet(6);
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
@@ -145,16 +131,12 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
         new FieldValueMetaData(TType.DOUBLE)));
     tmpMap.put(_Fields.ANGLE, new FieldMetaData("angle", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.DOUBLE)));
-    tmpMap.put(_Fields.LENGTH, new FieldMetaData("length", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.DOUBLE)));
     tmpMap.put(_Fields.PLAYER, new FieldMetaData("player", TFieldRequirementType.DEFAULT, 
         new EnumMetaData(TType.ENUM, TPlayer.class)));
-    tmpMap.put(_Fields.IS_INVISIBLE, new FieldMetaData("isInvisible", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
-    tmpMap.put(_Fields.IS_SPEEDUP, new FieldMetaData("isSpeedup", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
-    tmpMap.put(_Fields.IS_MAGNETIC, new FieldMetaData("isMagnetic", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
+    tmpMap.put(_Fields.STORE, new FieldMetaData("store", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, TPower.class)));
+    tmpMap.put(_Fields.USED, new FieldMetaData("used", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, TPower.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TPaddle.class, metaDataMap);
   }
@@ -165,26 +147,18 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
   public TPaddle(
     double radius,
     double angle,
-    double length,
     TPlayer player,
-    boolean isInvisible,
-    boolean isSpeedup,
-    boolean isMagnetic)
+    TPower store,
+    TPower used)
   {
     this();
     this.radius = radius;
     setRadiusIsSet(true);
     this.angle = angle;
     setAngleIsSet(true);
-    this.length = length;
-    setLengthIsSet(true);
     this.player = player;
-    this.isInvisible = isInvisible;
-    setIsInvisibleIsSet(true);
-    this.isSpeedup = isSpeedup;
-    setIsSpeedupIsSet(true);
-    this.isMagnetic = isMagnetic;
-    setIsMagneticIsSet(true);
+    this.store = store;
+    this.used = used;
   }
 
   /**
@@ -195,13 +169,15 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.radius = other.radius;
     this.angle = other.angle;
-    this.length = other.length;
     if (other.isSetPlayer()) {
       this.player = other.player;
     }
-    this.isInvisible = other.isInvisible;
-    this.isSpeedup = other.isSpeedup;
-    this.isMagnetic = other.isMagnetic;
+    if (other.isSetStore()) {
+      this.store = new TPower(other.store);
+    }
+    if (other.isSetUsed()) {
+      this.used = new TPower(other.used);
+    }
   }
 
   public TPaddle deepCopy() {
@@ -214,15 +190,9 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     this.radius = 0.0;
     setAngleIsSet(false);
     this.angle = 0.0;
-    setLengthIsSet(false);
-    this.length = 0.0;
     this.player = null;
-    setIsInvisibleIsSet(false);
-    this.isInvisible = false;
-    setIsSpeedupIsSet(false);
-    this.isSpeedup = false;
-    setIsMagneticIsSet(false);
-    this.isMagnetic = false;
+    this.store = null;
+    this.used = null;
   }
 
   public double getRadius() {
@@ -271,29 +241,6 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     __isset_bit_vector.set(__ANGLE_ISSET_ID, value);
   }
 
-  public double getLength() {
-    return this.length;
-  }
-
-  public TPaddle setLength(double length) {
-    this.length = length;
-    setLengthIsSet(true);
-    return this;
-  }
-
-  public void unsetLength() {
-    __isset_bit_vector.clear(__LENGTH_ISSET_ID);
-  }
-
-  /** Returns true if field length is set (has been asigned a value) and false otherwise */
-  public boolean isSetLength() {
-    return __isset_bit_vector.get(__LENGTH_ISSET_ID);
-  }
-
-  public void setLengthIsSet(boolean value) {
-    __isset_bit_vector.set(__LENGTH_ISSET_ID, value);
-  }
-
   /**
    * 
    * @see TPlayer
@@ -326,73 +273,52 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     }
   }
 
-  public boolean isIsInvisible() {
-    return this.isInvisible;
+  public TPower getStore() {
+    return this.store;
   }
 
-  public TPaddle setIsInvisible(boolean isInvisible) {
-    this.isInvisible = isInvisible;
-    setIsInvisibleIsSet(true);
+  public TPaddle setStore(TPower store) {
+    this.store = store;
     return this;
   }
 
-  public void unsetIsInvisible() {
-    __isset_bit_vector.clear(__ISINVISIBLE_ISSET_ID);
+  public void unsetStore() {
+    this.store = null;
   }
 
-  /** Returns true if field isInvisible is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsInvisible() {
-    return __isset_bit_vector.get(__ISINVISIBLE_ISSET_ID);
+  /** Returns true if field store is set (has been asigned a value) and false otherwise */
+  public boolean isSetStore() {
+    return this.store != null;
   }
 
-  public void setIsInvisibleIsSet(boolean value) {
-    __isset_bit_vector.set(__ISINVISIBLE_ISSET_ID, value);
+  public void setStoreIsSet(boolean value) {
+    if (!value) {
+      this.store = null;
+    }
   }
 
-  public boolean isIsSpeedup() {
-    return this.isSpeedup;
+  public TPower getUsed() {
+    return this.used;
   }
 
-  public TPaddle setIsSpeedup(boolean isSpeedup) {
-    this.isSpeedup = isSpeedup;
-    setIsSpeedupIsSet(true);
+  public TPaddle setUsed(TPower used) {
+    this.used = used;
     return this;
   }
 
-  public void unsetIsSpeedup() {
-    __isset_bit_vector.clear(__ISSPEEDUP_ISSET_ID);
+  public void unsetUsed() {
+    this.used = null;
   }
 
-  /** Returns true if field isSpeedup is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsSpeedup() {
-    return __isset_bit_vector.get(__ISSPEEDUP_ISSET_ID);
+  /** Returns true if field used is set (has been asigned a value) and false otherwise */
+  public boolean isSetUsed() {
+    return this.used != null;
   }
 
-  public void setIsSpeedupIsSet(boolean value) {
-    __isset_bit_vector.set(__ISSPEEDUP_ISSET_ID, value);
-  }
-
-  public boolean isIsMagnetic() {
-    return this.isMagnetic;
-  }
-
-  public TPaddle setIsMagnetic(boolean isMagnetic) {
-    this.isMagnetic = isMagnetic;
-    setIsMagneticIsSet(true);
-    return this;
-  }
-
-  public void unsetIsMagnetic() {
-    __isset_bit_vector.clear(__ISMAGNETIC_ISSET_ID);
-  }
-
-  /** Returns true if field isMagnetic is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsMagnetic() {
-    return __isset_bit_vector.get(__ISMAGNETIC_ISSET_ID);
-  }
-
-  public void setIsMagneticIsSet(boolean value) {
-    __isset_bit_vector.set(__ISMAGNETIC_ISSET_ID, value);
+  public void setUsedIsSet(boolean value) {
+    if (!value) {
+      this.used = null;
+    }
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -413,14 +339,6 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
       }
       break;
 
-    case LENGTH:
-      if (value == null) {
-        unsetLength();
-      } else {
-        setLength((Double)value);
-      }
-      break;
-
     case PLAYER:
       if (value == null) {
         unsetPlayer();
@@ -429,27 +347,19 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
       }
       break;
 
-    case IS_INVISIBLE:
+    case STORE:
       if (value == null) {
-        unsetIsInvisible();
+        unsetStore();
       } else {
-        setIsInvisible((Boolean)value);
+        setStore((TPower)value);
       }
       break;
 
-    case IS_SPEEDUP:
+    case USED:
       if (value == null) {
-        unsetIsSpeedup();
+        unsetUsed();
       } else {
-        setIsSpeedup((Boolean)value);
-      }
-      break;
-
-    case IS_MAGNETIC:
-      if (value == null) {
-        unsetIsMagnetic();
-      } else {
-        setIsMagnetic((Boolean)value);
+        setUsed((TPower)value);
       }
       break;
 
@@ -464,20 +374,14 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     case ANGLE:
       return new Double(getAngle());
 
-    case LENGTH:
-      return new Double(getLength());
-
     case PLAYER:
       return getPlayer();
 
-    case IS_INVISIBLE:
-      return new Boolean(isIsInvisible());
+    case STORE:
+      return getStore();
 
-    case IS_SPEEDUP:
-      return new Boolean(isIsSpeedup());
-
-    case IS_MAGNETIC:
-      return new Boolean(isIsMagnetic());
+    case USED:
+      return getUsed();
 
     }
     throw new IllegalStateException();
@@ -494,16 +398,12 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
       return isSetRadius();
     case ANGLE:
       return isSetAngle();
-    case LENGTH:
-      return isSetLength();
     case PLAYER:
       return isSetPlayer();
-    case IS_INVISIBLE:
-      return isSetIsInvisible();
-    case IS_SPEEDUP:
-      return isSetIsSpeedup();
-    case IS_MAGNETIC:
-      return isSetIsMagnetic();
+    case STORE:
+      return isSetStore();
+    case USED:
+      return isSetUsed();
     }
     throw new IllegalStateException();
   }
@@ -539,15 +439,6 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
         return false;
     }
 
-    boolean this_present_length = true;
-    boolean that_present_length = true;
-    if (this_present_length || that_present_length) {
-      if (!(this_present_length && that_present_length))
-        return false;
-      if (this.length != that.length)
-        return false;
-    }
-
     boolean this_present_player = true && this.isSetPlayer();
     boolean that_present_player = true && that.isSetPlayer();
     if (this_present_player || that_present_player) {
@@ -557,30 +448,21 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
         return false;
     }
 
-    boolean this_present_isInvisible = true;
-    boolean that_present_isInvisible = true;
-    if (this_present_isInvisible || that_present_isInvisible) {
-      if (!(this_present_isInvisible && that_present_isInvisible))
+    boolean this_present_store = true && this.isSetStore();
+    boolean that_present_store = true && that.isSetStore();
+    if (this_present_store || that_present_store) {
+      if (!(this_present_store && that_present_store))
         return false;
-      if (this.isInvisible != that.isInvisible)
-        return false;
-    }
-
-    boolean this_present_isSpeedup = true;
-    boolean that_present_isSpeedup = true;
-    if (this_present_isSpeedup || that_present_isSpeedup) {
-      if (!(this_present_isSpeedup && that_present_isSpeedup))
-        return false;
-      if (this.isSpeedup != that.isSpeedup)
+      if (!this.store.equals(that.store))
         return false;
     }
 
-    boolean this_present_isMagnetic = true;
-    boolean that_present_isMagnetic = true;
-    if (this_present_isMagnetic || that_present_isMagnetic) {
-      if (!(this_present_isMagnetic && that_present_isMagnetic))
+    boolean this_present_used = true && this.isSetUsed();
+    boolean that_present_used = true && that.isSetUsed();
+    if (this_present_used || that_present_used) {
+      if (!(this_present_used && that_present_used))
         return false;
-      if (this.isMagnetic != that.isMagnetic)
+      if (!this.used.equals(that.used))
         return false;
     }
 
@@ -620,16 +502,6 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetLength()).compareTo(typedOther.isSetLength());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetLength()) {
-      lastComparison = TBaseHelper.compareTo(this.length, typedOther.length);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
     lastComparison = Boolean.valueOf(isSetPlayer()).compareTo(typedOther.isSetPlayer());
     if (lastComparison != 0) {
       return lastComparison;
@@ -640,32 +512,22 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsInvisible()).compareTo(typedOther.isSetIsInvisible());
+    lastComparison = Boolean.valueOf(isSetStore()).compareTo(typedOther.isSetStore());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsInvisible()) {
-      lastComparison = TBaseHelper.compareTo(this.isInvisible, typedOther.isInvisible);
+    if (isSetStore()) {
+      lastComparison = TBaseHelper.compareTo(this.store, typedOther.store);
       if (lastComparison != 0) {
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsSpeedup()).compareTo(typedOther.isSetIsSpeedup());
+    lastComparison = Boolean.valueOf(isSetUsed()).compareTo(typedOther.isSetUsed());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsSpeedup()) {
-      lastComparison = TBaseHelper.compareTo(this.isSpeedup, typedOther.isSpeedup);
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-    }
-    lastComparison = Boolean.valueOf(isSetIsMagnetic()).compareTo(typedOther.isSetIsMagnetic());
-    if (lastComparison != 0) {
-      return lastComparison;
-    }
-    if (isSetIsMagnetic()) {
-      lastComparison = TBaseHelper.compareTo(this.isMagnetic, typedOther.isMagnetic);
+    if (isSetUsed()) {
+      lastComparison = TBaseHelper.compareTo(this.used, typedOther.used);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -703,41 +565,25 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 3: // LENGTH
-          if (field.type == TType.DOUBLE) {
-            this.length = iprot.readDouble();
-            setLengthIsSet(true);
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 4: // PLAYER
+        case 3: // PLAYER
           if (field.type == TType.I32) {
             this.player = TPlayer.findByValue(iprot.readI32());
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 5: // IS_INVISIBLE
-          if (field.type == TType.BOOL) {
-            this.isInvisible = iprot.readBool();
-            setIsInvisibleIsSet(true);
+        case 4: // STORE
+          if (field.type == TType.STRUCT) {
+            this.store = new TPower();
+            this.store.read(iprot);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 6: // IS_SPEEDUP
-          if (field.type == TType.BOOL) {
-            this.isSpeedup = iprot.readBool();
-            setIsSpeedupIsSet(true);
-          } else { 
-            TProtocolUtil.skip(iprot, field.type);
-          }
-          break;
-        case 7: // IS_MAGNETIC
-          if (field.type == TType.BOOL) {
-            this.isMagnetic = iprot.readBool();
-            setIsMagneticIsSet(true);
+        case 5: // USED
+          if (field.type == TType.STRUCT) {
+            this.used = new TPower();
+            this.used.read(iprot);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
@@ -763,23 +609,21 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     oprot.writeFieldBegin(ANGLE_FIELD_DESC);
     oprot.writeDouble(this.angle);
     oprot.writeFieldEnd();
-    oprot.writeFieldBegin(LENGTH_FIELD_DESC);
-    oprot.writeDouble(this.length);
-    oprot.writeFieldEnd();
     if (this.player != null) {
       oprot.writeFieldBegin(PLAYER_FIELD_DESC);
       oprot.writeI32(this.player.getValue());
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(IS_INVISIBLE_FIELD_DESC);
-    oprot.writeBool(this.isInvisible);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(IS_SPEEDUP_FIELD_DESC);
-    oprot.writeBool(this.isSpeedup);
-    oprot.writeFieldEnd();
-    oprot.writeFieldBegin(IS_MAGNETIC_FIELD_DESC);
-    oprot.writeBool(this.isMagnetic);
-    oprot.writeFieldEnd();
+    if (this.store != null) {
+      oprot.writeFieldBegin(STORE_FIELD_DESC);
+      this.store.write(oprot);
+      oprot.writeFieldEnd();
+    }
+    if (this.used != null) {
+      oprot.writeFieldBegin(USED_FIELD_DESC);
+      this.used.write(oprot);
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -797,10 +641,6 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     sb.append(this.angle);
     first = false;
     if (!first) sb.append(", ");
-    sb.append("length:");
-    sb.append(this.length);
-    first = false;
-    if (!first) sb.append(", ");
     sb.append("player:");
     if (this.player == null) {
       sb.append("null");
@@ -809,16 +649,20 @@ public class TPaddle implements TBase<TPaddle, TPaddle._Fields>, java.io.Seriali
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isInvisible:");
-    sb.append(this.isInvisible);
+    sb.append("store:");
+    if (this.store == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.store);
+    }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isSpeedup:");
-    sb.append(this.isSpeedup);
-    first = false;
-    if (!first) sb.append(", ");
-    sb.append("isMagnetic:");
-    sb.append(this.isMagnetic);
+    sb.append("used:");
+    if (this.used == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.used);
+    }
     first = false;
     sb.append(")");
     return sb.toString();

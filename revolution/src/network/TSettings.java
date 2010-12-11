@@ -33,6 +33,7 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
   private static final TField ARENA_RADIUS_FIELD_DESC = new TField("arenaRadius", TType.I32, (short)2);
   private static final TField TIMER_REFRESH_FIELD_DESC = new TField("timerRefresh", TType.I32, (short)3);
   private static final TField COLOR_FIELD_DESC = new TField("color", TType.I32, (short)4);
+  private static final TField COMBOS_FIELD_DESC = new TField("combos", TType.LIST, (short)5);
 
   public int ballRadius;
   public int arenaRadius;
@@ -42,6 +43,7 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
    * @see TPlayer
    */
   public TPlayer color;
+  public List<Integer> combos;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
@@ -52,7 +54,8 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
      * 
      * @see TPlayer
      */
-    COLOR((short)4, "color");
+    COLOR((short)4, "color"),
+    COMBOS((short)5, "combos");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -75,6 +78,8 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
           return TIMER_REFRESH;
         case 4: // COLOR
           return COLOR;
+        case 5: // COMBOS
+          return COMBOS;
         default:
           return null;
       }
@@ -131,6 +136,9 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
         new FieldValueMetaData(TType.I32)));
     tmpMap.put(_Fields.COLOR, new FieldMetaData("color", TFieldRequirementType.DEFAULT, 
         new EnumMetaData(TType.ENUM, TPlayer.class)));
+    tmpMap.put(_Fields.COMBOS, new FieldMetaData("combos", TFieldRequirementType.DEFAULT, 
+        new ListMetaData(TType.LIST, 
+            new FieldValueMetaData(TType.I32))));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TSettings.class, metaDataMap);
   }
@@ -142,7 +150,8 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     int ballRadius,
     int arenaRadius,
     int timerRefresh,
-    TPlayer color)
+    TPlayer color,
+    List<Integer> combos)
   {
     this();
     this.ballRadius = ballRadius;
@@ -152,6 +161,7 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     this.timerRefresh = timerRefresh;
     setTimerRefreshIsSet(true);
     this.color = color;
+    this.combos = combos;
   }
 
   /**
@@ -165,6 +175,13 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     this.timerRefresh = other.timerRefresh;
     if (other.isSetColor()) {
       this.color = other.color;
+    }
+    if (other.isSetCombos()) {
+      List<Integer> __this__combos = new ArrayList<Integer>();
+      for (Integer other_element : other.combos) {
+        __this__combos.add(other_element);
+      }
+      this.combos = __this__combos;
     }
   }
 
@@ -181,6 +198,7 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     setTimerRefreshIsSet(false);
     this.timerRefresh = 0;
     this.color = null;
+    this.combos = null;
   }
 
   public int getBallRadius() {
@@ -284,6 +302,45 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
     }
   }
 
+  public int getCombosSize() {
+    return (this.combos == null) ? 0 : this.combos.size();
+  }
+
+  public java.util.Iterator<Integer> getCombosIterator() {
+    return (this.combos == null) ? null : this.combos.iterator();
+  }
+
+  public void addToCombos(int elem) {
+    if (this.combos == null) {
+      this.combos = new ArrayList<Integer>();
+    }
+    this.combos.add(elem);
+  }
+
+  public List<Integer> getCombos() {
+    return this.combos;
+  }
+
+  public TSettings setCombos(List<Integer> combos) {
+    this.combos = combos;
+    return this;
+  }
+
+  public void unsetCombos() {
+    this.combos = null;
+  }
+
+  /** Returns true if field combos is set (has been asigned a value) and false otherwise */
+  public boolean isSetCombos() {
+    return this.combos != null;
+  }
+
+  public void setCombosIsSet(boolean value) {
+    if (!value) {
+      this.combos = null;
+    }
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case BALL_RADIUS:
@@ -318,6 +375,14 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       }
       break;
 
+    case COMBOS:
+      if (value == null) {
+        unsetCombos();
+      } else {
+        setCombos((List<Integer>)value);
+      }
+      break;
+
     }
   }
 
@@ -334,6 +399,9 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
 
     case COLOR:
       return getColor();
+
+    case COMBOS:
+      return getCombos();
 
     }
     throw new IllegalStateException();
@@ -354,6 +422,8 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       return isSetTimerRefresh();
     case COLOR:
       return isSetColor();
+    case COMBOS:
+      return isSetCombos();
     }
     throw new IllegalStateException();
   }
@@ -404,6 +474,15 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       if (!(this_present_color && that_present_color))
         return false;
       if (!this.color.equals(that.color))
+        return false;
+    }
+
+    boolean this_present_combos = true && this.isSetCombos();
+    boolean that_present_combos = true && that.isSetCombos();
+    if (this_present_combos || that_present_combos) {
+      if (!(this_present_combos && that_present_combos))
+        return false;
+      if (!this.combos.equals(that.combos))
         return false;
     }
 
@@ -463,6 +542,16 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetCombos()).compareTo(typedOther.isSetCombos());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetCombos()) {
+      lastComparison = TBaseHelper.compareTo(this.combos, typedOther.combos);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -511,6 +600,23 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 5: // COMBOS
+          if (field.type == TType.LIST) {
+            {
+              TList _list28 = iprot.readListBegin();
+              this.combos = new ArrayList<Integer>(_list28.size);
+              for (int _i29 = 0; _i29 < _list28.size; ++_i29)
+              {
+                int _elem30;
+                _elem30 = iprot.readI32();
+                this.combos.add(_elem30);
+              }
+              iprot.readListEnd();
+            }
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -540,6 +646,18 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       oprot.writeI32(this.color.getValue());
       oprot.writeFieldEnd();
     }
+    if (this.combos != null) {
+      oprot.writeFieldBegin(COMBOS_FIELD_DESC);
+      {
+        oprot.writeListBegin(new TList(TType.I32, this.combos.size()));
+        for (int _iter31 : this.combos)
+        {
+          oprot.writeI32(_iter31);
+        }
+        oprot.writeListEnd();
+      }
+      oprot.writeFieldEnd();
+    }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -566,6 +684,14 @@ public class TSettings implements TBase<TSettings, TSettings._Fields>, java.io.S
       sb.append("null");
     } else {
       sb.append(this.color);
+    }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("combos:");
+    if (this.combos == null) {
+      sb.append("null");
+    } else {
+      sb.append(this.combos);
     }
     first = false;
     sb.append(")");

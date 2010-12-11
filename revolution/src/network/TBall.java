@@ -30,37 +30,32 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
   private static final TStruct STRUCT_DESC = new TStruct("TBall");
 
   private static final TField POSITIONS_FIELD_DESC = new TField("positions", TType.LIST, (short)1);
-  private static final TField TYPE_FIELD_DESC = new TField("type", TType.I32, (short)2);
+  private static final TField STORE_FIELD_DESC = new TField("store", TType.STRUCT, (short)2);
   private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)3);
-  private static final TField IS_SHADOW_FIELD_DESC = new TField("isShadow", TType.BOOL, (short)4);
+  private static final TField ID_FIELD_DESC = new TField("id", TType.I32, (short)4);
+  private static final TField ANGLE_FIELD_DESC = new TField("angle", TType.DOUBLE, (short)5);
 
   public List<TPosition> positions;
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TPowerUp type;
+  public TPower store;
   /**
    * 
    * @see TPlayer
    */
   public TPlayer player;
-  public boolean isShadow;
+  public int id;
+  public double angle;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
     POSITIONS((short)1, "positions"),
-    /**
-     * 
-     * @see TPowerUp
-     */
-    TYPE((short)2, "type"),
+    STORE((short)2, "store"),
     /**
      * 
      * @see TPlayer
      */
     PLAYER((short)3, "player"),
-    IS_SHADOW((short)4, "isShadow");
+    ID((short)4, "id"),
+    ANGLE((short)5, "angle");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -77,12 +72,14 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       switch(fieldId) {
         case 1: // POSITIONS
           return POSITIONS;
-        case 2: // TYPE
-          return TYPE;
+        case 2: // STORE
+          return STORE;
         case 3: // PLAYER
           return PLAYER;
-        case 4: // IS_SHADOW
-          return IS_SHADOW;
+        case 4: // ID
+          return ID;
+        case 5: // ANGLE
+          return ANGLE;
         default:
           return null;
       }
@@ -123,8 +120,9 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
   }
 
   // isset id assignments
-  private static final int __ISSHADOW_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __ID_ISSET_ID = 0;
+  private static final int __ANGLE_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
@@ -132,12 +130,14 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     tmpMap.put(_Fields.POSITIONS, new FieldMetaData("positions", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
             new StructMetaData(TType.STRUCT, TPosition.class))));
-    tmpMap.put(_Fields.TYPE, new FieldMetaData("type", TFieldRequirementType.DEFAULT, 
-        new EnumMetaData(TType.ENUM, TPowerUp.class)));
+    tmpMap.put(_Fields.STORE, new FieldMetaData("store", TFieldRequirementType.DEFAULT, 
+        new StructMetaData(TType.STRUCT, TPower.class)));
     tmpMap.put(_Fields.PLAYER, new FieldMetaData("player", TFieldRequirementType.DEFAULT, 
         new EnumMetaData(TType.ENUM, TPlayer.class)));
-    tmpMap.put(_Fields.IS_SHADOW, new FieldMetaData("isShadow", TFieldRequirementType.DEFAULT, 
-        new FieldValueMetaData(TType.BOOL)));
+    tmpMap.put(_Fields.ID, new FieldMetaData("id", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
+    tmpMap.put(_Fields.ANGLE, new FieldMetaData("angle", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.DOUBLE)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TBall.class, metaDataMap);
   }
@@ -147,16 +147,19 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
 
   public TBall(
     List<TPosition> positions,
-    TPowerUp type,
+    TPower store,
     TPlayer player,
-    boolean isShadow)
+    int id,
+    double angle)
   {
     this();
     this.positions = positions;
-    this.type = type;
+    this.store = store;
     this.player = player;
-    this.isShadow = isShadow;
-    setIsShadowIsSet(true);
+    this.id = id;
+    setIdIsSet(true);
+    this.angle = angle;
+    setAngleIsSet(true);
   }
 
   /**
@@ -172,13 +175,14 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       }
       this.positions = __this__positions;
     }
-    if (other.isSetType()) {
-      this.type = other.type;
+    if (other.isSetStore()) {
+      this.store = new TPower(other.store);
     }
     if (other.isSetPlayer()) {
       this.player = other.player;
     }
-    this.isShadow = other.isShadow;
+    this.id = other.id;
+    this.angle = other.angle;
   }
 
   public TBall deepCopy() {
@@ -188,10 +192,12 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
   @Override
   public void clear() {
     this.positions = null;
-    this.type = null;
+    this.store = null;
     this.player = null;
-    setIsShadowIsSet(false);
-    this.isShadow = false;
+    setIdIsSet(false);
+    this.id = 0;
+    setAngleIsSet(false);
+    this.angle = 0.0;
   }
 
   public int getPositionsSize() {
@@ -233,35 +239,27 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     }
   }
 
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TPowerUp getType() {
-    return this.type;
+  public TPower getStore() {
+    return this.store;
   }
 
-  /**
-   * 
-   * @see TPowerUp
-   */
-  public TBall setType(TPowerUp type) {
-    this.type = type;
+  public TBall setStore(TPower store) {
+    this.store = store;
     return this;
   }
 
-  public void unsetType() {
-    this.type = null;
+  public void unsetStore() {
+    this.store = null;
   }
 
-  /** Returns true if field type is set (has been asigned a value) and false otherwise */
-  public boolean isSetType() {
-    return this.type != null;
+  /** Returns true if field store is set (has been asigned a value) and false otherwise */
+  public boolean isSetStore() {
+    return this.store != null;
   }
 
-  public void setTypeIsSet(boolean value) {
+  public void setStoreIsSet(boolean value) {
     if (!value) {
-      this.type = null;
+      this.store = null;
     }
   }
 
@@ -297,27 +295,50 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     }
   }
 
-  public boolean isIsShadow() {
-    return this.isShadow;
+  public int getId() {
+    return this.id;
   }
 
-  public TBall setIsShadow(boolean isShadow) {
-    this.isShadow = isShadow;
-    setIsShadowIsSet(true);
+  public TBall setId(int id) {
+    this.id = id;
+    setIdIsSet(true);
     return this;
   }
 
-  public void unsetIsShadow() {
-    __isset_bit_vector.clear(__ISSHADOW_ISSET_ID);
+  public void unsetId() {
+    __isset_bit_vector.clear(__ID_ISSET_ID);
   }
 
-  /** Returns true if field isShadow is set (has been asigned a value) and false otherwise */
-  public boolean isSetIsShadow() {
-    return __isset_bit_vector.get(__ISSHADOW_ISSET_ID);
+  /** Returns true if field id is set (has been asigned a value) and false otherwise */
+  public boolean isSetId() {
+    return __isset_bit_vector.get(__ID_ISSET_ID);
   }
 
-  public void setIsShadowIsSet(boolean value) {
-    __isset_bit_vector.set(__ISSHADOW_ISSET_ID, value);
+  public void setIdIsSet(boolean value) {
+    __isset_bit_vector.set(__ID_ISSET_ID, value);
+  }
+
+  public double getAngle() {
+    return this.angle;
+  }
+
+  public TBall setAngle(double angle) {
+    this.angle = angle;
+    setAngleIsSet(true);
+    return this;
+  }
+
+  public void unsetAngle() {
+    __isset_bit_vector.clear(__ANGLE_ISSET_ID);
+  }
+
+  /** Returns true if field angle is set (has been asigned a value) and false otherwise */
+  public boolean isSetAngle() {
+    return __isset_bit_vector.get(__ANGLE_ISSET_ID);
+  }
+
+  public void setAngleIsSet(boolean value) {
+    __isset_bit_vector.set(__ANGLE_ISSET_ID, value);
   }
 
   public void setFieldValue(_Fields field, Object value) {
@@ -330,11 +351,11 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       }
       break;
 
-    case TYPE:
+    case STORE:
       if (value == null) {
-        unsetType();
+        unsetStore();
       } else {
-        setType((TPowerUp)value);
+        setStore((TPower)value);
       }
       break;
 
@@ -346,11 +367,19 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       }
       break;
 
-    case IS_SHADOW:
+    case ID:
       if (value == null) {
-        unsetIsShadow();
+        unsetId();
       } else {
-        setIsShadow((Boolean)value);
+        setId((Integer)value);
+      }
+      break;
+
+    case ANGLE:
+      if (value == null) {
+        unsetAngle();
+      } else {
+        setAngle((Double)value);
       }
       break;
 
@@ -362,14 +391,17 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     case POSITIONS:
       return getPositions();
 
-    case TYPE:
-      return getType();
+    case STORE:
+      return getStore();
 
     case PLAYER:
       return getPlayer();
 
-    case IS_SHADOW:
-      return new Boolean(isIsShadow());
+    case ID:
+      return new Integer(getId());
+
+    case ANGLE:
+      return new Double(getAngle());
 
     }
     throw new IllegalStateException();
@@ -384,12 +416,14 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     switch (field) {
     case POSITIONS:
       return isSetPositions();
-    case TYPE:
-      return isSetType();
+    case STORE:
+      return isSetStore();
     case PLAYER:
       return isSetPlayer();
-    case IS_SHADOW:
-      return isSetIsShadow();
+    case ID:
+      return isSetId();
+    case ANGLE:
+      return isSetAngle();
     }
     throw new IllegalStateException();
   }
@@ -416,12 +450,12 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
         return false;
     }
 
-    boolean this_present_type = true && this.isSetType();
-    boolean that_present_type = true && that.isSetType();
-    if (this_present_type || that_present_type) {
-      if (!(this_present_type && that_present_type))
+    boolean this_present_store = true && this.isSetStore();
+    boolean that_present_store = true && that.isSetStore();
+    if (this_present_store || that_present_store) {
+      if (!(this_present_store && that_present_store))
         return false;
-      if (!this.type.equals(that.type))
+      if (!this.store.equals(that.store))
         return false;
     }
 
@@ -434,12 +468,21 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
         return false;
     }
 
-    boolean this_present_isShadow = true;
-    boolean that_present_isShadow = true;
-    if (this_present_isShadow || that_present_isShadow) {
-      if (!(this_present_isShadow && that_present_isShadow))
+    boolean this_present_id = true;
+    boolean that_present_id = true;
+    if (this_present_id || that_present_id) {
+      if (!(this_present_id && that_present_id))
         return false;
-      if (this.isShadow != that.isShadow)
+      if (this.id != that.id)
+        return false;
+    }
+
+    boolean this_present_angle = true;
+    boolean that_present_angle = true;
+    if (this_present_angle || that_present_angle) {
+      if (!(this_present_angle && that_present_angle))
+        return false;
+      if (this.angle != that.angle)
         return false;
     }
 
@@ -469,12 +512,12 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetType()).compareTo(typedOther.isSetType());
+    lastComparison = Boolean.valueOf(isSetStore()).compareTo(typedOther.isSetStore());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetType()) {
-      lastComparison = TBaseHelper.compareTo(this.type, typedOther.type);
+    if (isSetStore()) {
+      lastComparison = TBaseHelper.compareTo(this.store, typedOther.store);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -489,12 +532,22 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
         return lastComparison;
       }
     }
-    lastComparison = Boolean.valueOf(isSetIsShadow()).compareTo(typedOther.isSetIsShadow());
+    lastComparison = Boolean.valueOf(isSetId()).compareTo(typedOther.isSetId());
     if (lastComparison != 0) {
       return lastComparison;
     }
-    if (isSetIsShadow()) {
-      lastComparison = TBaseHelper.compareTo(this.isShadow, typedOther.isShadow);
+    if (isSetId()) {
+      lastComparison = TBaseHelper.compareTo(this.id, typedOther.id);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetAngle()).compareTo(typedOther.isSetAngle());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetAngle()) {
+      lastComparison = TBaseHelper.compareTo(this.angle, typedOther.angle);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -534,9 +587,10 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 2: // TYPE
-          if (field.type == TType.I32) {
-            this.type = TPowerUp.findByValue(iprot.readI32());
+        case 2: // STORE
+          if (field.type == TType.STRUCT) {
+            this.store = new TPower();
+            this.store.read(iprot);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
@@ -548,10 +602,18 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
-        case 4: // IS_SHADOW
-          if (field.type == TType.BOOL) {
-            this.isShadow = iprot.readBool();
-            setIsShadowIsSet(true);
+        case 4: // ID
+          if (field.type == TType.I32) {
+            this.id = iprot.readI32();
+            setIdIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case 5: // ANGLE
+          if (field.type == TType.DOUBLE) {
+            this.angle = iprot.readDouble();
+            setAngleIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
@@ -583,9 +645,9 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       }
       oprot.writeFieldEnd();
     }
-    if (this.type != null) {
-      oprot.writeFieldBegin(TYPE_FIELD_DESC);
-      oprot.writeI32(this.type.getValue());
+    if (this.store != null) {
+      oprot.writeFieldBegin(STORE_FIELD_DESC);
+      this.store.write(oprot);
       oprot.writeFieldEnd();
     }
     if (this.player != null) {
@@ -593,8 +655,11 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       oprot.writeI32(this.player.getValue());
       oprot.writeFieldEnd();
     }
-    oprot.writeFieldBegin(IS_SHADOW_FIELD_DESC);
-    oprot.writeBool(this.isShadow);
+    oprot.writeFieldBegin(ID_FIELD_DESC);
+    oprot.writeI32(this.id);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(ANGLE_FIELD_DESC);
+    oprot.writeDouble(this.angle);
     oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -613,11 +678,11 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("type:");
-    if (this.type == null) {
+    sb.append("store:");
+    if (this.store == null) {
       sb.append("null");
     } else {
-      sb.append(this.type);
+      sb.append(this.store);
     }
     first = false;
     if (!first) sb.append(", ");
@@ -629,8 +694,12 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     }
     first = false;
     if (!first) sb.append(", ");
-    sb.append("isShadow:");
-    sb.append(this.isShadow);
+    sb.append("id:");
+    sb.append(this.id);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("angle:");
+    sb.append(this.angle);
     first = false;
     sb.append(")");
     return sb.toString();

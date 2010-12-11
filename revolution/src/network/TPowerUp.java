@@ -14,12 +14,8 @@ public enum TPowerUp implements TEnum {
   NONE(0),
   SPEED(1),
   INVIS(2),
-  SHADOW(3),
-  MAGNET(4),
-  EXTEND(5),
-  PUSH(6),
-  LASER(7),
-  WALL(8);
+  STUN(3),
+  STUNNED(4);
 
   private final int value;
 
@@ -47,17 +43,9 @@ public enum TPowerUp implements TEnum {
       case 2:
         return INVIS;
       case 3:
-        return SHADOW;
+        return STUN;
       case 4:
-        return MAGNET;
-      case 5:
-        return EXTEND;
-      case 6:
-        return PUSH;
-      case 7:
-        return LASER;
-      case 8:
-        return WALL;
+        return STUNNED;
       default:
         return null;
     }
