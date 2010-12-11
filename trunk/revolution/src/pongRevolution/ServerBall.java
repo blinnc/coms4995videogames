@@ -4,15 +4,17 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import network.TPaddle;
 import network.TPlayer;
+import network.TPower;
 import network.TPowerUp;
 import network.TBall;
 import network.TPosition;
 
 public class ServerBall {
 	private static final int NUM_POSITIONS = 20;
+	private static int ballCount = 1;
 	
+	private int id;
 	private double vx, vy;
 	private double x, y;
 	private double t;
@@ -21,30 +23,34 @@ public class ServerBall {
 	private TPlayer lastHit;
 	private TBall tball;
 	
-	private TPowerUp power;
+	private TPower power;
 	
 	private ArrayList<TPosition> prevPositions;
 	
 	public ServerBall() {
+		id = ballCount++;
+		
 		x = 0;
 		y = 0;
 		combo = 0;
 		rehit = 0;
 		prevPositions = new ArrayList<TPosition>();
 		
+		t = GameSettings.BALL_SPAWN_DIRECTION == GameSettings.RANDOM_DIRECTION ? Math.random() * 360 : GameSettings.BALL_SPAWN_DIRECTION;
+		
+		TPowerUp powerup;
 		if(GameSettings.WITH_POWERUPS && Math.random() < GameSettings.POWERUP_SPAWN_RATE) {
-			power = getRandomPowerup();
+			powerup = getRandomPowerup();
+			id = -id;
 		}
 		else {
-			power = TPowerUp.NONE;
+			powerup = TPowerUp.NONE;
 		}
+		power = new TPower(id, powerup);
 		
-		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, false);
+		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, id, t);
 		addPosition(x, y);
 		updatePosition();
-		
-		// Random direction
-		t = GameSettings.BALL_SPAWN_DIRECTION == GameSettings.RANDOM_DIRECTION ? Math.random() * 360 : GameSettings.BALL_SPAWN_DIRECTION;
 		
 		updateVelocity();
 	}
@@ -53,16 +59,18 @@ public class ServerBall {
 		this();
 		double dif = Math.random() * 2 * GameSettings.BALL_SPAWN_RANGE - GameSettings.BALL_SPAWN_RANGE;
 		t = angle + dif;
+		tball.angle = t;
 		updateVelocity();
 	}
 	
 	private TPowerUp getRandomPowerup() {
-		int num = (int)(Math.random() * 2) + 1;
+		int num = 1; //(int)(Math.random() * 2) + 1;
 		return TPowerUp.findByValue(num);
 	}
 	
 	public void updatePosition() {
-		List<TPosition> positions = new ArrayList<TPosition>();
+		List<TPosition> positions = tball.getPositions();
+		positions.clear();
 		int[] comboSlot = GameSettings.COMBO_SLOTS[combo];
 		if(combo == 0) {
 			positions.add(prevPositions.get(0));
@@ -72,8 +80,6 @@ public class ServerBall {
 				positions.add(prevPositions.get(comboSlot[i]));
 			}
 		}
-		
-		tball.positions = positions;
 	}
 	
 	private void updateVelocity() {
@@ -118,13 +124,16 @@ public class ServerBall {
 		lastHit = player;
 		tball.player = player;
 		rehit = GameSettings.BALL_REHIT_TIME;
-		if(power != TPowerUp.NONE) {
+		if(power.type != TPowerUp.NONE) {
 			paddle.setPowerup(power);
+			power = new TPower(0, TPowerUp.NONE);
+			tball.store = power;
 		}
 	}
 
 	public void setAngle(double t) {
 		this.t = t;
+		tball.angle = t;
 		updateVelocity();
 	}
 	
