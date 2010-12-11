@@ -58,6 +58,7 @@ public class GameSettings {
 	// Powerup settings
 	public static final double POWERUP_SPAWN_RATE = 1;
 	public static final int[] POWERUP_TIME = {0, 5000 / CLOCK_INTERVAL, 5000 / CLOCK_INTERVAL, 0, 0, 0, 0 , 0};
+	public static final double STUN_RANGE = 10;
 
 	
 	public static boolean isRed(TPlayer player) {

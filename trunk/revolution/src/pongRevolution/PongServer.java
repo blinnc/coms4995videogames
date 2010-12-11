@@ -144,7 +144,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 
 	@Override
 	public TGameState poll(TPlayer requester) throws TException {
-		return game.getState();
+		return game.getState(requester);
 	}
 
 
