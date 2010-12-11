@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -157,7 +159,11 @@ public class PongServer implements network.TNetworkServer.Iface{
 	@Override
 	public TSettings getSettings(TPlayer preferred) throws TException {
 		TPlayer player = game.registerPlayer(preferred);
-		TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL, player);
+		List<Integer> comboList = new ArrayList<Integer>();
+		for(int i = 1; i < GameSettings.COMBO_SCORE.length; i++) {
+			comboList.add(GameSettings.COMBO_SCORE[i - 1] - GameSettings.COMBO_SCORE[i]);
+		}
+		TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL, player, comboList);
 		return settings;
 	}
 }

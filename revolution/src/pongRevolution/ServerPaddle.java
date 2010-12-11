@@ -5,6 +5,7 @@ import java.awt.geom.Point2D;
 import network.TDirection;
 import network.TPaddle;
 import network.TPlayer;
+import network.TPower;
 import network.TPowerUp;
 
 public class ServerPaddle {
@@ -18,13 +19,16 @@ public class ServerPaddle {
 	
 	private double length;
 	private int jumpCounter;
-	private int powerCounter;
+	
+	private int effectCounter;
 	
 	private boolean isJumping;
 	
 	private TPlayer player;
 	private TPaddle tPaddle;
-	private TPowerUp power;
+	
+	private TPower power;
+	private TPower effect;
 	
 	private TDirection direction;
 	
@@ -37,10 +41,10 @@ public class ServerPaddle {
 		direction = TDirection.NONE;
 		isJumping = false;
 		jumpCounter = 0;
-		power = TPowerUp.NONE;
-		powerCounter = -1;
+		power = GameSettings.getNullPower();
+		effectCounter = -1;
 		
-		tPaddle = new TPaddle(r, t, length, player, false, false, false);
+		tPaddle = new TPaddle(r, t, player, power, power);
 	}
 	
 	public double getX() {
@@ -71,7 +75,7 @@ public class ServerPaddle {
 		return player;
 	}
 	
-	public TPowerUp getPower() {
+	public TPower getPower() {
 		return power;
 	}
 	
@@ -90,10 +94,10 @@ public class ServerPaddle {
 			tPaddle.setRadius(r);
 		}
 		
-		if(powerCounter > 0) {
-			powerCounter--;
+		if(effectCounter > 0) {
+			effectCounter--;
 		}
-		else if(powerCounter == 0){
+		else if(effectCounter == 0){
 			restore();
 		}
 		
@@ -120,34 +124,39 @@ public class ServerPaddle {
 		}
 	}
 	
-	public void setPowerup(TPowerUp p) {
+	public void setPowerup(TPower p) {
 		power = p;
 		System.out.println(power);
 	}
 	
 	public void usePowerup() {
-		if(TPowerUp.SPEED == power) {
+		if(TPowerUp.SPEED == power.type) {
 			setSpeedUp(true);
-			tPaddle.isSpeedup = true;
-			powerCounter = GameSettings.POWERUP_TIME[TPowerUp.SPEED.getValue()];
+			effect = power;
+			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.SPEED.getValue()];
 		}
-		else if(TPowerUp.INVIS == power) {
-			tPaddle.isInvisible = true;
-			powerCounter = GameSettings.POWERUP_TIME[TPowerUp.INVIS.getValue()];
+		else if(TPowerUp.INVIS == power.type) {
+			effect = power;
+			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.INVIS.getValue()];
 		}
-		else if(TPowerUp.SHADOW == power) {
+		else if(TPowerUp.STUN == power.type) {
 			
 		}
+		tPaddle.used = effect;
+		power = GameSettings.getNullPower();
+		tPaddle.store = power;
+	}
+	
+	public void stun(TPower effect) {
+		this.effect = effect;
+		tPaddle.used = effect;
 	}
 	
 	private void restore() {
-		tPaddle.isSpeedup = false;
 		setSpeedUp(false);
-		
-		tPaddle.isInvisible = false;
-		
-		power = TPowerUp.NONE;
-		powerCounter = -1;
+		effect = GameSettings.getNullPower();
+		tPaddle.used = effect;
+		effectCounter = -1;
 	}
 	
 	private double getJumpHeight() {

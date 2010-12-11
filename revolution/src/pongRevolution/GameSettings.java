@@ -1,6 +1,8 @@
 package pongRevolution;
 
 import network.TPlayer;
+import network.TPower;
+import network.TPowerUp;
 
 public class GameSettings {
 	public static final int SERVER_PORT = 12020;
@@ -36,7 +38,7 @@ public class GameSettings {
 	public static final double RANDOM_DIRECTION = -1;
 	public static final double BALL_SPAWN_DIRECTION = RANDOM_DIRECTION;
 	public static final int BALL_RADIUS = 5;
-	public static final int COMBO_SCORE[] = {0, 10, 20, 35, 55, 80};
+	public static final int COMBO_SCORE[] = {0, 10, 25, 45, 70, 100};
 	public static final double INITIAL_SPEED = 3.5;
 	public static final double COMBO_SPEED[] = {INITIAL_SPEED, 
 												INITIAL_SPEED + .75, 
@@ -57,9 +59,11 @@ public class GameSettings {
 	
 	// Powerup settings
 	public static final double POWERUP_SPAWN_RATE = 1;
-	public static final int[] POWERUP_TIME = {0, 5000 / CLOCK_INTERVAL, 5000 / CLOCK_INTERVAL, 0, 0, 0, 0 , 0};
+	public static final int[] POWERUP_TIME = {0, 5000 / CLOCK_INTERVAL, 5000 / CLOCK_INTERVAL, 0};
 	public static final double STUN_RANGE = 10;
 
+	
+	
 	
 	public static boolean isRed(TPlayer player) {
 		return player == TPlayer.RED_ONE || player == TPlayer.RED_TWO;
@@ -67,5 +71,9 @@ public class GameSettings {
 
 	public static boolean isBlue(TPlayer player) {
 		return player == TPlayer.BLUE_ONE || player == TPlayer.BLUE_TWO;
+	}
+	
+	public static TPower getNullPower() {
+		return new TPower(0, TPowerUp.NONE);
 	}
 }

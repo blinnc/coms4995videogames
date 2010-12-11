@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import network.TBall;
+import network.TCollision;
 import network.TDirection;
 import network.TGameState;
 import network.TPaddle;
@@ -56,7 +57,7 @@ public class Game {
 	
 	public void usePowerup(TPlayer requester) {
 		paddleArray[requester.getValue()].usePowerup();
-		if(paddleArray[requester.getValue()].getPower() == TPowerUp.SHADOW) {
+		if(paddleArray[requester.getValue()].getPower().type == TPowerUp.STUN) {
 			
 		}
 	}
@@ -292,11 +293,10 @@ public class Game {
 		List<String> messageList = new ArrayList<String>();
 		messageList.add("" + count);
 		
-		state = new TGameState(paddles,balls,redScore,blueScore,false,false,false,TPowerUp.NONE,TPowerUp.NONE, connections, messageList);
+		state = new TGameState(paddles, balls, redScore, blueScore, 0, new ArrayList<TBall>(), new ArrayList<TCollision>(), connections, messageList);
 	}
 	
 	public TGameState getState(TPlayer requester) {
-		state.playerUp = paddleArray[requester.getValue()].getPower();
 		return state;
 	}
 }
