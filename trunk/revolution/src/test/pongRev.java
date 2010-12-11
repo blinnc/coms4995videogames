@@ -20,6 +20,7 @@ import org.apache.thrift.TException;
 import network.TDirection;
 import network.TPaddle;
 import network.TPlayer;
+import network.TPowerUp;
 import client.GameInfo;
 
 import java.io.File;
@@ -204,8 +205,13 @@ public class pongRev extends JFrame implements KeyListener {
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
 	            Image img = null;
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
+	        	    if (gameinfo.state.balls.get(i).type == TPowerUp.NONE) {
 	        		dbg.setColor(Color.GREEN);
 	        		img = neutralBall;
+	        	    } else {
+	        	        dbg.setColor(Color.YELLOW);
+	        	        img = blueMax; //CHANGE TO YELLOW BALL
+	        	    }
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
 	        		dbg.setColor(Color.BLUE);
