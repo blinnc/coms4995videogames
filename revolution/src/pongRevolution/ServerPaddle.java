@@ -144,7 +144,8 @@ public class ServerPaddle {
 			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.INVIS.getValue()];
 		}
 		else if(TPowerUp.STUN == power.type) {
-			
+			effect = power;
+			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.STUN.getValue()];
 		}
 		tPaddle.used = effect;
 		power = GameSettings.getNullPower();
