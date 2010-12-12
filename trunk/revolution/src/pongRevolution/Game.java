@@ -15,10 +15,12 @@ import network.TPowerUp;
 
 public class Game {	
 	private List<ServerBall> ballList, ballListCopy;
+	private List<TCollision> collisions;
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
 	private int numPlayers;
+	private int collisionCount;
 	private Point2D[] pointsTest;
 	private TGameState state;
 	
@@ -27,8 +29,10 @@ public class Game {
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		ballListCopy = new ArrayList<ServerBall>();
+		collisions = new ArrayList<TCollision>();
 		paddleArray = new ServerPaddle[5];
 		numPlayers = 0;
+		collisionCount = 1;
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
@@ -154,6 +158,20 @@ public class Game {
 			ballListCopy.clear();
 			ballListCopy.addAll(ballList);
 		}
+		
+		List<TCollision> garbage = new ArrayList<TCollision>();
+		for(TCollision c : collisions) {
+			if(c.decay > 0) {
+				c.decay--;
+			}
+			else {
+				garbage.add(c);
+			}
+		}
+		for(TCollision c : garbage) {
+			collisions.remove(c);
+		}
+		
 		makeGameState();
 	}
 	
@@ -215,13 +233,11 @@ public class Game {
 				
 				if (ball.contains(points[0])) {
 					if (points[0].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal2) {
-						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
-						ball.setLastHit(paddleArray[i]);
+						collide(ball, paddleArray[i], 180 + 2 * paddleArray[i].getT() - ball.getAngle());
 					}
 				} else if (ball.contains(points[1])) {
 					if (points[1].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
-						ball.setAngle(180 + 2 * paddleArray[i].getT() - ball.getAngle());
-						ball.setLastHit(paddleArray[i]);
+						collide(ball, paddleArray[i], 180 + 2 * paddleArray[i].getT() - ball.getAngle());
 					}
 				} else if (ball.contains(points[2])) {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
@@ -235,8 +251,7 @@ public class Game {
 								if (difference > 180) {
 									difference = 360 - difference;
 								}
-								ball.setAngle((ball.getAngle() - 180) + 2 * Math.abs(difference));
-								ball.setLastHit(paddleArray[i]);
+								collide(ball, paddleArray[i], (ball.getAngle() - 180) + 2 * Math.abs(difference));
 							}
 						}
 					}
@@ -252,14 +267,19 @@ public class Game {
 								if (difference > 180) {
 									difference = 360 - difference;
 								}
-								ball.setAngle((ball.getAngle() - 180) - 2 * Math.abs(difference));
-								ball.setLastHit(paddleArray[i]);
+								collide(ball, paddleArray[i], (ball.getAngle() - 180) - 2 * Math.abs(difference));
 							}
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	private void collide(ServerBall ball, ServerPaddle paddle, double angle) {
+		ball.setAngle(angle);
+		ball.setLastHit(paddle);
+		collisions.add(new TCollision(paddle.getPlayer(), ball.getCombo(), collisionCount++	, GameSettings.COLLISION_DECAY_TIME));
 	}
 	
 	private void makeGameState() {
@@ -293,7 +313,7 @@ public class Game {
 		List<String> messageList = new ArrayList<String>();
 		messageList.add("" + count);
 		
-		state = new TGameState(paddles, balls, redScore, blueScore, 0, new ArrayList<TBall>(), new ArrayList<TCollision>(), connections, messageList);
+		state = new TGameState(paddles, balls, redScore, blueScore, 0, new ArrayList<TBall>(), collisions, connections, messageList);
 	}
 	
 	public TGameState getState(TPlayer requester) {
