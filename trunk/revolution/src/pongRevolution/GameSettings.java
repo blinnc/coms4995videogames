@@ -15,6 +15,7 @@ public class GameSettings {
 	public static final boolean WITH_POWERUPS = true;
 	
 	public static final int COLLISION_DECAY_TIME = 20;
+	public static final int BALL_DECAY_TIME = 20;
 	
 	// Arena settings
 	public static final int ARENA_RADIUS = 278;
@@ -26,7 +27,7 @@ public class GameSettings {
 	public static final double PADDLE_TOP = 40;
 	public static final double PADDLE_HEIGHT = 14;
 	public static final double PADDLE_VELOCITY = 1.5;
-	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 2;
+	public static final double PADDLE_SPEEDUP = PADDLE_VELOCITY * 1.5;
 	
 	public static final double PADDLE_JUMP_INIT_VELOCITY = 8;
 	public static final double PADDLE_JUMP_ACCEL = 0.3;
@@ -35,6 +36,7 @@ public class GameSettings {
 	public static final boolean DEFAULT_BOUNCE_ANGLE = false;
 	
 	// Ball settings
+	public static final int BALL_SPAWN_WARNING = 30;
 	public static final boolean SPAWN_TOWARDS_LOSER = true;
 	public static final double BALL_SPAWN_RANGE = 15;
 	public static final double RANDOM_DIRECTION = -1;
@@ -76,6 +78,6 @@ public class GameSettings {
 	}
 	
 	public static TPower getNullPower() {
-		return new TPower(0, TPowerUp.NONE);
+		return new TPower(0, TPowerUp.NONE, -1);
 	}
 }

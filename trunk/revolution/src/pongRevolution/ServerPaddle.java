@@ -97,6 +97,7 @@ public class ServerPaddle {
 		
 		if(effectCounter > 0) {
 			effectCounter--;
+			power.decay = effectCounter;
 		}
 		else if(effectCounter == 0){
 			restore();
@@ -148,6 +149,7 @@ public class ServerPaddle {
 		tPaddle.used = effect;
 		power = GameSettings.getNullPower();
 		tPaddle.store = power;
+		power.decay = effectCounter;
 	}
 	
 	public void stun(TPower effect) {
@@ -160,6 +162,7 @@ public class ServerPaddle {
 		effect = GameSettings.getNullPower();
 		tPaddle.used = effect;
 		effectCounter = -1;
+		power.decay = -1;
 	}
 	
 	private double getJumpHeight() {

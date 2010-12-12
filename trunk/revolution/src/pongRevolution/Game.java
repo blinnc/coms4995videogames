@@ -15,12 +15,16 @@ import network.TPowerUp;
 
 public class Game {	
 	private List<ServerBall> ballList, ballListCopy;
+	private List<TBall> ballsOut;
 	private List<TCollision> collisions;
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
 	private int numPlayers;
+	
 	private int collisionCount;
+	private int ballCount;
+	
 	private Point2D[] pointsTest;
 	private TGameState state;
 	
@@ -29,10 +33,12 @@ public class Game {
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		ballListCopy = new ArrayList<ServerBall>();
+		ballsOut = new ArrayList<TBall>();
 		collisions = new ArrayList<TCollision>();
 		paddleArray = new ServerPaddle[5];
 		numPlayers = 0;
 		collisionCount = 1;
+		ballCount = 1;
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
@@ -132,14 +138,14 @@ public class Game {
 			}
 			
 			if(paddle == null) {
-				ball = new ServerBall();
+				ball = new ServerBall(ballCount);
 			}
 			else {
-				ball = new ServerBall(paddle.getT());
+				ball = new ServerBall(ballCount, paddle.getT());
 			}
 		}
 		else {
-			ball = new ServerBall();
+			ball = new ServerBall(ballCount);
 		}
 		
 		ballList.add(ball);
@@ -150,9 +156,14 @@ public class Game {
 		ballSpawnCount--;
 		movePaddles();
 		moveBalls();
-		if(ballSpawnCount < 0 && numPlayers >= 4) {
-			spawnBall();
-			ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
+		if(numPlayers >= 4) {
+			if(ballSpawnCount < 0) {
+				spawnBall();
+				ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
+			}
+			else if(ballSpawnCount == GameSettings.BALL_SPAWN_WARNING) {
+				ballCount++;
+			}
 		}
 		synchronized (this) {
 			ballListCopy.clear();
@@ -179,6 +190,19 @@ public class Game {
 	 * Updates the balls to their next position
 	 */
 	public void moveBalls() {
+		List<TBall> tgarbage = new ArrayList<TBall>();
+		for(TBall ball : ballsOut) {
+			if(ball.decay <= 0) {
+				tgarbage.add(ball);
+			}
+			else {
+				ball.decay--;
+			}
+		}
+		for(TBall ball : tgarbage) {
+			ballsOut.remove(ball);
+		}
+		
 		List<ServerBall> garbage = new ArrayList<ServerBall>();
 		for(ServerBall ball : ballList) {
 			ball.move();
@@ -194,7 +218,11 @@ public class Game {
 				blueScore += GameSettings.COMBO_SCORE[ball.getCombo()];
 			}
 			ballList.remove(ball);
+			TBall tball = ball.getTball();
+			tball.decay = GameSettings.BALL_DECAY_TIME;
+			ballsOut.add(tball);
 		}
+		
 		checkCollision();
 	}
 	
@@ -313,7 +341,7 @@ public class Game {
 		List<String> messageList = new ArrayList<String>();
 		messageList.add("" + count);
 		
-		state = new TGameState(paddles, balls, redScore, blueScore, 0, new ArrayList<TBall>(), collisions, connections, messageList);
+		state = new TGameState(paddles, balls, redScore, blueScore, ballCount, ballsOut, collisions, connections, messageList);
 	}
 	
 	public TGameState getState(TPlayer requester) {

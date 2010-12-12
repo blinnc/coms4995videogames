@@ -12,7 +12,6 @@ import network.TPosition;
 
 public class ServerBall {
 	private static final int NUM_POSITIONS = 20;
-	private static int ballCount = 1;
 	
 	private int id;
 	private double vx, vy;
@@ -27,9 +26,7 @@ public class ServerBall {
 	
 	private ArrayList<TPosition> prevPositions;
 	
-	public ServerBall() {
-		id = ballCount++;
-		
+	public ServerBall(int id) {
 		x = 0;
 		y = 0;
 		combo = 0;
@@ -41,22 +38,23 @@ public class ServerBall {
 		TPowerUp powerup;
 		if(GameSettings.WITH_POWERUPS && Math.random() < GameSettings.POWERUP_SPAWN_RATE) {
 			powerup = getRandomPowerup();
-			id = -id;
+			this.id = -id;
 		}
 		else {
 			powerup = TPowerUp.NONE;
+			this.id = id;
 		}
-		power = new TPower(id, powerup);
+		power = new TPower(id, powerup, -1);
 		
-		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, id, t);
+		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, id, t, -1);
 		addPosition(x, y);
 		updatePosition();
 		
 		updateVelocity();
 	}
 	
-	public ServerBall(double angle) {
-		this();
+	public ServerBall(int id, double angle) {
+		this(id);
 		double dif = Math.random() * 2 * GameSettings.BALL_SPAWN_RANGE - GameSettings.BALL_SPAWN_RANGE;
 		t = angle + dif;
 		tball.angle = t;
@@ -127,7 +125,7 @@ public class ServerBall {
 		rehit = GameSettings.BALL_REHIT_TIME;
 		if(power.type != TPowerUp.NONE) {
 			paddle.setPowerup(power);
-			power = new TPower(0, TPowerUp.NONE);
+			power = GameSettings.getNullPower();
 			tball.store = power;
 		}
 		
