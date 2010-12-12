@@ -50,6 +50,7 @@ public class Game {
 		collisions.clear();
 		redScore = 0;
 		blueScore = 0;
+		
 		ballSpawnCount = GameSettings.GAME_START_DELAY;
 	}
 	

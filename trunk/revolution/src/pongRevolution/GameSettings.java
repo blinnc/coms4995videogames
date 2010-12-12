@@ -65,7 +65,7 @@ public class GameSettings {
 	
 	public static final boolean ENABLE_POWERUPS = true;
 	
-	public static final int GAME_START_DELAY = 3000 / CLOCK_INTERVAL;	// delay is in game clock cycles
+	public static final int GAME_START_DELAY = 5000 / CLOCK_INTERVAL;	// delay is in game clock cycles
 	public static final int BALL_RELEASE_INTERVAL = 2000 / CLOCK_INTERVAL;	// interval is in game clock cycles
 	
 	public static final boolean SPAWN_BALL_TOWARDS_LOSER = true;
