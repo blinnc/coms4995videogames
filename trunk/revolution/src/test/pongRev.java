@@ -112,6 +112,8 @@ public class pongRev extends JFrame implements KeyListener {
         setSize( 1000, 700 );
         this.addKeyListener(this);
         setVisible(true);
+        
+        spawnID.put(0, 0);
 
 		try {
 	        AudioInputStream stream1 = AudioSystem.getAudioInputStream(new File("assets/sounds/stun.wav"));
