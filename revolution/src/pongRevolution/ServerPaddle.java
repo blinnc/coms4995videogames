@@ -140,6 +140,7 @@ public class ServerPaddle {
 			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.SPEED.getValue()];
 		}
 		else if(TPowerUp.INVIS == power.type) {
+			setStun(false);
 			effect = power;
 			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.INVIS.getValue()];
 		}

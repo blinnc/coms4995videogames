@@ -35,15 +35,8 @@ public class ServerBall {
 		
 		t = GameSettings.BALL_SPAWN_DIRECTION == GameSettings.RANDOM_DIRECTION ? Math.random() * 360 : GameSettings.BALL_SPAWN_DIRECTION;
 		
-		TPowerUp powerup;
-		if(GameSettings.WITH_POWERUPS && Math.random() < GameSettings.POWERUP_SPAWN_RATE) {
-			powerup = getRandomPowerup();
-			this.id = -id;
-		}
-		else {
-			powerup = TPowerUp.NONE;
-			this.id = id;
-		}
+		TPowerUp powerup = id < 0 ? getRandomPowerup() : TPowerUp.NONE;
+		this.id = id;
 		power = new TPower(this.id, powerup, -1);
 		
 		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, this.id, t, -1);
@@ -55,10 +48,12 @@ public class ServerBall {
 	
 	public ServerBall(int id, double angle) {
 		this(id);
-		double dif = Math.random() * 2 * GameSettings.BALL_SPAWN_RANGE - GameSettings.BALL_SPAWN_RANGE;
-		t = angle + dif;
-		tball.angle = t;
-		updateVelocity();
+		if(Math.random() < 0.8) {
+			double dif = Math.random() * 2 * GameSettings.BALL_SPAWN_RANGE - GameSettings.BALL_SPAWN_RANGE;
+			t = (angle + dif) % 360;
+			tball.angle = t;
+			updateVelocity();
+		}
 	}
 	
 	private TPowerUp getRandomPowerup() {

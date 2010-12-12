@@ -28,8 +28,6 @@ public class Game {
 	private Point2D[] pointsTest;
 	private TGameState state;
 	
-	private int count;	//For debugging/testing
-	
 	public Game() {
 		ballList = new ArrayList<ServerBall>();
 		ballListCopy = new ArrayList<ServerBall>();
@@ -38,7 +36,7 @@ public class Game {
 		paddleArray = new ServerPaddle[5];
 		numPlayers = 0;
 		collisionCount = 1;
-		ballCount = 1;
+		ballCount = 0;
 		for(int i = 0; i < paddleArray.length; i++) {
 			paddleArray[i] = null;
 		}
@@ -47,10 +45,12 @@ public class Game {
 	
 	public void resetGame() {
 		ballList.clear();
+		ballListCopy.clear();
+		ballsOut.clear();
+		collisions.clear();
 		redScore = 0;
 		blueScore = 0;
 		ballSpawnCount = GameSettings.GAME_START_DELAY;
-		count = 0;
 	}
 	
 	public void startGame() {
@@ -78,13 +78,18 @@ public class Game {
 					continue;
 				}
 				
-				if(getDifference(paddle.getT(), p.getT()) < GameSettings.STUN_RANGE) {
+				if(isInStunRange(paddle, p)) {
 					p.stun(paddle.getPower());
 				}
 			}
 		}
 		
 		paddle.usePowerup();
+	}
+	
+	private boolean isInStunRange(ServerPaddle stunner, ServerPaddle stunee) {
+		return getDifference(stunner.getT(), stunee.getT()) < GameSettings.HORIZONTAL_STUN_RANGE &&
+				Math.abs(stunner.getR() - stunee.getR()) < GameSettings.VERTICAL_STUN_RANGE;
 	}
 	
 	private double getDifference(double a, double b) {
@@ -145,7 +150,7 @@ public class Game {
 	
 	public void spawnBall() {
 		ServerBall ball;
-		if(GameSettings.SPAWN_TOWARDS_LOSER) {
+		if(GameSettings.SPAWN_BALL_TOWARDS_LOSER) {
 			boolean one = Math.random() < 0.5;
 			ServerPaddle paddle;
 			if(redScore > blueScore) {
@@ -182,8 +187,14 @@ public class Game {
 		ballList.add(ball);
 	}
 	
+	private void nextBallID() {
+		ballCount = Math.abs(ballCount) + 1;
+		if(GameSettings.ENABLE_POWERUPS && Math.random() < GameSettings.POWERUP_SPAWN_RATE) {
+			ballCount = -ballCount;
+		}
+	}
+	
 	public void updateGame() {
-		count++;
 		ballSpawnCount--;
 		movePaddles();
 		moveBalls();
@@ -193,7 +204,7 @@ public class Game {
 				ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
 			}
 			else if(ballSpawnCount == GameSettings.BALL_SPAWN_WARNING) {
-				ballCount++;
+				nextBallID();
 			}
 		}
 		synchronized (this) {
@@ -303,7 +314,7 @@ public class Game {
 						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
 							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
 								double angle = GameSettings.PADDLE_BOUNCE_ANGLE;
-								if (GameSettings.DEFAULT_BOUNCE_ANGLE) {
+								if (GameSettings.ENABLE_DEFAULT_BOUNCE_ANGLE) {
 									angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
 								}
 								double difference = paddleArray[i].getT() + 180 + Math.toDegrees(angle) - (ball.getAngle() - 180);
@@ -319,7 +330,7 @@ public class Game {
 						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
 							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
 								double angle = GameSettings.PADDLE_BOUNCE_ANGLE;
-								if (GameSettings.DEFAULT_BOUNCE_ANGLE) {
+								if (GameSettings.ENABLE_DEFAULT_BOUNCE_ANGLE) {
 									angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
 								}
 								double difference = paddleArray[i].getT() - 180 - Math.toDegrees(angle) - (ball.getAngle() - 180);
@@ -370,7 +381,6 @@ public class Game {
 		}
 		
 		List<String> messageList = new ArrayList<String>();
-		messageList.add("" + count);
 		
 		state = new TGameState(paddles, balls, redScore, blueScore, ballCount, ballsOut, collisions, connections, messageList);
 	}
