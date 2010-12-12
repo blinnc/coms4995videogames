@@ -8,6 +8,7 @@ import org.apache.thrift.transport.TTransport;
 import org.apache.thrift.transport.TTransportException;
 
 import network.TNetworkServer.Client;
+import network.TPlayer;
 
 import network.*;
 
@@ -19,6 +20,9 @@ public class GameInfo {
 	public TTransport transport;
 	public String ip;
 	public TPlayer player;
+	public TPlayer ally;
+	public TPlayer enemy1;
+	public TPlayer enemy2;
 	public TSettings settings;
 	public TGameState state;
 	
@@ -40,6 +44,23 @@ public class GameInfo {
 		}
 		
 		player = settings.getColor();
+		if (player == TPlayer.BLUE_ONE) {
+			ally = TPlayer.BLUE_TWO;
+			enemy1 = TPlayer.RED_ONE;
+			enemy2 = TPlayer.RED_TWO;
+		} else if (player == TPlayer.BLUE_TWO) {
+			ally = TPlayer.BLUE_ONE;
+			enemy1 = TPlayer.RED_ONE;
+			enemy2 = TPlayer.RED_TWO;
+		} else if (player == TPlayer.RED_ONE) {
+			ally = TPlayer.RED_ONE;
+			enemy1 = TPlayer.BLUE_ONE;
+			enemy2 = TPlayer.BLUE_TWO;
+		} else if (player == TPlayer.RED_TWO) {
+			ally = TPlayer.RED_ONE;
+			enemy1 = TPlayer.BLUE_ONE;
+			enemy2 = TPlayer.BLUE_TWO;
+		}
 		System.out.println(player);
 		
 	}
