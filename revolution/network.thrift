@@ -37,6 +37,7 @@ struct TCollision {
 struct TPower {
     1: i32 id;
     2: TPowerUp type;
+    3: i32 decay;
 }
 
 struct TPaddle {
@@ -53,6 +54,7 @@ struct TBall {
 	3: TPlayer player;
     4: i32 id;
     5: double angle;
+    6: i32 decay;
 }
 
 struct TGameState {
