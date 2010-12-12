@@ -2,6 +2,7 @@ package pongRevolution;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import network.TBall;
@@ -29,10 +30,10 @@ public class Game {
 	private TGameState state;
 	
 	public Game() {
-		ballList = new ArrayList<ServerBall>();
-		ballListCopy = new ArrayList<ServerBall>();
-		ballsOut = new ArrayList<TBall>();
-		collisions = new ArrayList<TCollision>();
+		ballList = Collections.synchronizedList(new ArrayList<ServerBall>());
+		ballListCopy = Collections.synchronizedList(new ArrayList<ServerBall>());
+		ballsOut = Collections.synchronizedList(new ArrayList<TBall>());
+		collisions = Collections.synchronizedList(new ArrayList<TCollision>());
 		paddleArray = new ServerPaddle[5];
 		numPlayers = 0;
 		collisionCount = 1;
@@ -208,10 +209,9 @@ public class Game {
 				nextBallID();
 			}
 		}
-		synchronized (this) {
-			ballListCopy.clear();
-			ballListCopy.addAll(ballList);
-		}
+		
+		ballListCopy.clear();
+		ballListCopy.addAll(ballList);
 		
 		List<TCollision> garbage = new ArrayList<TCollision>();
 		for(TCollision c : collisions) {
@@ -367,10 +367,8 @@ public class Game {
 		
 		List<TBall> balls = new ArrayList<TBall>();
 		
-		synchronized (this) {
-			for(ServerBall ball : ballListCopy) {
-				balls.add(ball.getTball());
-			}
+		for(ServerBall ball : ballListCopy) {
+			balls.add(ball.getTball());
 		}
 		
 		List<TPosition> connections = new ArrayList<TPosition>();
@@ -382,11 +380,15 @@ public class Game {
 		}
 		
 		List<String> messageList = new ArrayList<String>();
-		
-		state = new TGameState(paddles, balls, redScore, blueScore, ballCount, ballsOut, collisions, connections, messageList);
+
+		synchronized(this) {
+			state = new TGameState(paddles, balls, redScore, blueScore, ballCount, ballsOut, collisions, connections, messageList);
+		}
 	}
 	
 	public TGameState getState(TPlayer requester) {
-		return state;
+		synchronized(this) {
+			return state;
+		}
 	}
 }
