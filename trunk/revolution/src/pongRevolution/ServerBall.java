@@ -62,7 +62,7 @@ public class ServerBall {
 	}
 	
 	private TPowerUp getRandomPowerup() {
-		int num = 1; //(int)(Math.random() * 2) + 1;
+		int num = TPowerUp.STUN.getValue(); //(int)(Math.random() * 2) + 1;
 		return TPowerUp.findByValue(num);
 	}
 	

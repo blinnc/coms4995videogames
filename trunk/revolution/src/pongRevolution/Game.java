@@ -66,10 +66,25 @@ public class Game {
 	}
 	
 	public void usePowerup(TPlayer requester) {
-		paddleArray[requester.getValue()].usePowerup();
-		if(paddleArray[requester.getValue()].getPower().type == TPowerUp.STUN) {
-			
+		ServerPaddle paddle = paddleArray[requester.getValue()];
+		
+		if(paddle.getPower().type == TPowerUp.STUN) {
+			for(int i = 1; i < paddleArray.length; i++) {
+				if(i == requester.getValue()) {
+					continue;
+				}
+				ServerPaddle p = paddleArray[i];
+				if(p == null) {
+					continue;
+				}
+				
+				if(Math.abs(paddle.getT() - p.getT()) < GameSettings.STUN_RANGE) {
+					p.stun(paddle.getPower());
+				}
+			}
 		}
+		
+		paddle.usePowerup();
 	}
 	
 	public TPlayer registerPlayer(TPlayer team) {
