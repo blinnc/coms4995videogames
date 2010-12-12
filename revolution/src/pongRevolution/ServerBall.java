@@ -130,6 +130,7 @@ public class ServerBall {
 			power = new TPower(0, TPowerUp.NONE);
 			tball.store = power;
 		}
+		
 	}
 
 	public void setAngle(double t) {

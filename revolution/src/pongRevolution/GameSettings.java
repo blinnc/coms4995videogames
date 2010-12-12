@@ -14,6 +14,8 @@ public class GameSettings {
 	
 	public static final boolean WITH_POWERUPS = true;
 	
+	public static final int COLLISION_DECAY_TIME = 20;
+	
 	// Arena settings
 	public static final int ARENA_RADIUS = 278;
 	public static final double BALL_OUT_BUFFER = 22;
