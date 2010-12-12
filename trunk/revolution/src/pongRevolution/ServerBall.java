@@ -44,9 +44,9 @@ public class ServerBall {
 			powerup = TPowerUp.NONE;
 			this.id = id;
 		}
-		power = new TPower(id, powerup, -1);
+		power = new TPower(this.id, powerup, -1);
 		
-		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, id, t, -1);
+		tball = new TBall(new ArrayList<TPosition>(), power, TPlayer.NONE, this.id, t, -1);
 		addPosition(x, y);
 		updatePosition();
 		
