@@ -102,7 +102,6 @@ public class pongRev extends JFrame implements KeyListener {
 	private boolean w;
 	private boolean s;
 	static GameInfo gameinfo;
-	private static boolean waitForInput = true;
 	private TDirection lastSent = TDirection.NONE;
 	private int lastSentW = 0;
 	private int lastSentS = 0;
@@ -198,18 +197,16 @@ public class pongRev extends JFrame implements KeyListener {
 				}
 				gameinfo = new GameInfo(hostAddress, team);
 				start.setVisible(false);
-				waitForInput = false;
+				go();
 			}
 		});
 		
-		start.setVisible(true);
-		
-		while(waitForInput) {
-			
-		}
-		//END SET UP AND DRAW THE SERVER GUI
-		
-		//BEGIN SET UP AND DRAW THE GAME GUI
+		start.setVisible(true);			
+	}
+	//END SET UP AND DRAW THE SERVER GUI
+	
+	//BEGIN SET UP AND DRAW THE GAME GUI
+	public static void go() {
 		final pongRev pr = new pongRev();
 		(new Thread() {
             public void run() {
@@ -260,8 +257,6 @@ public class pongRev extends JFrame implements KeyListener {
 	        Score s = new Score(0, 0, 0, null, 0, 0, 0, Color.RED); // for loading resources
 	        s.increment();
 	        s.show((Graphics2D) dbg);
-//	        scores.add(s);
-//	        scores.remove(0);
 		} 
 		
 		dbg.drawLine(600, 0, 600, 600);
@@ -438,7 +433,6 @@ public class pongRev extends JFrame implements KeyListener {
         		scores.remove(i);
         		i--;
         	}
-        	System.out.println(scores.size());
         }
 
 		g.drawImage(dbImage, 0, 0, this);
