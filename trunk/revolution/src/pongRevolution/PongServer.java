@@ -161,7 +161,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 		TPlayer player = game.registerPlayer(preferred);
 		List<Integer> comboList = new ArrayList<Integer>();
 		for(int i = 1; i < GameSettings.COMBO_SCORE.length; i++) {
-			comboList.add(GameSettings.COMBO_SCORE[i - 1] - GameSettings.COMBO_SCORE[i]);
+			comboList.add(GameSettings.COMBO_SCORE[i] - GameSettings.COMBO_SCORE[i - 1]);
 		}
 		TSettings settings = new TSettings(GameSettings.BALL_RADIUS, GameSettings.ARENA_RADIUS, GameSettings.CLOCK_INTERVAL, player, comboList);
 		return settings;

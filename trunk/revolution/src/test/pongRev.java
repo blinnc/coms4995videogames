@@ -23,9 +23,12 @@ import network.TPlayer;
 import network.TPower;
 import network.TPowerUp;
 import client.GameInfo;
+import client.Score;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
@@ -48,6 +51,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Hashtable<Integer, Integer> collideID = new Hashtable<Integer, Integer>();
 	Hashtable<Integer, Integer> scoreID = new Hashtable<Integer, Integer>();
 	Hashtable<Integer, Integer> spawnID = new Hashtable<Integer, Integer>();
+	List<Score> scores = new ArrayList<Score>();
 	
 	Clip invisClip, stunClip, speedClip, scoreClip;
 	Clip[] teamCollide = new Clip[6];
@@ -99,6 +103,9 @@ public class pongRev extends JFrame implements KeyListener {
 	private boolean s;
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
+	private TDirection lastSent = TDirection.NONE;
+	private int lastSentW = 0;
+	private int lastSentS = 0;
 	AffineTransform tx[] = new AffineTransform[5];
 	AffineTransform txOld[][] = new AffineTransform[5][5];
 	AffineTransform txAD;
@@ -113,8 +120,6 @@ public class pongRev extends JFrame implements KeyListener {
         setSize( 1000, 700 );
         this.addKeyListener(this);
         setVisible(true);
-        
-        spawnID.put(0, 0);
 
 		try {
 	        AudioInputStream stream1 = AudioSystem.getAudioInputStream(new File("assets/sounds/stun.wav"));
@@ -252,6 +257,11 @@ public class pongRev extends JFrame implements KeyListener {
 		{
 			dbImage = createImage (this.getSize().width, this.getSize().height); 
 			dbg = dbImage.getGraphics (); 
+	        Score s = new Score(0, -1000, -1000, null, 0, 0, 0, Color.RED); // for loading resources
+	        s.increment();
+	        s.show((Graphics2D) dbg);
+//	        scores.add(s);
+//	        scores.remove(0);
 		} 
 		
 		dbg.drawLine(600, 0, 600, 600);
@@ -338,6 +348,27 @@ public class pongRev extends JFrame implements KeyListener {
 	        // BALLS SCORING
 	        for (int i = 0; i < gameinfo.state.out.size(); i++) {
 	        	if (!scoreID.containsKey(gameinfo.state.out.get(i).id)) {
+	        		Score s = null;
+	        		if (isBlue(gameinfo.state.out.get(i).player)) {
+	        			s = new Score(gameinfo.state.out.get(i).positions.size(),
+	        					gameinfo.state.out.get(i).positions.get(0).xPos,
+	        					gameinfo.state.out.get(i).positions.get(0).yPos,
+	        					gameinfo.settings.combos, 
+	        					gameinfo.state.out.get(i).angle, 
+	        					CIRCLE_CENTER, 
+	        					CIRCLE_DIAMETER / 2, Color.BLUE);
+	        		} else if (isRed(gameinfo.state.out.get(i).player)) {
+	        			s = new Score(gameinfo.state.out.get(i).positions.size(),
+	        					gameinfo.state.out.get(i).positions.get(0).xPos,
+	        					gameinfo.state.out.get(i).positions.get(0).yPos,
+		        				gameinfo.settings.combos, 
+		        				gameinfo.state.out.get(i).angle, 
+		        				CIRCLE_CENTER, 
+		        				CIRCLE_DIAMETER / 2, Color.RED);
+	        		}
+	        		if (s != null) {
+	        			scores.add(s);
+	        		}
 	        		scoreID.put(gameinfo.state.out.get(i).id, gameinfo.state.out.get(i).id);
 	        		scoreClip.stop();
 	        		scoreClip.setFramePosition(0);
@@ -400,6 +431,15 @@ public class pongRev extends JFrame implements KeyListener {
 				dbg.drawImage(stunActivated,813,588,this);
 			}
 		}
+		for(int i = 0; i < scores.size(); i++) {
+        	scores.get(i).increment();
+        	scores.get(i).show((Graphics2D) dbg);
+        	if (scores.get(i).remove()) {
+        		scores.remove(i);
+        		i--;
+        	}
+        	System.out.println(scores.size());
+        }
 
 		g.drawImage(dbImage, 0, 0, this);
 	}
@@ -434,6 +474,8 @@ public class pongRev extends JFrame implements KeyListener {
 	    while (true) {
 	        Thread.sleep(15);
 	        counter++;
+	        lastSentW++;
+	        lastSentS++;
 	        try {
 				gameinfo.state = gameinfo.client.poll(gameinfo.player);
 			} catch (TException e) {
@@ -463,19 +505,28 @@ public class pongRev extends JFrame implements KeyListener {
 	        this.repaint();
 	        if ((a && d) || (!a && !d)) {
 	        	try {
-	    			gameinfo.client.move(gameinfo.player, TDirection.NONE);
+	        		if (lastSent != TDirection.NONE) {
+	        			gameinfo.client.move(gameinfo.player, TDirection.NONE);
+	        			lastSent = TDirection.NONE;
+	        		}
 	    		} catch (TException e) {
 	    			e.printStackTrace();
 	    		}
 	        } else if (a) {
 	        	try {
-	    			gameinfo.client.move(gameinfo.player, TDirection.LEFT);
+	        		if (lastSent != TDirection.LEFT) {
+	    				gameinfo.client.move(gameinfo.player, TDirection.LEFT);
+	    				lastSent = TDirection.LEFT;
+	        		}
 	    		} catch (TException e) {
 	    			e.printStackTrace();
 	    		}
 	        } else if (d) {
 	        	try {
-	    			gameinfo.client.move(gameinfo.player, TDirection.RIGHT);
+	        		if (lastSent != TDirection.RIGHT) {
+	        			gameinfo.client.move(gameinfo.player, TDirection.RIGHT);
+	        			lastSent = TDirection.RIGHT;
+	        		}
 	    		} catch (TException e) {
 	    			e.printStackTrace();
 	    		}
@@ -483,7 +534,10 @@ public class pongRev extends JFrame implements KeyListener {
 	        if (w) {
 	        	w = false;
 	        	try {
-	        		gameinfo.client.jump(gameinfo.player);
+	        		if (lastSentW > 7) {
+	        			gameinfo.client.jump(gameinfo.player);
+	        			lastSentW = 0;
+	        		}
 	        	} catch (TException e) {
 	        		e.printStackTrace();
 	        	}
@@ -491,7 +545,10 @@ public class pongRev extends JFrame implements KeyListener {
 	        if (s) {
                 s = false;
                 try {
-                    gameinfo.client.usePowerUp(gameinfo.player);
+                	if (lastSentS > 7) {
+                		gameinfo.client.usePowerUp(gameinfo.player);
+                		lastSentS = 0;
+                	}
                 } catch (TException e) {
                     e.printStackTrace();
                 }
@@ -499,7 +556,7 @@ public class pongRev extends JFrame implements KeyListener {
 	    }
 	}
 	
-	public void drawPaddle(TPlayer p) {
+	private void drawPaddle(TPlayer p) {
 		int q = p.getValue();
 		if (gameinfo.state.paddles.get(q).used != null) {
 			if(gameinfo.state.paddles.get(q).used.type == TPowerUp.NONE) {
@@ -541,13 +598,21 @@ public class pongRev extends JFrame implements KeyListener {
 		}
 	}
 	
-	public boolean isBlue(TPlayer p) {
-		if (p == TPlayer.RED_ONE || p == TPlayer.RED_TWO) {
-			return false;
+	private boolean isBlue(TPlayer p) {
+		if (p == TPlayer.BLUE_ONE || p == TPlayer.BLUE_TWO) {
+			return true;
 		}
-		return true;
+		return false;
 	}
-	public boolean isEnemy(TPlayer p) {
+	
+	private boolean isRed(TPlayer p) {
+		if (p == TPlayer.RED_ONE || p == TPlayer.RED_TWO) {
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean isEnemy(TPlayer p) {
 		if (p == gameinfo.enemy1 || p == gameinfo.enemy2) {
 			return true;
 		}
