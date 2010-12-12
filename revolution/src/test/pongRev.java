@@ -41,12 +41,16 @@ public class pongRev extends JFrame implements KeyListener {
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2) + 6;
 	public double paddleRotation = 0;
 	private Image dbImage;
+	private Image spawnAnimation;
 	private Graphics dbg;
 	Hashtable<Integer, Integer> powerID = new Hashtable<Integer, Integer>();
 	Hashtable<Integer, Integer> collideID = new Hashtable<Integer, Integer>();
 	Hashtable<Integer, Integer> scoreID = new Hashtable<Integer, Integer>();
+	Hashtable<Integer, Integer> spawnID = new Hashtable<Integer, Integer>();
 	
 	Clip invisClip, stunClip, speedClip, scoreClip;
+	Clip[] teamCollide = new Clip[6];
+	Clip[] enemyCollide = new Clip[6];
 	
 	Image backG = Toolkit.getDefaultToolkit().getImage("assets/back.png");
 	Image front = Toolkit.getDefaultToolkit().getImage("assets/front.png");
@@ -95,7 +99,7 @@ public class pongRev extends JFrame implements KeyListener {
 	static GameInfo gameinfo;
 	private static boolean waitForInput = true;
 	AffineTransform tx[] = new AffineTransform[5];
-	AffineTransform txOld[][] = new AffineTransform[21][5];
+	AffineTransform txOld[][] = new AffineTransform[5][5];
 	AffineTransform txAD;
     int offset = 33;
     double ballRadius = 7.5;
@@ -129,6 +133,22 @@ public class pongRev extends JFrame implements KeyListener {
 	        DataLine.Info info4 = new DataLine.Info(Clip.class, stream4.getFormat());
 	        scoreClip = (Clip) AudioSystem.getLine(info4);
 	        scoreClip.open(stream4);
+	        
+	        AudioInputStream[] stream = new AudioInputStream[6];
+	        DataLine.Info[] info = new DataLine.Info[6];
+	        AudioInputStream[] streamO = new AudioInputStream[6];
+	        DataLine.Info[] infoO = new DataLine.Info[6];
+	        for (int i = 0; i < 6; i++) {
+	        	stream[i] = AudioSystem.getAudioInputStream(new File("assets/sounds/team" + i + ".wav"));
+		        info[i] = new DataLine.Info(Clip.class, stream[i].getFormat());
+		        teamCollide[i] = (Clip) AudioSystem.getLine(info[i]);
+		        teamCollide[i].open(stream[i]);
+		        
+		        streamO[i] = AudioSystem.getAudioInputStream(new File("assets/sounds/opponent" + i + ".wav"));
+		        infoO[i] = new DataLine.Info(Clip.class, streamO[i].getFormat());
+		        enemyCollide[i] = (Clip) AudioSystem.getLine(infoO[i]);
+		        enemyCollide[i].open(streamO[i]);
+	        }
 	        
 	      } catch (Exception e) {
 	           e.printStackTrace();
@@ -295,8 +315,44 @@ public class pongRev extends JFrame implements KeyListener {
 //        			-(int) gameinfo.state.connections.get(i).yPos + CIRCLE_CENTER, 4, 4);
 //        }
 		
-	        // BALL SPAWNING
 	        
+	        // BALLS COLLIDING
+	        for (int i = 0; i < gameinfo.state.collisions.size(); i++) {
+	        	if (!collideID.containsKey(gameinfo.state.collisions.get(i).id)) {
+	        		collideID.put(gameinfo.state.collisions.get(i).id, gameinfo.state.collisions.get(i).id);
+	        		if (isEnemy(gameinfo.state.collisions.get(i).player)) {
+	        			enemyCollide[gameinfo.state.collisions.get(i).ballCombo].stop();
+	        			enemyCollide[gameinfo.state.collisions.get(i).ballCombo].setFramePosition(0);
+	        			enemyCollide[gameinfo.state.collisions.get(i).ballCombo].start();
+	        		} else {
+	        			teamCollide[gameinfo.state.collisions.get(i).ballCombo].stop();
+	        			teamCollide[gameinfo.state.collisions.get(i).ballCombo].setFramePosition(0);
+	        			teamCollide[gameinfo.state.collisions.get(i).ballCombo].start();
+	        		}
+	        	}
+	        }
+	        
+	        // BALLS SCORING
+	        for (int i = 0; i < gameinfo.state.out.size(); i++) {
+	        	if (!scoreID.containsKey(gameinfo.state.out.get(i).id)) {
+	        		scoreID.put(gameinfo.state.out.get(i).id, gameinfo.state.out.get(i).id);
+	        		scoreClip.stop();
+	        		scoreClip.setFramePosition(0);
+	        		scoreClip.start();
+	        	}
+	        }
+	        
+	        // BALL SPAWNING
+//	        System.out.println(gameinfo.state.spawning);
+//	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) {
+//	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
+//	        	if (gameinfo.state.spawning < 0) {
+//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/yellowSpawn.gif");
+//	        	} else {
+//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/spawnBall.gif");
+//	        	}
+//	        }
+//	        dbg.drawImage(spawnAnimation, CIRCLE_CENTER, CIRCLE_CENTER, this);
 	        
 	        
 	        // DRAW PADDLES
