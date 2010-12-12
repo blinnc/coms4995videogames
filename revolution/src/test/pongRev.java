@@ -288,7 +288,7 @@ public class pongRev extends JFrame implements KeyListener {
 			dbg.drawImage(stunIcon,830,605,this);
 			dbg.drawImage(stunActivated,813,588,this);
 		}
-		
+
 		g.drawImage(dbImage, 0, 0, this);
 	}
 	
