@@ -78,13 +78,29 @@ public class Game {
 					continue;
 				}
 				
-				if(Math.abs(paddle.getT() - p.getT()) < GameSettings.STUN_RANGE) {
+				if(getDifference(paddle.getT(), p.getT()) < GameSettings.STUN_RANGE) {
 					p.stun(paddle.getPower());
 				}
 			}
 		}
 		
 		paddle.usePowerup();
+	}
+	
+	private double getDifference(double a, double b) {
+		if(Math.abs(a - b) <= 180) {
+			return Math.abs(a - b);
+		}
+		else {
+			if(a < b) {
+				a += 360;
+				return a - b;
+			}
+			else {
+				b += 360;
+				return b - a;
+			}
+		}
 	}
 	
 	public TPlayer registerPlayer(TPlayer team) {
