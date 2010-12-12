@@ -155,6 +155,8 @@ public class ServerPaddle {
 	public void stun(TPower effect) {
 		this.effect = effect;
 		tPaddle.used = effect;
+		effectCounter = GameSettings.POWERUP_TIME[TPowerUp.STUNNED.getValue()];
+		setStun(true);
 	}
 	
 	private void restore() {
@@ -176,6 +178,10 @@ public class ServerPaddle {
 	
 	public void setSpeedUp(boolean enable) {
 		vt = enable ? GameSettings.PADDLE_SPEEDUP : GameSettings.PADDLE_VELOCITY;
+	}
+	
+	private void setStun(boolean enable) {
+		vt = enable ? GameSettings.STUN_SPEED : GameSettings.PADDLE_VELOCITY;
 	}
 
 	/**
