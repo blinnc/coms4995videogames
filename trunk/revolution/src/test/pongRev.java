@@ -39,22 +39,10 @@ public class pongRev extends JFrame implements KeyListener {
 	public double paddleRotation = 0;
 	private Image dbImage;
 	private Graphics dbg; 
-	private int otherColor = 240;
-	private int change = 0;
 	int rotate = 0;
 	int rotateChange = 0;
 	int rotateZ = 10;
 	int rotateChangeZ = 0;
-	int explode = 0;
-	int shardN=15;
-	int shardX[] = new int[shardN];
-	int shardY[] = new int[shardN];
-	int shardXZ[] = new int[shardN];
-	int shardYZ[] = new int[shardN];
-	int shardXS[] = new int[shardN];
-	int shardYS[] = new int[shardN];
-	int shardS[] = new int[shardN];
-	Color shardC[] = new Color[shardN];
 	Image backG = Toolkit.getDefaultToolkit().getImage("assets/back.png");
 	Image front = Toolkit.getDefaultToolkit().getImage("assets/front.png");
 	Image red1 = Toolkit.getDefaultToolkit().getImage("assets/red1.png");
@@ -65,12 +53,20 @@ public class pongRev extends JFrame implements KeyListener {
 	Image redBall = Toolkit.getDefaultToolkit().getImage("assets/redball.png");
 	Image blueBall = Toolkit.getDefaultToolkit().getImage("assets/blueball.png");
 	Image blueMax = Toolkit.getDefaultToolkit().getImage("assets/blueMax.gif");
-	Image redMax = Toolkit.getDefaultToolkit().getImage("assets/redMax.gif");
+	Image redMax = Toolkit.getDefaultToolkit().getImage("assets/redMax.gif"); 
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
 	Image yellowBall = Toolkit.getDefaultToolkit().getImage("assets/yellowball.png");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
 	Image ad = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
 	Image number = Toolkit.getDefaultToolkit().getImage("assets/number.png");
+	Image speedIcon = Toolkit.getDefaultToolkit().getImage("assets/speedIcon.png");
+	Image invisIcon = Toolkit.getDefaultToolkit().getImage("assets/invisIcon.png");
+	Image stunIcon = Toolkit.getDefaultToolkit().getImage("assets/stunIcon.png");
+	Image invisActivated = Toolkit.getDefaultToolkit().getImage("assets/invisActivated.png");
+	Image speedActivated = Toolkit.getDefaultToolkit().getImage("assets/speedActivated.png");
+	Image stunActivated = Toolkit.getDefaultToolkit().getImage("assets/stunActivated.png");
+	Image stunnedActivated = Toolkit.getDefaultToolkit().getImage("assets/stunnedActivated.png");
+	
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -189,15 +185,7 @@ public class pongRev extends JFrame implements KeyListener {
 		} 
 		
 		dbg.drawLine(600, 0, 600, 600);
-		
-		//Graphics2D g2d = ( Graphics2D ) g;
-		//dbg.setColor(Color.black);
-		//dbg.fillOval(CIRCLE_X, CIRCLE_Y, CIRCLE_DIAMETER, CIRCLE_DIAMETER);
-		//dbg.fillRect(601,0,300,600);
-		//dbg.setColor (getBackground ()); 
-		//dbg.fillRect (0, 0, this.getSize().width, this.getSize().height); 
-		
-		
+	
 		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
 		
@@ -270,8 +258,34 @@ public class pongRev extends JFrame implements KeyListener {
 		}
 		dbg.drawImage(front,6,6,this);
 		
+		if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.STUNNED) {
+			// draw a PADDLE
+			dbg.drawImage(stunnedActivated,813,588,this);
+		}
+		
 		((Graphics2D) dbg).drawImage(paddles[gameinfo.player.getValue()], tx[gameinfo.player.getValue()], this);
 		((Graphics2D) dbg).drawImage(ad, txAD, this);
+		
+		if (gameinfo.state.paddles.get(gameinfo.player.getValue()).store.type == TPowerUp.INVIS) {
+			dbg.drawImage(invisIcon,830,605,this);
+		} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).store.type == TPowerUp.SPEED) {
+			// draw speed up in bottom right
+			dbg.drawImage(speedIcon,830,605,this);
+		} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).store.type == TPowerUp.STUN) {
+			// draw stun in bottom right
+			dbg.drawImage(stunIcon,830,605,this);
+		} 
+		
+		if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.INVIS) {
+			// draw a glow around the box
+			dbg.drawImage(invisActivated,813,588,this);
+		} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.SPEED) {
+			// draw a glow around the box
+			dbg.drawImage(speedActivated,813,588,this);
+		} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.STUN) {
+			// draw a glow around the box
+			dbg.drawImage(stunActivated,813,588,this);
+		}
 		
 		g.drawImage(dbImage, 0, 0, this);
 	}
