@@ -277,12 +277,15 @@ public class pongRev extends JFrame implements KeyListener {
 		
 		if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.INVIS) {
 			// draw a glow around the box
+			dbg.drawImage(invisIcon,830,605,this);
 			dbg.drawImage(invisActivated,813,588,this);
 		} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.SPEED) {
 			// draw a glow around the box
+			dbg.drawImage(speedIcon,830,605,this);
 			dbg.drawImage(speedActivated,813,588,this);
 		} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.STUN) {
 			// draw a glow around the box
+			dbg.drawImage(stunIcon,830,605,this);
 			dbg.drawImage(stunActivated,813,588,this);
 		}
 		
