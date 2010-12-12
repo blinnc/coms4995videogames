@@ -97,7 +97,7 @@ public class ServerPaddle {
 		
 		if(effectCounter > 0) {
 			effectCounter--;
-			power.decay = effectCounter;
+			effect.decay = effectCounter;
 		}
 		else if(effectCounter == 0){
 			restore();
@@ -148,10 +148,10 @@ public class ServerPaddle {
 			effect = power;
 			effectCounter = GameSettings.POWERUP_TIME[TPowerUp.STUN.getValue()];
 		}
+		effect.decay = effectCounter;
 		tPaddle.used = effect;
 		power = GameSettings.getNullPower();
 		tPaddle.store = power;
-		power.decay = effectCounter;
 	}
 	
 	public void stun(TPower effect) {
