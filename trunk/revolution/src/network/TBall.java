@@ -34,6 +34,7 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
   private static final TField PLAYER_FIELD_DESC = new TField("player", TType.I32, (short)3);
   private static final TField ID_FIELD_DESC = new TField("id", TType.I32, (short)4);
   private static final TField ANGLE_FIELD_DESC = new TField("angle", TType.DOUBLE, (short)5);
+  private static final TField DECAY_FIELD_DESC = new TField("decay", TType.I32, (short)6);
 
   public List<TPosition> positions;
   public TPower store;
@@ -44,6 +45,7 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
   public TPlayer player;
   public int id;
   public double angle;
+  public int decay;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
@@ -55,7 +57,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
      */
     PLAYER((short)3, "player"),
     ID((short)4, "id"),
-    ANGLE((short)5, "angle");
+    ANGLE((short)5, "angle"),
+    DECAY((short)6, "decay");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -80,6 +83,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
           return ID;
         case 5: // ANGLE
           return ANGLE;
+        case 6: // DECAY
+          return DECAY;
         default:
           return null;
       }
@@ -122,7 +127,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
   // isset id assignments
   private static final int __ID_ISSET_ID = 0;
   private static final int __ANGLE_ISSET_ID = 1;
-  private BitSet __isset_bit_vector = new BitSet(2);
+  private static final int __DECAY_ISSET_ID = 2;
+  private BitSet __isset_bit_vector = new BitSet(3);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
@@ -138,6 +144,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
         new FieldValueMetaData(TType.I32)));
     tmpMap.put(_Fields.ANGLE, new FieldMetaData("angle", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.DOUBLE)));
+    tmpMap.put(_Fields.DECAY, new FieldMetaData("decay", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TBall.class, metaDataMap);
   }
@@ -150,7 +158,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     TPower store,
     TPlayer player,
     int id,
-    double angle)
+    double angle,
+    int decay)
   {
     this();
     this.positions = positions;
@@ -160,6 +169,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     setIdIsSet(true);
     this.angle = angle;
     setAngleIsSet(true);
+    this.decay = decay;
+    setDecayIsSet(true);
   }
 
   /**
@@ -183,6 +194,7 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     }
     this.id = other.id;
     this.angle = other.angle;
+    this.decay = other.decay;
   }
 
   public TBall deepCopy() {
@@ -198,6 +210,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     this.id = 0;
     setAngleIsSet(false);
     this.angle = 0.0;
+    setDecayIsSet(false);
+    this.decay = 0;
   }
 
   public int getPositionsSize() {
@@ -341,6 +355,29 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     __isset_bit_vector.set(__ANGLE_ISSET_ID, value);
   }
 
+  public int getDecay() {
+    return this.decay;
+  }
+
+  public TBall setDecay(int decay) {
+    this.decay = decay;
+    setDecayIsSet(true);
+    return this;
+  }
+
+  public void unsetDecay() {
+    __isset_bit_vector.clear(__DECAY_ISSET_ID);
+  }
+
+  /** Returns true if field decay is set (has been asigned a value) and false otherwise */
+  public boolean isSetDecay() {
+    return __isset_bit_vector.get(__DECAY_ISSET_ID);
+  }
+
+  public void setDecayIsSet(boolean value) {
+    __isset_bit_vector.set(__DECAY_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case POSITIONS:
@@ -383,6 +420,14 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       }
       break;
 
+    case DECAY:
+      if (value == null) {
+        unsetDecay();
+      } else {
+        setDecay((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -402,6 +447,9 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
 
     case ANGLE:
       return new Double(getAngle());
+
+    case DECAY:
+      return new Integer(getDecay());
 
     }
     throw new IllegalStateException();
@@ -424,6 +472,8 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       return isSetId();
     case ANGLE:
       return isSetAngle();
+    case DECAY:
+      return isSetDecay();
     }
     throw new IllegalStateException();
   }
@@ -483,6 +533,15 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
       if (!(this_present_angle && that_present_angle))
         return false;
       if (this.angle != that.angle)
+        return false;
+    }
+
+    boolean this_present_decay = true;
+    boolean that_present_decay = true;
+    if (this_present_decay || that_present_decay) {
+      if (!(this_present_decay && that_present_decay))
+        return false;
+      if (this.decay != that.decay)
         return false;
     }
 
@@ -548,6 +607,16 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     }
     if (isSetAngle()) {
       lastComparison = TBaseHelper.compareTo(this.angle, typedOther.angle);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
+    lastComparison = Boolean.valueOf(isSetDecay()).compareTo(typedOther.isSetDecay());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDecay()) {
+      lastComparison = TBaseHelper.compareTo(this.decay, typedOther.decay);
       if (lastComparison != 0) {
         return lastComparison;
       }
@@ -618,6 +687,14 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 6: // DECAY
+          if (field.type == TType.I32) {
+            this.decay = iprot.readI32();
+            setDecayIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -661,6 +738,9 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     oprot.writeFieldBegin(ANGLE_FIELD_DESC);
     oprot.writeDouble(this.angle);
     oprot.writeFieldEnd();
+    oprot.writeFieldBegin(DECAY_FIELD_DESC);
+    oprot.writeI32(this.decay);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -700,6 +780,10 @@ public class TBall implements TBase<TBall, TBall._Fields>, java.io.Serializable,
     if (!first) sb.append(", ");
     sb.append("angle:");
     sb.append(this.angle);
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("decay:");
+    sb.append(this.decay);
     first = false;
     sb.append(")");
     return sb.toString();

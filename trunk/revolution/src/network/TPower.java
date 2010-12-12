@@ -31,6 +31,7 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
 
   private static final TField ID_FIELD_DESC = new TField("id", TType.I32, (short)1);
   private static final TField TYPE_FIELD_DESC = new TField("type", TType.I32, (short)2);
+  private static final TField DECAY_FIELD_DESC = new TField("decay", TType.I32, (short)3);
 
   public int id;
   /**
@@ -38,6 +39,7 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
    * @see TPowerUp
    */
   public TPowerUp type;
+  public int decay;
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements TFieldIdEnum {
@@ -46,7 +48,8 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
      * 
      * @see TPowerUp
      */
-    TYPE((short)2, "type");
+    TYPE((short)2, "type"),
+    DECAY((short)3, "decay");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -65,6 +68,8 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
           return ID;
         case 2: // TYPE
           return TYPE;
+        case 3: // DECAY
+          return DECAY;
         default:
           return null;
       }
@@ -106,7 +111,8 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
 
   // isset id assignments
   private static final int __ID_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __DECAY_ISSET_ID = 1;
+  private BitSet __isset_bit_vector = new BitSet(2);
 
   public static final Map<_Fields, FieldMetaData> metaDataMap;
   static {
@@ -115,6 +121,8 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
         new FieldValueMetaData(TType.I32)));
     tmpMap.put(_Fields.TYPE, new FieldMetaData("type", TFieldRequirementType.DEFAULT, 
         new EnumMetaData(TType.ENUM, TPowerUp.class)));
+    tmpMap.put(_Fields.DECAY, new FieldMetaData("decay", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.I32)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
     FieldMetaData.addStructMetaDataMap(TPower.class, metaDataMap);
   }
@@ -124,12 +132,15 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
 
   public TPower(
     int id,
-    TPowerUp type)
+    TPowerUp type,
+    int decay)
   {
     this();
     this.id = id;
     setIdIsSet(true);
     this.type = type;
+    this.decay = decay;
+    setDecayIsSet(true);
   }
 
   /**
@@ -142,6 +153,7 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
     if (other.isSetType()) {
       this.type = other.type;
     }
+    this.decay = other.decay;
   }
 
   public TPower deepCopy() {
@@ -153,6 +165,8 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
     setIdIsSet(false);
     this.id = 0;
     this.type = null;
+    setDecayIsSet(false);
+    this.decay = 0;
   }
 
   public int getId() {
@@ -210,6 +224,29 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
     }
   }
 
+  public int getDecay() {
+    return this.decay;
+  }
+
+  public TPower setDecay(int decay) {
+    this.decay = decay;
+    setDecayIsSet(true);
+    return this;
+  }
+
+  public void unsetDecay() {
+    __isset_bit_vector.clear(__DECAY_ISSET_ID);
+  }
+
+  /** Returns true if field decay is set (has been asigned a value) and false otherwise */
+  public boolean isSetDecay() {
+    return __isset_bit_vector.get(__DECAY_ISSET_ID);
+  }
+
+  public void setDecayIsSet(boolean value) {
+    __isset_bit_vector.set(__DECAY_ISSET_ID, value);
+  }
+
   public void setFieldValue(_Fields field, Object value) {
     switch (field) {
     case ID:
@@ -228,6 +265,14 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
       }
       break;
 
+    case DECAY:
+      if (value == null) {
+        unsetDecay();
+      } else {
+        setDecay((Integer)value);
+      }
+      break;
+
     }
   }
 
@@ -238,6 +283,9 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
 
     case TYPE:
       return getType();
+
+    case DECAY:
+      return new Integer(getDecay());
 
     }
     throw new IllegalStateException();
@@ -254,6 +302,8 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
       return isSetId();
     case TYPE:
       return isSetType();
+    case DECAY:
+      return isSetDecay();
     }
     throw new IllegalStateException();
   }
@@ -286,6 +336,15 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
       if (!(this_present_type && that_present_type))
         return false;
       if (!this.type.equals(that.type))
+        return false;
+    }
+
+    boolean this_present_decay = true;
+    boolean that_present_decay = true;
+    if (this_present_decay || that_present_decay) {
+      if (!(this_present_decay && that_present_decay))
+        return false;
+      if (this.decay != that.decay)
         return false;
     }
 
@@ -325,6 +384,16 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
         return lastComparison;
       }
     }
+    lastComparison = Boolean.valueOf(isSetDecay()).compareTo(typedOther.isSetDecay());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    if (isSetDecay()) {
+      lastComparison = TBaseHelper.compareTo(this.decay, typedOther.decay);
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+    }
     return 0;
   }
 
@@ -357,6 +426,14 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
             TProtocolUtil.skip(iprot, field.type);
           }
           break;
+        case 3: // DECAY
+          if (field.type == TType.I32) {
+            this.decay = iprot.readI32();
+            setDecayIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, field.type);
       }
@@ -380,6 +457,9 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
       oprot.writeI32(this.type.getValue());
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(DECAY_FIELD_DESC);
+    oprot.writeI32(this.decay);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -399,6 +479,10 @@ public class TPower implements TBase<TPower, TPower._Fields>, java.io.Serializab
     } else {
       sb.append(this.type);
     }
+    first = false;
+    if (!first) sb.append(", ");
+    sb.append("decay:");
+    sb.append(this.decay);
     first = false;
     sb.append(")");
     return sb.toString();
