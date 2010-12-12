@@ -39,7 +39,8 @@ public class pongRev extends JFrame implements KeyListener {
 	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_DIAMETER = 600;
 	private static final int CIRCLE_CENTER = CIRCLE_X + (CIRCLE_DIAMETER / 2) + 6;
-	public double paddleRotation = 0;
+	
+	private int counter = 0;
 	private Image dbImage;
 	private Image spawnAnimation;
 	private Graphics dbg;
@@ -345,16 +346,15 @@ public class pongRev extends JFrame implements KeyListener {
 	        }
 	        
 	        // BALL SPAWNING
-	        System.out.println(gameinfo.state.spawning);
-	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) {
-	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
-	        	if (gameinfo.state.spawning < 0) {
-	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/yellowSpawn.gif");
-	        	} else {
-	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/spawnBall.gif");
-	        	}
-	        }
-	        dbg.drawImage(spawnAnimation, CIRCLE_CENTER, CIRCLE_CENTER, this);
+//	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) {
+//	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
+//	        	if (gameinfo.state.spawning < 0) {
+//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/yellowSpawn.gif");
+//	        	} else {
+//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/spawnBall.gif");
+//	        	}
+//	        }
+//	        dbg.drawImage(spawnAnimation, CIRCLE_CENTER, CIRCLE_CENTER, this);
 	        
 	        
 	        // DRAW PADDLES
@@ -366,6 +366,8 @@ public class pongRev extends JFrame implements KeyListener {
 			drawPaddle(gameinfo.player);
 			((Graphics2D) dbg).drawImage(ad, txAD, this);
 	
+			// DRAW POWERUPS
+			
 			if (gameinfo.state.paddles.get(gameinfo.player.getValue()).store.type == TPowerUp.INVIS) {
 				dbg.drawImage(invisIcon,830,605,this);
 			} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).store.type == TPowerUp.SPEED) {
@@ -379,11 +381,19 @@ public class pongRev extends JFrame implements KeyListener {
 			if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.INVIS) {
 				// draw a glow around the box
 				dbg.drawImage(invisIcon,830,605,this);
-				dbg.drawImage(invisActivated,813,588,this);
+				if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.decay > 180 || 
+						(gameinfo.state.paddles.get(gameinfo.player.getValue()).used.decay > 75 && counter % 30 > 7) ||
+						counter % 15 > 7) {
+					dbg.drawImage(invisActivated,813,588,this);
+				}
 			} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.SPEED) {
 				// draw a glow around the box
 				dbg.drawImage(speedIcon,830,605,this);
+				if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.decay > 180 || 
+						(gameinfo.state.paddles.get(gameinfo.player.getValue()).used.decay > 75 && counter % 30 > 7) ||
+						counter % 15 > 7) {
 				dbg.drawImage(speedActivated,813,588,this);
+				}
 			} else if (gameinfo.state.paddles.get(gameinfo.player.getValue()).used.type == TPowerUp.STUN) {
 				// draw a glow around the box
 				dbg.drawImage(stunIcon,830,605,this);
@@ -423,6 +433,7 @@ public class pongRev extends JFrame implements KeyListener {
 	private void play() throws InterruptedException {
 	    while (true) {
 	        Thread.sleep(15);
+	        counter++;
 	        try {
 				gameinfo.state = gameinfo.client.poll(gameinfo.player);
 			} catch (TException e) {
@@ -436,7 +447,7 @@ public class pongRev extends JFrame implements KeyListener {
 			for (int i = 1; i < gameinfo.state.paddles.size(); i++) {
 				if (!gameinfo.state.paddles.get(i).equals(new TPaddle())) {
 			        tx[i] = new AffineTransform();
-			        paddleRotation = gameinfo.state.paddles.get(i).angle;
+			        double paddleRotation = gameinfo.state.paddles.get(i).angle;
 			        tx[i].rotate(Math.toRadians(-paddleRotation), CIRCLE_CENTER, CIRCLE_CENTER);
 			        tx[i].rotate(-Math.PI/2, CIRCLE_CENTER, CIRCLE_CENTER);
 					tx[i].translate(CIRCLE_CENTER - red1.getWidth(null)/2, CIRCLE_DIAMETER / 2 + gameinfo.state.paddles.get(i).radius + offset);
