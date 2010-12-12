@@ -63,8 +63,8 @@ public class GameSettings {
 	
 	// Powerup settings
 	public static final double POWERUP_SPAWN_RATE = 1;
-	public static final int[] POWERUP_TIME = {0, 5000 / CLOCK_INTERVAL, 5000 / CLOCK_INTERVAL, 20, 2000 / CLOCK_INTERVAL};
-	public static final double STUN_RANGE = 10;
+	public static final int[] POWERUP_TIME = {0, 5000 / CLOCK_INTERVAL, 5000 / CLOCK_INTERVAL, 15, 2000 / CLOCK_INTERVAL};
+	public static final double STUN_RANGE = 16;
 	public static final double STUN_SPEED = PADDLE_VELOCITY * 0.5;
 	
 	
