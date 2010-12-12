@@ -18,7 +18,8 @@ public class Score {
 	Color c;
 	
 	static final int startSize = 13;
-	static final int startLife = 50;
+	static final int startLife = 65;
+	int[] fade = {255, 255, 255, 255, 255};
 	
 	static final double[] angleOffset = {Math.PI/90, -Math.PI / 180, Math.PI / 180, -Math.PI / 90, 0};
 	static final Font[] plain = { new Font("Courier New", Font.PLAIN, startSize),
@@ -26,11 +27,6 @@ public class Score {
 			new Font("Courier New", Font.PLAIN, startSize + 2), 
 			new Font("Courier New", Font.PLAIN, startSize + 3), 
 			new Font("Courier New", Font.PLAIN, startSize + 4) };
-	static final Font[] bold = { new Font("Courier New", Font.BOLD, startSize),
-			new Font("Courier New", Font.BOLD, startSize + 1), 
-			new Font("Courier New", Font.BOLD, startSize + 2), 
-			new Font("Courier New", Font.BOLD, startSize + 3), 
-			new Font("Courier New", Font.BOLD, startSize + 4) };
 	
 	public Score(int combo, double initX, double initY, List<Integer> values, double angle, double center, double radius, Color c) {
 		this.time = 0;
@@ -58,16 +54,22 @@ public class Score {
 		} else if (time % 3 == 0){
 			radius++;
 		}
+		int left = (life - time);
+		for (int i = 0; i < fade.length; i++) {
+			if (left < 70 + combo * 2 - i * 5) {
+				fade[i] -= 3;
+			}
+		}
 	}
 	
 	public void show(Graphics2D g) {
-		g.setColor(c);
 		for (int i = 0; i < combo && i * 3 < time; i++) {
-			if (i == combo - 1) {
-				g.setFont(bold[i]);
-			} else {
-				g.setFont(plain[i]);
+			if (c == Color.RED){
+				g.setColor(new Color(fade[fade.length - combo + i], 0, 0));
+			} else if (c == Color.BLUE){
+				g.setColor(new Color(0, 0, fade[fade.length - combo + i]));
 			}
+				g.setFont(plain[i]);
 			g.drawString(values[i] + "",
 					- startSize / 2 + getX(radius - (i * (8 + i)), angle + angleOffset[angleOffset.length - combo + i]),
 					startSize / 2 + getY(radius - (i * (8 + i)), angle + angleOffset[angleOffset.length - combo + i]));

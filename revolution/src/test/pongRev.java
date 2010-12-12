@@ -257,7 +257,7 @@ public class pongRev extends JFrame implements KeyListener {
 		{
 			dbImage = createImage (this.getSize().width, this.getSize().height); 
 			dbg = dbImage.getGraphics (); 
-	        Score s = new Score(0, -1000, -1000, null, 0, 0, 0, Color.RED); // for loading resources
+	        Score s = new Score(0, 0, 0, null, 0, 0, 0, Color.RED); // for loading resources
 	        s.increment();
 	        s.show((Graphics2D) dbg);
 //	        scores.add(s);
