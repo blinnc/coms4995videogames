@@ -128,6 +128,7 @@ public class ServerPaddle {
 	public void setPowerup(TPower p) {
 		if(effect.type != TPowerUp.SPEED && effect.type != TPowerUp.INVIS) {
 			power = p;
+			tPaddle.store = power;
 		}
 	}
 	
