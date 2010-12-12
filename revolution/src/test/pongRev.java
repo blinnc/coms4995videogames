@@ -343,16 +343,16 @@ public class pongRev extends JFrame implements KeyListener {
 	        }
 	        
 	        // BALL SPAWNING
-//	        System.out.println(gameinfo.state.spawning);
-//	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) {
-//	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
-//	        	if (gameinfo.state.spawning < 0) {
-//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/yellowSpawn.gif");
-//	        	} else {
-//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/spawnBall.gif");
-//	        	}
-//	        }
-//	        dbg.drawImage(spawnAnimation, CIRCLE_CENTER, CIRCLE_CENTER, this);
+	        System.out.println(gameinfo.state.spawning);
+	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) {
+	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
+	        	if (gameinfo.state.spawning < 0) {
+	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/yellowSpawn.gif");
+	        	} else {
+	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/spawnBall.gif");
+	        	}
+	        }
+	        dbg.drawImage(spawnAnimation, CIRCLE_CENTER, CIRCLE_CENTER, this);
 	        
 	        
 	        // DRAW PADDLES
