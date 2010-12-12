@@ -153,9 +153,9 @@ public class ServerPaddle {
 	}
 	
 	public void stun(TPower effect) {
-		this.effect = effect;
-		tPaddle.used = effect;
 		effectCounter = GameSettings.POWERUP_TIME[TPowerUp.STUNNED.getValue()];
+		this.effect = new TPower(effect.id, TPowerUp.STUNNED, effectCounter);
+		tPaddle.used = this.effect;
 		setStun(true);
 	}
 	
