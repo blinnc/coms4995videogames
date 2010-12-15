@@ -104,6 +104,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Image neutralgreen = Toolkit.getDefaultToolkit().getImage("assets/neutralgreen.png");
 	Image neutralyellow = Toolkit.getDefaultToolkit().getImage("assets/neutralyellow.png");
 	Image neutralpurple = Toolkit.getDefaultToolkit().getImage("assets/neutralpurple.png");
+	Image spawnimg = Toolkit.getDefaultToolkit().getImage("assets/ballspawn.png");
 	
 	private boolean a;
 	private boolean d;
@@ -275,12 +276,12 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.drawImage(score,700,0,this);
 		
         // BALL SPAWNING
-		Image spawnimg = ballspawn;
         if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) 
         {
         	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
         	ballSpawnCounter = 0;
         	ballSpawnPrinter = 0;
+
         	if (gameinfo.state.spawning % 10 == TPowerUp.NONE.getValue()) {
         	    spawnimg = ballspawn;
         	} else if (gameinfo.state.spawning % 10 == TPowerUp.INVIS.getValue()) {
@@ -292,7 +293,7 @@ public class pongRev extends JFrame implements KeyListener {
             }
         }
         
-        if(ballSpawnCounter >= 0 && ballSpawnCounter < (5 * 6) + 2)
+        if(ballSpawnCounter >= 0 && ballSpawnCounter < (5 * 6) + 1)
         {
         	if(ballSpawnCounter%6 == 0 && ballSpawnPrinter!=4)
         	{
