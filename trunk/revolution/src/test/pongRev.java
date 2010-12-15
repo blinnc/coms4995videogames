@@ -98,6 +98,9 @@ public class pongRev extends JFrame implements KeyListener {
 	Image stunnedActivated = Toolkit.getDefaultToolkit().getImage("assets/stunnedActivated.png");
 	
 	Image ballspawn = Toolkit.getDefaultToolkit().getImage("assets/ballspawn.png");
+	Image greenspawn = Toolkit.getDefaultToolkit().getImage("assets/greenspawn.png");
+	Image yellowspawn = Toolkit.getDefaultToolkit().getImage("assets/yellowspawn.png");
+	Image purplespawn = Toolkit.getDefaultToolkit().getImage("assets/purplespawn.png");
 	Image neutralgreen = Toolkit.getDefaultToolkit().getImage("assets/neutralgreen.png");
 	Image neutralyellow = Toolkit.getDefaultToolkit().getImage("assets/neutralyellow.png");
 	Image neutralpurple = Toolkit.getDefaultToolkit().getImage("assets/neutralpurple.png");
@@ -272,11 +275,21 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.drawImage(score,700,0,this);
 		
         // BALL SPAWNING
+		Image spawnimg = ballspawn;
         if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) 
         {
         	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
         	ballSpawnCounter = 0;
         	ballSpawnPrinter = 0;
+        	if (gameinfo.state.spawning % 10 == TPowerUp.NONE.getValue()) {
+        	    spawnimg = ballspawn;
+        	} else if (gameinfo.state.spawning % 10 == TPowerUp.INVIS.getValue()) {
+                spawnimg = greenspawn;
+            } else if (gameinfo.state.spawning % 10 == TPowerUp.SPEED.getValue()) {
+                spawnimg = purplespawn;
+            } else if (gameinfo.state.spawning % 10 == TPowerUp.STUN.getValue()) {
+                spawnimg = yellowspawn;
+            }
         }
         
         if(ballSpawnCounter >= 0 && ballSpawnCounter < (5 * 6) + 2)
@@ -287,7 +300,7 @@ public class pongRev extends JFrame implements KeyListener {
         	}
         	ballSpawnCounter++;
         	int tempnum = 20;
-        	dbg.drawImage(ballspawn, CIRCLE_CENTER - tempnum, CIRCLE_CENTER - tempnum, CIRCLE_CENTER + 41 - tempnum, CIRCLE_CENTER + 41 - tempnum, 41 * ballSpawnPrinter, 0, 41 * ballSpawnPrinter + 41, 41, this);
+        	dbg.drawImage(spawnimg, CIRCLE_CENTER - tempnum, CIRCLE_CENTER - tempnum, CIRCLE_CENTER + 41 - tempnum, CIRCLE_CENTER + 41 - tempnum, 41 * ballSpawnPrinter, 0, 41 * ballSpawnPrinter + 41, 41, this);
         }
         
 		if (gameinfo.state != null) {
