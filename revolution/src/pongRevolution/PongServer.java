@@ -1,8 +1,11 @@
 package pongRevolution;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -11,9 +14,11 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import network.TDirection;
 import network.TGameState;
@@ -46,22 +51,31 @@ public class PongServer implements network.TNetworkServer.Iface{
 		BasicConfigurator.configure();
 		timer.scheduleAtFixedRate(new ClockThread(), 0, GameSettings.CLOCK_INTERVAL);
 		
-		final JButton pauseButton = new JButton("  Pause  ");
-		final JButton resetButton = new JButton("Reset");
+		final JButton startButton = new JButton("Start Game");
 		final JButton exitButton = new JButton("Exit");
-		final JPanel buttonPanel = new JPanel();
+		final JButton pauseButton = new JButton("Pause");
+		final JButton resetButton = new JButton("Reset");
+		final JPanel buttonPanel = new JPanel(new GridLayout(2, 2));
+		buttonPanel.add(startButton);
+		buttonPanel.add(exitButton);
 		buttonPanel.add(pauseButton);
 		buttonPanel.add(resetButton);
-		buttonPanel.add(exitButton);
 		
-		final JButton startButton = new JButton("Start");
-		final JPanel buttonPanel2 = new JPanel();
-		buttonPanel2.add(startButton);
+		final JCheckBox powerBox = new JCheckBox("Enable power-ups");
+		final JCheckBox spawnBox = new JCheckBox("Enable ball spawn towards loser");
+		final JTextField pointsBox = new JTextField();
+		powerBox.setEnabled(true);
+		spawnBox.setEnabled(true);
+		pointsBox.setText("1000");
+		final JPanel settingsPanel = new JPanel(new GridLayout(3, 1));
+		settingsPanel.add(powerBox);
+		settingsPanel.add(spawnBox);
+		settingsPanel.add(pointsBox);
 		
 		final JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
 		frame.add(buttonPanel, BorderLayout.CENTER);
-		frame.add(buttonPanel2, BorderLayout.SOUTH);
+		frame.add(settingsPanel, BorderLayout.SOUTH);
 		try {
 			final JLabel ipLabel = new JLabel(InetAddress.getLocalHost().getHostAddress());
 			final JPanel ipPanel = new JPanel();
@@ -101,6 +115,16 @@ public class PongServer implements network.TNetworkServer.Iface{
 		startButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				game.startGame();
+			}
+		});
+		powerBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				
+			}
+		});
+		spawnBox.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				
 			}
 		});
 	}
