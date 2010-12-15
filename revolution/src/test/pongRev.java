@@ -51,6 +51,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Hashtable<Integer, Integer> collideID = new Hashtable<Integer, Integer>();
 	Hashtable<Integer, Integer> scoreID = new Hashtable<Integer, Integer>();
 	Hashtable<Integer, Integer> spawnID = new Hashtable<Integer, Integer>();
+	Hashtable<Integer, Integer> ballID = new Hashtable<Integer, Integer>();
 	List<Score> scores = new ArrayList<Score>();
 	
 	Clip invisClip, stunClip, speedClip, scoreClip;
@@ -274,54 +275,15 @@ public class pongRev extends JFrame implements KeyListener {
 	
 		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
-
-		// GAME STATE
-		if (gameinfo.state.message.size() == 0) {
-			// DONT DRAW ANYTHING
-		} else if (gameinfo.state.message.get(0).equals("3") || 
-				gameinfo.state.message.get(0).equals("2") ||
-				gameinfo.state.message.get(0).equals("4")) {
-			dbg.drawImage(countDown, CIRCLE_CENTER - 100, CIRCLE_CENTER - 100,this);
-		} else if (gameinfo.state.message.get(0).equals("blue")) {
-			// BLUE WINS
-		} else if (gameinfo.state.message.get(0).equals("red")) {
-			// RED WINS
-		} else if (gameinfo.state.message.get(0).equals("waiting")) {
-			// GAME IS WAITING TO START
-		}
-		
-        // BALL SPAWNING
-        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) 
-        {
-        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
-        	ballSpawnCounter = 0;
-        	ballSpawnPrinter = 0;
-
-        	if (gameinfo.state.spawning % 10 == TPowerUp.NONE.getValue()) {
-        	    spawnimg = ballspawn;
-        	} else if (gameinfo.state.spawning % 10 == TPowerUp.INVIS.getValue()) {
-                spawnimg = greenspawn;
-            } else if (gameinfo.state.spawning % 10 == TPowerUp.SPEED.getValue()) {
-                spawnimg = purplespawn;
-            } else if (gameinfo.state.spawning % 10 == TPowerUp.STUN.getValue()) {
-                spawnimg = yellowspawn;
-            }
-        }
-        
-        if(ballSpawnCounter >= 0 && ballSpawnCounter < (5 * 6) + 1)
-        {
-        	if(ballSpawnCounter%6 == 0 && ballSpawnPrinter!=4)
-        	{
-        		ballSpawnPrinter++;
-        	}
-        	ballSpawnCounter++;
-        	int tempnum = 20;
-        	dbg.drawImage(spawnimg, CIRCLE_CENTER - tempnum, CIRCLE_CENTER - tempnum, CIRCLE_CENTER + 41 - tempnum, CIRCLE_CENTER + 41 - tempnum, 41 * ballSpawnPrinter, 0, 41 * ballSpawnPrinter + 41, 41, this);
-        }
         
 		if (gameinfo.state != null) {
+			
+			// BALLS MOVING
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
 	            Image img = null;
+	            if (!ballID.containsKey(gameinfo.state.balls.get(i).id)){
+	            	ballID.put(gameinfo.state.balls.get(i).id, gameinfo.state.balls.get(i).id);
+	            }
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
 	        	    if (gameinfo.state.balls.get(i).store.type == TPowerUp.NONE) {
     	        		dbg.setColor(Color.white);
@@ -365,6 +327,51 @@ public class pongRev extends JFrame implements KeyListener {
         	        			br, br);
 	        	    }
 	        	}
+	        }
+	        
+			// GAME STATE
+			if (gameinfo.state.message.size() == 0) {
+				// DONT DRAW ANYTHING
+			} else if (gameinfo.state.message.get(0).equals("3") || 
+					gameinfo.state.message.get(0).equals("2") ||
+					gameinfo.state.message.get(0).equals("4")) {
+				dbg.drawImage(countDown, CIRCLE_CENTER - 100, CIRCLE_CENTER - 100,this);
+			} else if (gameinfo.state.message.get(0).equals("blue")) {
+				// BLUE WINS
+			} else if (gameinfo.state.message.get(0).equals("red")) {
+				// RED WINS
+			} else if (gameinfo.state.message.get(0).equals("waiting")) {
+				// GAME IS WAITING TO START
+			}
+			
+	        // BALL SPAWNING
+	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) 
+	        {
+	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
+	        	ballSpawnCounter = 0;
+	        	ballSpawnPrinter = 0;
+
+	        	if (gameinfo.state.spawning % 10 == TPowerUp.NONE.getValue()) {
+	        	    spawnimg = ballspawn;
+	        	} else if (gameinfo.state.spawning % 10 == TPowerUp.INVIS.getValue()) {
+	                spawnimg = greenspawn;
+	            } else if (gameinfo.state.spawning % 10 == TPowerUp.SPEED.getValue()) {
+	                spawnimg = purplespawn;
+	            } else if (gameinfo.state.spawning % 10 == TPowerUp.STUN.getValue()) {
+	                spawnimg = yellowspawn;
+	            }
+	        }
+	        
+	        if(ballSpawnCounter >= 0 && 
+	        		ballSpawnCounter < (5 * 6) + 10 && 
+	        		!ballID.containsKey(gameinfo.state.spawning / 10)) {
+	        	if(ballSpawnCounter%6 == 0 && ballSpawnPrinter!=4)
+	        	{
+	        		ballSpawnPrinter++;
+	        	}
+	        	ballSpawnCounter++;
+	        	int tempnum = 20;
+	        	dbg.drawImage(spawnimg, CIRCLE_CENTER - tempnum, CIRCLE_CENTER - tempnum, CIRCLE_CENTER + 41 - tempnum, CIRCLE_CENTER + 41 - tempnum, 41 * ballSpawnPrinter, 0, 41 * ballSpawnPrinter + 41, 41, this);
 	        }
 	        
 	        String tempScore = Integer.toString(gameinfo.state.redScore);
