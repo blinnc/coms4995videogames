@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -63,14 +66,13 @@ public class PongServer implements network.TNetworkServer.Iface{
 		
 		final JCheckBox powerBox = new JCheckBox("Enable power-ups");
 		final JCheckBox spawnBox = new JCheckBox("Enable ball spawn towards loser");
-		final JTextField pointsBox = new JTextField();
-		powerBox.setEnabled(true);
-		spawnBox.setEnabled(true);
-		pointsBox.setText("1000");
+		final JTextField pointsBox = new JTextField("[Points to win] (default: 1000)");
 		final JPanel settingsPanel = new JPanel(new GridLayout(3, 1));
 		settingsPanel.add(powerBox);
 		settingsPanel.add(spawnBox);
 		settingsPanel.add(pointsBox);
+		powerBox.setSelected(true);
+		spawnBox.setSelected(true);
 		
 		final JFrame frame = new JFrame();
 		frame.setLayout(new BorderLayout());
@@ -96,7 +98,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 					frame.pack();
 				}
 				else {
-					pauseButton.setText("  Pause  ");
+					pauseButton.setText("Pause");
 					frame.pack();
 				}
 			}
@@ -118,13 +120,25 @@ public class PongServer implements network.TNetworkServer.Iface{
 			}
 		});
 		powerBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				
+			public void itemStateChanged(ItemEvent e) {
+				GameSettings.ENABLE_POWERUPS = e.getStateChange() == ItemEvent.SELECTED;
 			}
 		});
 		spawnBox.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent arg0) {
-				
+			public void itemStateChanged(ItemEvent e) {
+				GameSettings.SPAWN_BALL_TOWARDS_LOSER = e.getStateChange() == ItemEvent.SELECTED;
+			}
+		});
+		pointsBox.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					try {
+						String num = pointsBox.getText();
+						GameSettings.POINTS_FOR_WIN = Integer.parseInt(num);
+					}
+					catch(Exception ex) {
+					}
+				}
 			}
 		});
 	}
