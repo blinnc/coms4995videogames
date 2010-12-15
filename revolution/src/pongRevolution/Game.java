@@ -197,9 +197,10 @@ public class Game {
 	}
 	
 	private void nextBallID() {
-		ballCount = Math.abs(ballCount) + 1;
+		ballCount = (ballCount / 10 + 1) * 10;
 		if(GameSettings.ENABLE_POWERUPS && Math.random() < GameSettings.POWERUP_SPAWN_RATE) {
-			ballCount = -ballCount;
+			int pow = (int)(Math.random() * 3) + 1;
+			ballCount += pow;
 		}
 	}
 	

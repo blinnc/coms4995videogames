@@ -35,7 +35,7 @@ public class ServerBall {
 		
 		t = GameSettings.BALL_SPAWN_DIRECTION == GameSettings.RANDOM_DIRECTION ? Math.random() * 360 : GameSettings.BALL_SPAWN_DIRECTION;
 		
-		TPowerUp powerup = id < 0 ? getRandomPowerup() : TPowerUp.NONE;
+		TPowerUp powerup = TPowerUp.findByValue(id % 10);
 		this.id = id;
 		power = new TPower(this.id, powerup, -1);
 		
@@ -54,11 +54,6 @@ public class ServerBall {
 			tball.angle = t;
 			updateVelocity();
 		}
-	}
-	
-	private TPowerUp getRandomPowerup() {
-		int num = (int)(Math.random() * 3) + 1;
-		return TPowerUp.findByValue(num);
 	}
 	
 	public void updatePosition() {
