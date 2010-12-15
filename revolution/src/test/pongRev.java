@@ -97,6 +97,11 @@ public class pongRev extends JFrame implements KeyListener {
 	Image stunActivated = Toolkit.getDefaultToolkit().getImage("assets/stunActivated.png");
 	Image stunnedActivated = Toolkit.getDefaultToolkit().getImage("assets/stunnedActivated.png");
 	
+	Image ballspawn = Toolkit.getDefaultToolkit().getImage("assets/ballspawn.png");
+	Image neutralgreen = Toolkit.getDefaultToolkit().getImage("assets/neutralgreen.png");
+	Image neutralyellow = Toolkit.getDefaultToolkit().getImage("assets/neutralyellow.png");
+	Image neutralpurple = Toolkit.getDefaultToolkit().getImage("assets/neutralpurple.png");
+	
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -110,7 +115,9 @@ public class pongRev extends JFrame implements KeyListener {
 	AffineTransform txAD;
     int offset = 33;
     double ballRadius = 7.5;
-
+    int ballSpawnCounter = -1;
+    int ballSpawnPrinter = 0;
+    
 	public pongRev()
 	{
 		super( "Pong Revolution" );
@@ -264,16 +271,44 @@ public class pongRev extends JFrame implements KeyListener {
 		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
 		
+        // BALL SPAWNING
+        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) 
+        {
+        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
+        	ballSpawnCounter = 0;
+        	ballSpawnPrinter = 0;
+        }
+        
+        if(ballSpawnCounter >= 0 && ballSpawnCounter < (5 * 6) + 2)
+        {
+        	if(ballSpawnCounter%6 == 0 && ballSpawnPrinter!=4)
+        	{
+        		ballSpawnPrinter++;
+        	}
+        	ballSpawnCounter++;
+        	int tempnum = 20;
+        	dbg.drawImage(ballspawn, CIRCLE_CENTER - tempnum, CIRCLE_CENTER - tempnum, CIRCLE_CENTER + 41 - tempnum, CIRCLE_CENTER + 41 - tempnum, 41 * ballSpawnPrinter, 0, 41 * ballSpawnPrinter + 41, 41, this);
+        }
+        
 		if (gameinfo.state != null) {
 	        for (int i = 0; i < gameinfo.state.balls.size(); i++) {
 	            Image img = null;
 	        	if (gameinfo.state.balls.get(i).player == TPlayer.NONE){
 	        	    if (gameinfo.state.balls.get(i).store.type == TPowerUp.NONE) {
-    	        		dbg.setColor(Color.GREEN);
+    	        		dbg.setColor(Color.white);
     	        		img = neutralBall;
-	        	    } else {
-	        	        dbg.setColor(Color.YELLOW);
-	        	        img = yellowBall; // TODO: CHANGE TO YELLOW BALL
+	        	    } 
+	        	    else if (gameinfo.state.balls.get(i).store.type == TPowerUp.STUN) {
+    	        		dbg.setColor(Color.white);
+    	        		img = neutralyellow;
+	        	    }
+	        	    else if (gameinfo.state.balls.get(i).store.type == TPowerUp.SPEED) {
+    	        		dbg.setColor(Color.white);
+    	        		img = neutralpurple;
+	        	    }
+	        	    else if (gameinfo.state.balls.get(i).store.type == TPowerUp.INVIS) {
+    	        		dbg.setColor(Color.white);
+    	        		img = neutralgreen;
 	        	    }
 	        	} else if (gameinfo.state.balls.get(i).player == TPlayer.BLUE_ONE || 
 	        			gameinfo.state.balls.get(i).player == TPlayer.BLUE_TWO) {
@@ -370,18 +405,6 @@ public class pongRev extends JFrame implements KeyListener {
 	        		scoreClip.start();
 	        	}
 	        }
-	        
-	        // BALL SPAWNING
-//	        if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) {
-//	        	spawnID.put(gameinfo.state.spawning, gameinfo.state.spawning);
-//	        	if (gameinfo.state.spawning < 0) {
-//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/yellowSpawn.gif");
-//	        	} else {
-//	        		spawnAnimation = Toolkit.getDefaultToolkit().getImage("assets/spawnBall.gif");
-//	        	}
-//	        }
-//	        dbg.drawImage(spawnAnimation, CIRCLE_CENTER, CIRCLE_CENTER, this);
-	        
 	        
 	        // DRAW PADDLES
 			dbg.drawImage(front,6,6,this);
