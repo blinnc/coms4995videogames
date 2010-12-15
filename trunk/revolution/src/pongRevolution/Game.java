@@ -15,6 +15,10 @@ import network.TPosition;
 import network.TPowerUp;
 
 public class Game {	
+	private enum Status {
+		WAITING, THREE, TWO, ONE, PLAYING, WIN
+	}
+	
 	private List<ServerBall> ballList, ballListCopy;
 	private List<TBall> ballsOut;
 	private List<TCollision> collisions;
@@ -28,6 +32,7 @@ public class Game {
 	
 	private Point2D[] pointsTest;
 	private TGameState state;
+	private Status status;
 	
 	public Game() {
 		ballList = Collections.synchronizedList(new ArrayList<ServerBall>());
@@ -53,9 +58,11 @@ public class Game {
 		blueScore = 0;
 		
 		ballSpawnCount = GameSettings.GAME_START_DELAY;
+		status = Status.WAITING;
 	}
 	
 	public void startGame() {
+		resetGame();
 		numPlayers = 5;
 	}
 	
@@ -197,11 +204,31 @@ public class Game {
 	}
 	
 	public void updateGame() {
-		ballSpawnCount--;
 		movePaddles();
-		moveBalls();
+		if(redScore >= GameSettings.POINTS_FOR_WIN || blueScore >= GameSettings.POINTS_FOR_WIN) {
+			status = Status.WIN;
+			numPlayers = -1;
+			ballList.clear();
+			ballListCopy.clear();
+		}
+		
 		if(numPlayers >= 4) {
+			moveBalls();
+			ballSpawnCount--;
+			if((status == Status.WAITING || status == Status.WIN) && ballSpawnCount < 3000 / GameSettings.CLOCK_INTERVAL) {
+				status = Status.THREE;
+			}
+			if(status == Status.THREE && ballSpawnCount < 2000 / GameSettings.CLOCK_INTERVAL) {
+				status = Status.TWO;
+			}
+			if(status == Status.TWO && ballSpawnCount < 1000 / GameSettings.CLOCK_INTERVAL) {
+				status = Status.ONE;
+			}
+			
 			if(ballSpawnCount < 0) {
+				if(status == Status.ONE){
+					status = Status.PLAYING;
+				}
 				spawnBall();
 				ballSpawnCount = GameSettings.BALL_RELEASE_INTERVAL;
 			}
@@ -380,6 +407,30 @@ public class Game {
 		}
 		
 		List<String> messageList = new ArrayList<String>();
+		switch(status) {
+		case WIN:
+			if(redScore > blueScore) {
+				messageList.add("red victory");
+			}
+			else {
+				messageList.add("blue victory");
+			}
+			break;
+		case WAITING:
+			messageList.add("waiting");
+			break;
+		case THREE:
+			messageList.add("3");
+			break;
+		case TWO:
+			messageList.add("2");
+			break;
+		case ONE:
+			messageList.add("1");
+			break;
+		}
+		
+		state = new TGameState(paddles, balls, redScore, blueScore, ballCount, ballsOut, collisions, connections, messageList);
 
 		synchronized(this) {
 			state = new TGameState(paddles, balls, redScore, blueScore, ballCount, ballsOut, collisions, connections, messageList);
