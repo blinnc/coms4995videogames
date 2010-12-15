@@ -16,7 +16,7 @@ import network.TPowerUp;
 
 public class Game {	
 	private enum Status {
-		WAITING, THREE, TWO, ONE, PLAYING, WIN
+		WAITING, FIVE, FOUR, THREE, TWO, ONE, PLAYING, WIN
 	}
 	
 	private List<ServerBall> ballList, ballListCopy;
@@ -216,10 +216,16 @@ public class Game {
 		if(numPlayers >= 4) {
 			moveBalls();
 			ballSpawnCount--;
-			if((status == Status.WAITING || status == Status.WIN) && ballSpawnCount < 3000 / GameSettings.CLOCK_INTERVAL) {
+			if((status == Status.WAITING || status == Status.WIN) && ballSpawnCount < 5000 / GameSettings.CLOCK_INTERVAL) {
+				status = Status.FIVE;
+			}
+			else if(status == Status.FIVE && ballSpawnCount < 4000 / GameSettings.CLOCK_INTERVAL) {
+				status = Status.FOUR;
+			}
+			else if(status == Status.FOUR && ballSpawnCount < 3000 / GameSettings.CLOCK_INTERVAL) {
 				status = Status.THREE;
 			}
-			if(status == Status.THREE && ballSpawnCount < 2000 / GameSettings.CLOCK_INTERVAL) {
+			else if(status == Status.THREE && ballSpawnCount < 2000 / GameSettings.CLOCK_INTERVAL) {
 				status = Status.TWO;
 			}
 			if(status == Status.TWO && ballSpawnCount < 1000 / GameSettings.CLOCK_INTERVAL) {
@@ -411,14 +417,20 @@ public class Game {
 		switch(status) {
 		case WIN:
 			if(redScore > blueScore) {
-				messageList.add("red victory");
+				messageList.add("red");
 			}
 			else {
-				messageList.add("blue victory");
+				messageList.add("blue");
 			}
 			break;
 		case WAITING:
 			messageList.add("waiting");
+			break;
+		case FIVE:
+			messageList.add("5");
+			break;
+		case FOUR:
+			messageList.add("4");
 			break;
 		case THREE:
 			messageList.add("3");
