@@ -105,7 +105,7 @@ public class pongRev extends JFrame implements KeyListener {
 	Image neutralyellow = Toolkit.getDefaultToolkit().getImage("assets/neutralyellow.png");
 	Image neutralpurple = Toolkit.getDefaultToolkit().getImage("assets/neutralpurple.png");
 	Image spawnimg = Toolkit.getDefaultToolkit().getImage("assets/ballspawn.png");
-	
+	Image countDown = Toolkit.getDefaultToolkit().getImage("assets/countDown.gif");
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -274,6 +274,21 @@ public class pongRev extends JFrame implements KeyListener {
 	
 		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
+
+		// GAME STATE
+		if (gameinfo.state.message.size() == 0) {
+			// DONT DRAW ANYTHING
+		} else if (gameinfo.state.message.get(0).equals("3") || 
+				gameinfo.state.message.get(0).equals("2") ||
+				gameinfo.state.message.get(0).equals("4")) {
+			dbg.drawImage(countDown, CIRCLE_CENTER - 100, CIRCLE_CENTER - 100,this);
+		} else if (gameinfo.state.message.get(0).equals("blue")) {
+			// BLUE WINS
+		} else if (gameinfo.state.message.get(0).equals("red")) {
+			// RED WINS
+		} else if (gameinfo.state.message.get(0).equals("waiting")) {
+			// GAME IS WAITING TO START
+		}
 		
         // BALL SPAWNING
         if (gameinfo.state.spawning != 0 && !spawnID.containsKey(gameinfo.state.spawning)) 
