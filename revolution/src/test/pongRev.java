@@ -350,8 +350,7 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        	    }
 	        	}
 	        }
-	        
-	        dbg.drawImage(blueWins, CIRCLE_CENTER - 150, CIRCLE_CENTER - 150, this); 
+	       
 			// GAME STATE
 			if (gameinfo.state.message.size() == 0) {
 				// DONT DRAW ANYTHING
