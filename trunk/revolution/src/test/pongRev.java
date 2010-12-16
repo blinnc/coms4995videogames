@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.AffineTransform;
@@ -35,9 +36,11 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 @SuppressWarnings("serial")
-public class pongRev extends JFrame implements KeyListener {
+public class pongRev extends JFrame implements KeyListener, MouseListener, MouseMotionListener{
 	
 	private static final int CIRCLE_X = 50;
 	private static final int CIRCLE_DIAMETER = 600;
@@ -55,6 +58,7 @@ public class pongRev extends JFrame implements KeyListener {
 	List<Score> scores = new ArrayList<Score>();
 	
 	Clip invisClip, stunClip, speedClip, scoreClip;
+	static Clip clip;
 	Clip[] teamCollide = new Clip[6];
 	Clip[] enemyCollide = new Clip[6];
 	
@@ -107,6 +111,19 @@ public class pongRev extends JFrame implements KeyListener {
 	Image neutralpurple = Toolkit.getDefaultToolkit().getImage("assets/neutralpurple.png");
 	Image spawnimg = Toolkit.getDefaultToolkit().getImage("assets/ballspawn.png");
 	Image countDown = Toolkit.getDefaultToolkit().getImage("assets/countDown.gif");
+	Image soundOn = Toolkit.getDefaultToolkit().getImage("assets/soundOn.png");
+	Image soundOff = Toolkit.getDefaultToolkit().getImage("assets/soundOff.png");
+	Image musicOn = Toolkit.getDefaultToolkit().getImage("assets/musicOn.png");
+	Image musicOff = Toolkit.getDefaultToolkit().getImage("assets/musicOff.png");
+	
+	Image soundOnHigh = Toolkit.getDefaultToolkit().getImage("assets/soundOnHigh.png");
+	Image soundOffHigh = Toolkit.getDefaultToolkit().getImage("assets/soundOffHigh.png");
+	Image musicOnHigh = Toolkit.getDefaultToolkit().getImage("assets/musicOnHigh.png");
+	Image musicOffHigh = Toolkit.getDefaultToolkit().getImage("assets/musicOffHigh.png");
+	
+	Image blueWins = Toolkit.getDefaultToolkit().getImage("assets/blueWins.gif");
+	Image redWins = Toolkit.getDefaultToolkit().getImage("assets/redWins.gif");
+	
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -123,6 +140,9 @@ public class pongRev extends JFrame implements KeyListener {
     int ballSpawnCounter = -1;
     int ballSpawnPrinter = 0;
     
+    int soundState = 0;
+    int musicState = 0;
+    
 	public pongRev()
 	{
 		super( "Pong Revolution" );
@@ -130,8 +150,10 @@ public class pongRev extends JFrame implements KeyListener {
         setForeground(Color.white);
         setSize( 1000, 700 );
         this.addKeyListener(this);
+        this.addMouseListener(this);
+        this.addMouseMotionListener(this);
         setVisible(true);
-
+        
 		try {
 	        AudioInputStream stream1 = AudioSystem.getAudioInputStream(new File("assets/sounds/stun.wav"));
 	        DataLine.Info info1 = new DataLine.Info(Clip.class, stream1.getFormat());
@@ -249,7 +271,7 @@ public class pongRev extends JFrame implements KeyListener {
 	        DataLine.Info info =
 	                  new DataLine.Info(Clip.class,
 	                          stream.getFormat());
-	        Clip clip = (Clip) AudioSystem.getLine(info);
+	        clip = (Clip) AudioSystem.getLine(info);
 	 
 	        clip.open(stream);
 	        clip.start();
@@ -275,7 +297,7 @@ public class pongRev extends JFrame implements KeyListener {
 	
 		dbg.drawImage(backG,6,6,this);
 		dbg.drawImage(score,700,0,this);
-        
+		
 		if (gameinfo.state != null) {
 			
 			// BALLS MOVING
@@ -329,6 +351,7 @@ public class pongRev extends JFrame implements KeyListener {
 	        	}
 	        }
 	        
+	        dbg.drawImage(blueWins, CIRCLE_CENTER - 150, CIRCLE_CENTER - 150, this); 
 			// GAME STATE
 			if (gameinfo.state.message.size() == 0) {
 				// DONT DRAW ANYTHING
@@ -338,8 +361,10 @@ public class pongRev extends JFrame implements KeyListener {
 				dbg.drawImage(countDown, CIRCLE_CENTER - 100, CIRCLE_CENTER - 100,this);
 			} else if (gameinfo.state.message.get(0).equals("blue")) {
 				// BLUE WINS
+				dbg.drawImage(blueWins, CIRCLE_CENTER - 150, CIRCLE_CENTER - 150, this); 
 			} else if (gameinfo.state.message.get(0).equals("red")) {
 				// RED WINS
+				dbg.drawImage(redWins, CIRCLE_CENTER - 150, CIRCLE_CENTER - 150, this);
 			} else if (gameinfo.state.message.get(0).equals("waiting")) {
 				// GAME IS WAITING TO START
 			}
@@ -363,7 +388,7 @@ public class pongRev extends JFrame implements KeyListener {
 	        }
 	        
 	        if(ballSpawnCounter >= 0 && 
-	        		ballSpawnCounter < (5 * 6) + 10 && 
+	        		ballSpawnCounter < (5 * 6) + 1 && 
 	        		!ballID.containsKey(gameinfo.state.spawning / 10)) {
 	        	if(ballSpawnCounter%6 == 0 && ballSpawnPrinter!=4)
 	        	{
@@ -397,7 +422,7 @@ public class pongRev extends JFrame implements KeyListener {
 	        
 	        // BALLS COLLIDING
 	        for (int i = 0; i < gameinfo.state.collisions.size(); i++) {
-	        	if (!collideID.containsKey(gameinfo.state.collisions.get(i).id)) {
+	        	if (!collideID.containsKey(gameinfo.state.collisions.get(i).id) && soundState == 0) {
 	        		collideID.put(gameinfo.state.collisions.get(i).id, gameinfo.state.collisions.get(i).id);
 	        		if (isEnemy(gameinfo.state.collisions.get(i).player)) {
 	        			enemyCollide[gameinfo.state.collisions.get(i).ballCombo].stop();
@@ -436,14 +461,54 @@ public class pongRev extends JFrame implements KeyListener {
 	        			scores.add(s);
 	        		}
 	        		scoreID.put(gameinfo.state.out.get(i).id, gameinfo.state.out.get(i).id);
-	        		scoreClip.stop();
-	        		scoreClip.setFramePosition(0);
-	        		scoreClip.start();
+	        		
+	        		if(soundState == 0)
+	        		{
+		        		scoreClip.stop();
+		        		scoreClip.setFramePosition(0);
+		        		scoreClip.start();
+	        		}
 	        	}
 	        }
 	        
+	        dbg.drawImage(front,6,6,this);
+	        
+	        
+			if(musicState == 0)
+			{
+				dbg.drawImage(musicOn,20,630,this);
+			}
+			else if(musicState == 2)
+			{
+				dbg.drawImage(musicOnHigh,20,630,this);
+			}
+			else if(musicState == 3)
+			{
+				dbg.drawImage(musicOffHigh,20,630,this);
+			}
+			else
+			{
+				dbg.drawImage(musicOff,20,630,this);
+			}
+			if(soundState == 0)
+			{
+				dbg.drawImage(soundOn,70,630,this);
+			}
+			else if(soundState == 2)
+			{
+				dbg.drawImage(soundOnHigh,70,630,this);
+			}
+			else if(soundState == 3)
+			{
+				dbg.drawImage(soundOffHigh,70,630,this);
+			}
+			else
+			{
+				dbg.drawImage(soundOff,70,630,this);
+			}
+			
 	        // DRAW PADDLES
-			dbg.drawImage(front,6,6,this);
+			
 			
 			drawPaddle(gameinfo.enemy1);
 			drawPaddle(gameinfo.enemy2);
@@ -615,7 +680,7 @@ public class pongRev extends JFrame implements KeyListener {
 			if(gameinfo.state.paddles.get(q).used.type == TPowerUp.NONE) {
 				((Graphics2D) dbg).drawImage(paddles[q], tx[q], this);
 			} else if (gameinfo.state.paddles.get(q).used.type == TPowerUp.SPEED) {
-				if (!powerID.containsKey(gameinfo.state.paddles.get(q).used.id)) {
+				if (!powerID.containsKey(gameinfo.state.paddles.get(q).used.id) && soundState == 0) {
 					powerID.put(gameinfo.state.paddles.get(q).used.id, gameinfo.state.paddles.get(q).used.id);
 					speedClip.stop();
 					speedClip.setFramePosition(0);
@@ -628,7 +693,7 @@ public class pongRev extends JFrame implements KeyListener {
 					((Graphics2D) dbg).drawImage(redSpeed, txOld[1][q], this);
 				}
 			} else if (gameinfo.state.paddles.get(q).used.type == TPowerUp.INVIS) {
-				if (!powerID.containsKey(gameinfo.state.paddles.get(q).used.id)) {
+				if (!powerID.containsKey(gameinfo.state.paddles.get(q).used.id) && soundState == 0) {
 					powerID.put(gameinfo.state.paddles.get(q).used.id, gameinfo.state.paddles.get(q).used.id);
 					invisClip.stop();
 					invisClip.setFramePosition(0);
@@ -638,7 +703,7 @@ public class pongRev extends JFrame implements KeyListener {
 					((Graphics2D) dbg).drawImage(invisPaddle, tx[q], this);
 				}
 			} else if (gameinfo.state.paddles.get(q).used.type == TPowerUp.STUN) {
-				if (!powerID.containsKey(gameinfo.state.paddles.get(q).used.id)) {
+				if (!powerID.containsKey(gameinfo.state.paddles.get(q).used.id) && soundState == 0) {
 					powerID.put(gameinfo.state.paddles.get(q).used.id, gameinfo.state.paddles.get(q).used.id);
 					stunClip.stop();
 					stunClip.setFramePosition(0);
@@ -686,5 +751,108 @@ public class pongRev extends JFrame implements KeyListener {
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+    public void mousePressed(MouseEvent e) {
+    	
+    	if(e.getX()>=20 && e.getX() <=70 && e.getY() >= 630 && e.getY() <=680)
+    	{
+    		if(musicState == 2){
+    			musicState = 1;
+    			clip.loop(0);
+    			clip.stop();
+    		}
+    		else if(musicState == 3){
+    			musicState = 0;
+    			clip.start();
+    			clip.loop(Clip.LOOP_CONTINUOUSLY);
+    		}
+    		
+    	}
+    	
+    	else if(e.getX()>=70 && e.getX() <=120 && e.getY() >= 630 && e.getY() <=680)
+    	{
+    		if(soundState == 2){
+    			soundState = 1;
+    		}
+    		else if(soundState == 3){
+    			soundState = 0;
+    		}
+    	}	
+   }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+    	if(e.getX()>=20 && e.getX() <=70 && e.getY() >= 630 && e.getY() <=680)
+    	{
+    		if(musicState == 0){
+    			musicState = 2;
+
+    		}
+    		else if(musicState == 1){
+    			musicState = 3;
+    		}
+    	}
+    	else
+    	{
+    		if(musicState == 2){
+    			musicState = 0;
+
+    		}
+    		else if(musicState == 3){
+    			musicState = 1;
+    		}
+    	}
+    	
+    	if(e.getX()>=70 && e.getX() <=120 && e.getY() >= 630 && e.getY() <=680)
+    	{
+    		if(soundState == 0){
+    			soundState = 2;
+
+    		}
+    		else if(soundState == 1){
+    			soundState = 3;
+    		}
+    	}	
+    	else
+    	{
+    		if(soundState == 2){
+    			soundState = 0;
+
+    		}
+    		else if(soundState == 3){
+    			soundState = 1;
+    		}
+    	}
 	}
 }
