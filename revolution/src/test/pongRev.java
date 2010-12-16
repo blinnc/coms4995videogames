@@ -92,6 +92,7 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	Image neutralBall = Toolkit.getDefaultToolkit().getImage("assets/neutralball.png");
 	Image yellowBall = Toolkit.getDefaultToolkit().getImage("assets/yellowball.png");
 	Image score = Toolkit.getDefaultToolkit().getImage("assets/score.png");
+	Image logoHidden = Toolkit.getDefaultToolkit().getImage("assets/logoHidden.png");
 	Image ad = Toolkit.getDefaultToolkit().getImage("assets/AD.png");
 	Image number = Toolkit.getDefaultToolkit().getImage("assets/number.png");
 	Image speedIcon = Toolkit.getDefaultToolkit().getImage("assets/speedIcon.png");
@@ -296,7 +297,8 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 		dbg.drawLine(600, 0, 600, 600);
 	
 		dbg.drawImage(backG,6,6,this);
-		dbg.drawImage(score,700,0,this);
+		//dbg.drawImage(score,700,0,this);
+		dbg.drawImage(logoHidden,700,0,this);
 		
 		if (gameinfo.state != null) {
 			
