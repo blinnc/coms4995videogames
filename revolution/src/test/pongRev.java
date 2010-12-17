@@ -359,13 +359,16 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        	}
 	        }
 	       
+	        Image newCountDown = null;
 			// GAME STATE
 			if (gameinfo.state.message.size() == 0) {
 				// DONT DRAW ANYTHING
 			} else if (gameinfo.state.message.get(0).equals("3") || 
 					gameinfo.state.message.get(0).equals("2") ||
 					gameinfo.state.message.get(0).equals("4")) {
-				dbg.drawImage(countDown, CIRCLE_CENTER - 100, CIRCLE_CENTER - 100,this);
+				newCountDown = countDown;
+				tutorial ++;
+				dbg.drawImage(newCountDown, CIRCLE_CENTER - 100, CIRCLE_CENTER - 100,this);
 			} else if (gameinfo.state.message.get(0).equals("blue")) {
 				// BLUE WINS
 				dbg.drawImage(blueWins, CIRCLE_CENTER - 150, CIRCLE_CENTER - 150, this); 
@@ -581,6 +584,12 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 		{
 			dbg.drawImage(helpfinish, 0,0,this);
 			dbg.drawImage(pressAny, 50,600,this);
+		}
+		else if(tutorial == 2)
+		{
+			dbg.drawImage(help, 2000,2000,this);
+			dbg.drawImage(helpfinish, 2000,2000,this);
+			dbg.drawImage(pressAny, 2000,2000,this);
 		}
 		
 		g.drawImage(dbImage, 0, 0, this);
