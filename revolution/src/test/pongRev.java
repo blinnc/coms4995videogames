@@ -297,8 +297,8 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 		dbg.drawLine(600, 0, 600, 600);
 	
 		dbg.drawImage(backG,6,6,this);
-		//dbg.drawImage(score,700,0,this);
-		dbg.drawImage(logoHidden,700,0,this);
+		dbg.drawImage(score,700,0,this);
+		//dbg.drawImage(logoHidden,700,0,this);
 		
 		if (gameinfo.state != null) {
 			
