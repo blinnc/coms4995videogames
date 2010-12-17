@@ -25,7 +25,6 @@ public class Game {
 	private ServerPaddle[] paddleArray;
 	private int redScore, blueScore;
 	private int ballSpawnCount;
-	private int numPlayers;
 	
 	private int collisionCount;
 	private int ballCount;
@@ -33,6 +32,7 @@ public class Game {
 	private Point2D[] pointsTest;
 	private TGameState state;
 	private Status status;
+	private boolean start;
 	
 	public Game() {
 		ballList = Collections.synchronizedList(new ArrayList<ServerBall>());
@@ -40,7 +40,7 @@ public class Game {
 		ballsOut = Collections.synchronizedList(new ArrayList<TBall>());
 		collisions = Collections.synchronizedList(new ArrayList<TCollision>());
 		paddleArray = new ServerPaddle[5];
-		numPlayers = 0;
+		start = false;
 		collisionCount = 1;
 		ballCount = 0;
 		for(int i = 0; i < paddleArray.length; i++) {
@@ -63,7 +63,7 @@ public class Game {
 	
 	public void startGame() {
 		resetGame();
-		numPlayers = 5;
+		start = true;
 	}
 	
 	public void movePaddle(TPlayer requester, TDirection dir) {
@@ -123,12 +123,10 @@ public class Game {
 			if(paddleArray[TPlayer.RED_ONE.getValue()] == null) {
 				player = TPlayer.RED_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				numPlayers++;
 			}
 			else if(paddleArray[TPlayer.RED_TWO.getValue()] == null) {
 				player = TPlayer.RED_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				numPlayers++;
 			}
 			else {
 				player = TPlayer.NONE;
@@ -138,12 +136,10 @@ public class Game {
 			if(paddleArray[TPlayer.BLUE_ONE.getValue()] == null) {
 				player = TPlayer.BLUE_ONE;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				numPlayers++;
 			}
 			else if(paddleArray[TPlayer.BLUE_TWO.getValue()] == null) {
 				player = TPlayer.BLUE_TWO;
 				paddleArray[player.getValue()] = new ServerPaddle(player);
-				numPlayers++;
 			}
 			else {
 				player = TPlayer.NONE;
@@ -208,12 +204,12 @@ public class Game {
 		movePaddles();
 		if(redScore >= GameSettings.POINTS_FOR_WIN || blueScore >= GameSettings.POINTS_FOR_WIN) {
 			status = Status.WIN;
-			numPlayers = -1;
+			start = false;
 			ballList.clear();
 			ballListCopy.clear();
 		}
 		
-		if(numPlayers >= 4) {
+		if(start) {
 			moveBalls();
 			ballSpawnCount--;
 			if((status == Status.WAITING || status == Status.WIN) && ballSpawnCount < 5000 / GameSettings.CLOCK_INTERVAL) {
