@@ -26,8 +26,6 @@ public class StartWindow extends javax.swing.JFrame {
 	private JPanel jPanel1;
 	private JLabel serverLabel;
 	private JLabel teamLabel;
-	private JTextField usernameInput;
-	private JLabel usernameLabel;
 	public JButton joinButton;
 	public JList teamList;
 	public JTextField serverInput;
@@ -93,17 +91,6 @@ public class StartWindow extends javax.swing.JFrame {
 					jPanel1.add(joinButton);
 					joinButton.setText("Join Game");
 					joinButton.setBounds(128, 204, 131, 23);
-				}
-				{
-					usernameLabel = new JLabel();
-					jPanel1.add(usernameLabel);
-					usernameLabel.setText("Username:");
-					usernameLabel.setBounds(21, 64, 89, 16);
-				}
-				{
-					usernameInput = new JTextField();
-					jPanel1.add(usernameInput);
-					usernameInput.setBounds(128, 67, 245, 23);
 				}
 			}
 			pack();
