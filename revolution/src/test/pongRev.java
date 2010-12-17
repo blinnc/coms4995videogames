@@ -125,6 +125,13 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	Image blueWins = Toolkit.getDefaultToolkit().getImage("assets/blueWins.gif");
 	Image redWins = Toolkit.getDefaultToolkit().getImage("assets/redWins.gif");
 	
+	Image help = Toolkit.getDefaultToolkit().getImage("assets/help.gif");
+	Image helpfinish = Toolkit.getDefaultToolkit().getImage("assets/helpfinish.png");
+	Image pressAny = Toolkit.getDefaultToolkit().getImage("assets/pressAny.gif");
+	
+	int tutorial = 0;
+	int helpCounter = 0;
+	
 	private boolean a;
 	private boolean d;
 	private boolean w;
@@ -290,6 +297,7 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        Score s = new Score(0, 0, 0, null, 0, 0, 0, Color.RED); // for loading resources
 	        s.increment();
 	        s.show((Graphics2D) dbg);
+	        dbg.drawImage(helpfinish, 2000,2000,this);
 		} 
 		
 		dbg.drawLine(600, 0, 600, 600);
@@ -557,7 +565,24 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
         		i--;
         	}
         }
-
+		
+		helpCounter++;
+		
+		if(helpCounter == 1730)
+		{
+			tutorial = 1;
+		}
+		
+		if(tutorial == 0)
+		{
+			dbg.drawImage(help, 0,0,this);
+		}
+		else if(tutorial == 1)
+		{
+			dbg.drawImage(helpfinish, 0,0,this);
+			dbg.drawImage(pressAny, 50,600,this);
+		}
+		
 		g.drawImage(dbImage, 0, 0, this);
 	}
 	
@@ -569,6 +594,14 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
+		if(tutorial == 0)
+		{
+			tutorial = 1;
+		}
+		else if(tutorial == 1)
+		{
+			tutorial = 2;
+		}
 		if(c == 'a' || c == 'A' || c == 'j' || c == 'J' || e.getKeyCode() == KeyEvent.VK_LEFT) 
 		{
 			a = true;
@@ -748,6 +781,15 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	
     public void mousePressed(MouseEvent e) {
     	
+		if(tutorial == 0)
+		{
+			tutorial = 1;
+		}
+		else if(tutorial == 1)
+		{
+			tutorial = 2;
+		}
+		
     	if(e.getX()>=20 && e.getX() <=70 && e.getY() >= 630 && e.getY() <=680)
     	{
     		if(musicState == 2){
