@@ -125,7 +125,11 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	Image blueWins = Toolkit.getDefaultToolkit().getImage("assets/blueWins.gif");
 	Image redWins = Toolkit.getDefaultToolkit().getImage("assets/redWins.gif");
 	
-	Image help = Toolkit.getDefaultToolkit().getImage("assets/help.gif");
+	Image help1 = Toolkit.getDefaultToolkit().getImage("assets/help1.gif");
+	Image help2 = Toolkit.getDefaultToolkit().getImage("assets/help2.gif");
+	Image help3 = Toolkit.getDefaultToolkit().getImage("assets/help3.gif");
+	Image help4 = Toolkit.getDefaultToolkit().getImage("assets/help4.gif");
+	
 	Image helpfinish = Toolkit.getDefaultToolkit().getImage("assets/helpfinish.png");
 	Image pressAny = Toolkit.getDefaultToolkit().getImage("assets/pressAny.gif");
 	
@@ -569,27 +573,57 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
         	}
         }
 		
-		helpCounter++;
-		
-		if(helpCounter == 1730 && tutorial == 0)
-		{
-			tutorial = 1;
-		}
-		
 		if(tutorial == 0)
 		{
-			dbg.drawImage(help, 0,0,this);
+			helpCounter++;
+			dbg.drawImage(help1, 0,0,this);
 		}
 		else if(tutorial == 1)
 		{
-			dbg.drawImage(helpfinish, 0,0,this);
-			dbg.drawImage(pressAny, 50,600,this);
+			helpCounter++;
+			dbg.drawImage(help1, 0,0,this);
+			dbg.drawImage(help2, 0,0,this);
+			//dbg.drawImage(helpfinish, 0,0,this);
+			//dbg.drawImage(pressAny, 50,600,this);
 		}
 		else if(tutorial == 2)
 		{
-			dbg.drawImage(help, 2000,2000,this);
+			helpCounter++;
+			dbg.drawImage(help2, 0,0,this);
+			dbg.drawImage(help3, 0,0,this);
+			//dbg.drawImage(helpfinish, 0,0,this);
+			//dbg.drawImage(pressAny, 50,600,this);
+		}
+		else if(tutorial == 3)
+		{
+			helpCounter++;
+			dbg.drawImage(help3, 0,0,this);
+			dbg.drawImage(help4, 0,0,this);
+			//dbg.drawImage(helpfinish, 0,0,this);
+			//dbg.drawImage(pressAny, 50,600,this);
+		}
+		else if(tutorial == 4)
+		{
+			dbg.drawImage(helpfinish, 0,0,this);
+			//dbg.drawImage(pressAny, 2000,2000,this);
+		}
+		else if(tutorial == 5)
+		{
+			dbg.drawImage(help4, 2000,2000,this);
+			dbg.drawImage(help3, 2000,2000,this);
+			dbg.drawImage(help2, 2000,2000,this);
+			dbg.drawImage(help1, 2000,2000,this);
 			dbg.drawImage(helpfinish, 2000,2000,this);
-			dbg.drawImage(pressAny, 2000,2000,this);
+			//dbg.drawImage(pressAny, 2000,2000,this);
+		}
+
+		if( (helpCounter >= 460 && tutorial == 0) || (helpCounter >= 400 && tutorial == 1) || (helpCounter >= 700 && tutorial == 2) || (helpCounter >= 160 && tutorial == 3) || (tutorial == 4))
+		{
+			dbg.drawImage(pressAny, 50,600,this);
+			if(tutorial==3)
+			{
+				tutorial = 4;
+			}
 		}
 		
 		g.drawImage(dbImage, 0, 0, this);
@@ -603,14 +637,9 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	@Override
 	public void keyPressed(KeyEvent e) {
 		char c = e.getKeyChar();
-		if(tutorial == 0)
-		{
-			tutorial = 1;
-		}
-		else if(tutorial == 1)
-		{
-			tutorial = 2;
-		}
+		
+		tutorial++;
+		helpCounter = 0;
 		if(c == 'a' || c == 'A' || c == 'j' || c == 'J' || e.getKeyCode() == KeyEvent.VK_LEFT) 
 		{
 			a = true;
@@ -790,14 +819,8 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	
     public void mousePressed(MouseEvent e) {
     	
-		if(tutorial == 0)
-		{
-			tutorial = 1;
-		}
-		else if(tutorial == 1)
-		{
-			tutorial = 2;
-		}
+		tutorial++;
+		helpCounter = 0;
 		
     	if(e.getX()>=20 && e.getX() <=70 && e.getY() >= 630 && e.getY() <=680)
     	{
