@@ -297,8 +297,8 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 		dbg.drawLine(600, 0, 600, 600);
 	
 		dbg.drawImage(backG,6,6,this);
-		dbg.drawImage(score,700,0,this);
-		//dbg.drawImage(logoHidden,700,0,this);
+		//dbg.drawImage(score,700,0,this);
+		dbg.drawImage(logoHidden,700,0,this);
 		
 		if (gameinfo.state != null) {
 			
@@ -569,21 +569,21 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	}
 	
 	@Override
-	public void keyPressed(KeyEvent arg0) {
-		char c = arg0.getKeyChar();
-		if(c == 'a' || c == 'A' || c == 'j' || c == 'J') 
+	public void keyPressed(KeyEvent e) {
+		char c = e.getKeyChar();
+		if(c == 'a' || c == 'A' || c == 'j' || c == 'J' || e.getKeyCode() == KeyEvent.VK_LEFT) 
 		{
 			a = true;
 		} 
-		else if (c == 'd' || c == 'D' || c == 'l' || c == 'L') 
+		else if (c == 'd' || c == 'D' || c == 'l' || c == 'L' || e.getKeyCode() == KeyEvent.VK_RIGHT) 
 		{
 			d = true;
 		}
-		else if (c == 'w' || c == 'W' || c == 'i' || c == 'I' || c == ' ')
+		else if (c == 'w' || c == 'W' || c == 'i' || c == 'I' || c == ' ' || e.getKeyCode() == KeyEvent.VK_UP)
 		{
 			w = true;
 		}
-		else if (c == 's' || c == 'S' || c == 'k' || c == 'K')
+		else if (c == 's' || c == 'S' || c == 'k' || c == 'K' || e.getKeyCode() == KeyEvent.VK_DOWN)
 		{
 			s = true;
 		}
@@ -739,11 +739,11 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	}
 
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		char c = arg0.getKeyChar();
-		if(c == 'a' || c == 'A' || c == 'j' || c == 'J') {
+	public void keyReleased(KeyEvent e) {
+		char c = e.getKeyChar();
+		if(c == 'a' || c == 'A' || c == 'j' || c == 'J' || e.getKeyCode() == KeyEvent.VK_LEFT) {
 			a = false;
-		} else if (c == 'd' || c == 'D' || c == 'l' || c == 'L') {
+		} else if (c == 'd' || c == 'D' || c == 'l' || c == 'L'|| e.getKeyCode() == KeyEvent.VK_RIGHT) {
 			d = false;
 		}
 	}
