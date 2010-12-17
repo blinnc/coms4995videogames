@@ -53,7 +53,7 @@ public class GameInfo {
 			enemy1 = TPlayer.RED_ONE;
 			enemy2 = TPlayer.RED_TWO;
 		} else if (player == TPlayer.RED_ONE) {
-			ally = TPlayer.RED_ONE;
+			ally = TPlayer.RED_TWO;
 			enemy1 = TPlayer.BLUE_ONE;
 			enemy2 = TPlayer.BLUE_TWO;
 		} else if (player == TPlayer.RED_TWO) {
