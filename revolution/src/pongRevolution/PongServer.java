@@ -66,7 +66,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 		
 		final JCheckBox powerBox = new JCheckBox("Enable power-ups");
 		final JCheckBox spawnBox = new JCheckBox("Enable ball spawn towards loser");
-		final JTextField pointsBox = new JTextField("[Points to win] (default: 1000)");
+		final JTextField pointsBox = new JTextField("[Points to win] (default: 600)");
 		final JPanel settingsPanel = new JPanel(new GridLayout(3, 1));
 		settingsPanel.add(powerBox);
 		settingsPanel.add(spawnBox);
