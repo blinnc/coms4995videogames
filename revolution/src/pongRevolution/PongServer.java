@@ -8,7 +8,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -88,6 +87,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 		}
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
+		frame.setTitle("Pong Revolution Server");
 		frame.setVisible(true);
 		
 		pauseButton.addActionListener(new ActionListener() {
