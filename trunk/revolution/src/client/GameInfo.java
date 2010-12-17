@@ -74,9 +74,6 @@ public class GameInfo {
 	         
 	         //transport.close();
 	      } catch (TTransportException e) {
-	         e.printStackTrace();
-	      } catch (TException e) {
-	         e.printStackTrace();
 	      }
 	   }
 	

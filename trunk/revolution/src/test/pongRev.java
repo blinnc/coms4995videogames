@@ -193,7 +193,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        }
 	        
 	      } catch (Exception e) {
-	           e.printStackTrace();
 	           System.exit(0);
 	      }
 	}
@@ -224,7 +223,7 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 				try {
 					team = start.teamList.getSelectedValue().toString();
 				} catch (NullPointerException e) {
-					System.out.println("Please select a team and try again.");
+					 System.out.println("Please select a team and try again.");
 				}
 				if(hostAddress.equals(""))
 				{
@@ -279,7 +278,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        clip.loop(Clip.LOOP_CONTINUOUSLY);
 		 
 	      } catch (Exception e) {
-	           e.printStackTrace();
 	      }
 	}
 	
@@ -598,7 +596,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        try {
 				gameinfo.state = gameinfo.client.poll(gameinfo.player);
 			} catch (TException e) {
-				e.printStackTrace();
 			}
 			for (int i = txOld.length-1; i > 0; i--) {
 				txOld[i] = txOld[i-1];
@@ -629,7 +626,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        			lastSent = TDirection.NONE;
 	        		}
 	    		} catch (TException e) {
-	    			e.printStackTrace();
 	    		}
 	        } else if (a) {
 	        	try {
@@ -638,7 +634,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	    				lastSent = TDirection.LEFT;
 	        		}
 	    		} catch (TException e) {
-	    			e.printStackTrace();
 	    		}
 	        } else if (d) {
 	        	try {
@@ -647,7 +642,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        			lastSent = TDirection.RIGHT;
 	        		}
 	    		} catch (TException e) {
-	    			e.printStackTrace();
 	    		}
 	        }
 	        if (w) {
@@ -658,7 +652,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 	        			lastSentW = 0;
 	        		}
 	        	} catch (TException e) {
-	        		e.printStackTrace();
 	        	}
 	        }
 	        if (s) {
@@ -669,7 +662,6 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
                 		lastSentS = 0;
                 	}
                 } catch (TException e) {
-                    e.printStackTrace();
                 }
             }
 	    }
