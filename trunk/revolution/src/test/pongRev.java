@@ -571,7 +571,7 @@ public class pongRev extends JFrame implements KeyListener, MouseListener, Mouse
 		
 		helpCounter++;
 		
-		if(helpCounter == 1730)
+		if(helpCounter == 1730 && tutorial == 0)
 		{
 			tutorial = 1;
 		}
