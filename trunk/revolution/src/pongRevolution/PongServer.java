@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -63,12 +64,14 @@ public class PongServer implements network.TNetworkServer.Iface{
 		buttonPanel.add(pauseButton);
 		buttonPanel.add(resetButton);
 		
-		final JCheckBox powerBox = new JCheckBox("Enable power-ups");
 		final JCheckBox spawnBox = new JCheckBox("Enable ball spawn towards loser");
-		final JTextField pointsBox = new JTextField("[Points to win] (default: 600)");
-		final JPanel settingsPanel = new JPanel(new GridLayout(3, 1));
-		settingsPanel.add(powerBox);
+		final JCheckBox powerBox = new JCheckBox("Enable power-ups");
+		final JTextField powerFreqBox = new JTextField("[Power-up spawn freq] (default: " + GameSettings.POWERUP_SPAWN_RATE + ")");
+		final JTextField pointsBox = new JTextField("[Points to win] (default: " + GameSettings.POINTS_FOR_WIN + ")");
+		final JPanel settingsPanel = new JPanel(new GridLayout(0, 1));
 		settingsPanel.add(spawnBox);
+		settingsPanel.add(powerBox);
+		settingsPanel.add(powerFreqBox);
 		settingsPanel.add(pointsBox);
 		powerBox.setSelected(true);
 		spawnBox.setSelected(true);
@@ -78,7 +81,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 		frame.add(buttonPanel, BorderLayout.CENTER);
 		frame.add(settingsPanel, BorderLayout.SOUTH);
 		try {
-			final JLabel ipLabel = new JLabel(InetAddress.getLocalHost().getHostAddress());
+			final JLabel ipLabel = new JLabel("IP: " + InetAddress.getLocalHost().getHostAddress());
 			final JPanel ipPanel = new JPanel();
 			ipPanel.add(ipLabel);
 			frame.add(ipPanel, BorderLayout.NORTH);
@@ -88,6 +91,7 @@ public class PongServer implements network.TNetworkServer.Iface{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.pack();
 		frame.setTitle("Pong Revolution Server");
+		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
 		pauseButton.addActionListener(new ActionListener() {
@@ -135,9 +139,40 @@ public class PongServer implements network.TNetworkServer.Iface{
 					try {
 						String num = pointsBox.getText();
 						GameSettings.POINTS_FOR_WIN = Integer.parseInt(num);
+						JOptionPane.showMessageDialog(frame, "Points changed to " + num);
 					}
 					catch(Exception ex) {
+						JOptionPane.showMessageDialog(frame, "Input not recognized");
+						pointsBox.setText("" + GameSettings.POINTS_FOR_WIN);
 					}
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+					pointsBox.setText("");
+				}
+			}
+		});
+		powerFreqBox.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					try {
+						String num = powerFreqBox.getText();
+						double freq = Double.parseDouble(num);
+						if(freq < 0 || freq > 1) {
+							JOptionPane.showMessageDialog(frame, "Frequency must be between 0 and 1, inclusive");
+							powerFreqBox.setText("" + GameSettings.POWERUP_SPAWN_RATE);
+						}
+						else {
+							GameSettings.POWERUP_SPAWN_RATE = freq;
+							JOptionPane.showMessageDialog(frame, "Frequency changed to " + GameSettings.POWERUP_SPAWN_RATE);
+						}
+					}
+					catch(Exception ex) {
+						JOptionPane.showMessageDialog(frame, "Input not recognized");
+						powerFreqBox.setText("" + GameSettings.POWERUP_SPAWN_RATE);
+					}
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+					powerFreqBox.setText("");
 				}
 			}
 		});
