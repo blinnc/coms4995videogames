@@ -98,7 +98,6 @@ public class ServerBall {
 	}
 	
 	public boolean canHit(TPlayer player) {
-//		return player != lastHit || rehit == 0;
 		return rehit == 0;
 	}
 
@@ -122,6 +121,12 @@ public class ServerBall {
 	}
 
 	public void setAngle(double t) {
+		if(Math.abs(t) >= 360) {
+			t = t % 360;
+			if(t < 0) {
+				t += 360;
+			}
+		}
 		this.t = t;
 		tball.angle = t;
 		updateVelocity();

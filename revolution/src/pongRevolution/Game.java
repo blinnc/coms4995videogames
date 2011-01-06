@@ -344,15 +344,8 @@ public class Game {
 					if (points[2].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
 							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
-								double angle = GameSettings.PADDLE_BOUNCE_ANGLE;
-								if (GameSettings.ENABLE_DEFAULT_BOUNCE_ANGLE) {
-									angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-								}
-								double difference = paddleArray[i].getT() + 180 + Math.toDegrees(angle) - (ball.getAngle() - 180);
-								if (difference > 180) {
-									difference = 360 - difference;
-								}
-								collide(ball, paddleArray[i], (ball.getAngle() - 180) + 2 * Math.abs(difference));
+								double angle = paddleArray[i].getT() + GameSettings.PADDLE_BOUNCE_ANGLE;
+								collide(ball, paddleArray[i], 180 + 2 * angle - ball.getAngle());
 							}
 						}
 					}
@@ -360,15 +353,8 @@ public class Game {
 					if (points[3].distance(new Point2D.Double(paddleArray[i].getX(), paddleArray[i].getY())) <= paddleDiagonal) {
 						if (ball.getX() <= points[0].getX() && ball.getX() >= points[1].getX() || ball.getX() >= points[0].getX() && ball.getX() <= points[1].getX()) {
 							if (ball.getY() <= points[0].getY() && ball.getY() >= points[1].getY() || ball.getY() >= points[0].getY() && ball.getY() <= points[1].getY()) {		
-								double angle = GameSettings.PADDLE_BOUNCE_ANGLE;
-								if (GameSettings.ENABLE_DEFAULT_BOUNCE_ANGLE) {
-									angle = Math.atan(2 * GameSettings.PADDLE_HEIGHT / (GameSettings.PADDLE_LENGTH - GameSettings.PADDLE_TOP));
-								}
-								double difference = paddleArray[i].getT() - 180 - Math.toDegrees(angle) - (ball.getAngle() - 180);
-								if (difference > 180) {
-									difference = 360 - difference;
-								}
-								collide(ball, paddleArray[i], (ball.getAngle() - 180) - 2 * Math.abs(difference));
+								double angle = paddleArray[i].getT() - GameSettings.PADDLE_BOUNCE_ANGLE;
+								collide(ball, paddleArray[i], 180 + 2 * angle - ball.getAngle());
 							}
 						}
 					}

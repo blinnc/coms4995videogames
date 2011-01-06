@@ -26,8 +26,7 @@ public class GameSettings {
 	public static final double PADDLE_JUMP_INIT_VELOCITY = 8;
 	public static final double PADDLE_JUMP_ACCEL = 0.3;
 	
-	public static final double PADDLE_BOUNCE_ANGLE = -44.4;
-	public static final boolean ENABLE_DEFAULT_BOUNCE_ANGLE = false;
+	public static final double PADDLE_BOUNCE_ANGLE = 9;
 	
 	// Ball settings
 	public static final int BALL_SPAWN_WARNING = 30;
